@@ -1,0 +1,44 @@
+.error-message {
+    color: #e3342f;
+    font-size: 0.875rem; 
+    margin-top: -16px; 
+    display: block; 
+    margin-bottom: 24px;
+  }
+  
+  .your-container {
+    @apply bg-[#F9FAFB] w-[1750px] h-[3022px];
+  }
+
+
+  .row {
+    background-image: url('/public/assets/images/disability.svg'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+.question {
+  color: #212121;
+  font-size: 16px; 
+  font-weight: 500; 
+  line-height: 1.5rem; 
+  letter-spacing: 0.02em; 
+  font-family: 'Inter', sans-serif;
+}
+
+.industry-list {
+  max-height: 150px; /* Initial max height */
+  overflow-y: hidden; /* Hidden scroll initially */
+  transition: max-height 0.3s ease-in-out;
+}
+
+.industry-list.expanded {
+  max-height: 400px; /* Expanded max height */
+  overflow-y: auto; /* Enable scroll when expanded */
+}
+.custom-select option {
+  padding-left: 30px; /* Adjust as needed for flag width */
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px 20px; /* Adjust flag size */
+}
