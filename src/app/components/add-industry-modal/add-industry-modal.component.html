@@ -1,0 +1,66 @@
+<div 
+  class="fixed inset-0 flex items-center justify-center bg-black/50 z-[1050]" 
+  (click)="closeModal()">
+  <div 
+    class="h-[440px] bg-white rounded-2xl shadow flex-col justify-start items-start inline-flex w-[550px]" 
+    (click)="$event.stopPropagation()">
+    
+    <!-- Modal Header -->
+    <div class="self-stretch mb-8 px-8 pt-8 pb-6 bg-white rounded-tl-2xl rounded-tr-2xl border-b border-[#dae5ec] flex justify-between items-center">
+      <div class="flex justify-start items-center gap-5">
+        <div class="w-[60px] h-[60px] flex justify-center items-center p-3.5 bg-white rounded-md shadow border border-[#dae5ec]">
+          <div class="icon icon-plus text-blue-600 text-2xl"></div>
+        </div>
+        <div class="flex-col">
+          <div class="text-[#212121] text-2xl font-bold font-inter tracking-tight">Add new industry</div>
+          <div class="text-[#595959] text-lg font-normal font-inter leading-normal">Please specify your industry</div>
+        </div>
+      </div>
+      <button 
+        class="  top-10 text-gray-500 hover:text-gray-700 text-xl w-[38px] h-[38px] rounded-lg flex  items-center" 
+        (click)="closeModal()">✕
+      </button>
+    </div>
+
+        <!-- Industry Type Input -->
+        <div class="px-8 mt-2 flex-col justify-start items-start gap-8 flex h-[196px]">
+      <form [formGroup]="employeeForm" class="self-stretch flex-col gap-6 flex">
+        <div class="flex-col gap-3 flex">
+          <label for="industryType" class="text-[#212121] text-base font-medium font-inter leading-normal">
+            Industry Type
+          </label>
+          <select 
+            formControlName="industryType" 
+            id="industryType"
+            class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:ring-blue-500 focus:border-blue-500 text-[#212121] text-base font-normal font-inter leading-snug">
+            <option value="" disabled>All</option>
+         @for (industry of industries | async; track industry.IndustryId) {
+        <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
+      }
+    </select>
+  </div>
+        <!-- Industry Name Input -->
+        <div class="flex-col gap-3 flex">
+          <label for="industryName" class="text-[#212121] text-base font-medium font-inter leading-normal">
+            Your Industry Name
+          </label>
+          <input 
+            formControlName="industryName"
+            type="text"
+            id="industryName"
+            placeholder="Type industry name"
+            class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:ring-blue-500 focus:border-blue-500 text-black text-base font-normal font-inter leading-snug">
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="self-stretch mt-16 px-5 py-4 bg-gray-100 rounded-bl-2xl rounded-br-2xl border-t border-[#dae5ec] flex justify-end">
+      <button 
+      type="submit"
+      class="h-[41px] px-6 py-3 bg-[#008a22] rounded-md text-white text-sm font-medium font-inter hover:bg-green-700"
+      (click)="addIndustry()">Add
+    </button>    
+    </div>
+  </div>
+</div>

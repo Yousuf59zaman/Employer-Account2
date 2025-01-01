@@ -1,0 +1,28 @@
+<div class="flex -ml-2">
+  <!-- Refresh Button with Icon -->
+  <button type="button" class="p-2 mr-2  text-center text-[#0E73A9] rounded-full" (click)="generateCaptcha()">
+    <i class="icon icon-refresh"></i>
+  </button>
+
+  <!-- Expression Display -->
+  <div class="flex items-center text-inter  font-semibold text-[#0A4A94] bg-blue-100 rounded-md w-[135px] h-[50px] px-[33px] py-[13px] border border-[#0E73A9]">
+    {{ expressionDisplay() }} =
+  </div>
+
+  <!-- CAPTCHA Input with blur event -->
+  <input
+    type="text"
+    [formControl]="captchaInput"
+    class="w-[400px] px-4 py-2 ml-4 text-gray-600 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+    placeholder="Type the verification code here"
+    autocomplete="off"
+    (blur)="validateAnswerOnBlur(captchaInput.value)"
+  />
+
+  <!-- Error Message -->
+
+@if (captchaInput.errors?.['incorrect'] && captchaInput.touched) {
+  <div class="mt-1 ml-3 text-sm text-red-500" aria-live="polite">
+    Incorrect Verification Code. Please try again.
+  </div>
+}
