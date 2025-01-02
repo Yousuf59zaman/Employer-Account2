@@ -64,7 +64,7 @@ filteredCountriesList = this.countrie;
   employeeForm: FormGroup = new FormGroup({
     
     isPolicyAcceptedControl: new FormControl(''),
-    facilitiesForDisabilities: new FormControl('', [Validators.required]),
+    facilitiesForDisabilities: new FormControl(''),
     username: new FormControl('', [Validators.minLength(4),Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
@@ -680,14 +680,10 @@ onContinue() {
   this.checkNamesService.insertAccount(payload).subscribe({
     next: (response) => {
       console.log('Account created successfully:', response);
-      alert(`Account created successfully! CorporateAccountID: ${response.CorporateAccountID}`);
-
       this.router.navigate(['/account-created-successfully']);
-
     },
     error: (error) => {
       console.error('Error creating account:', error);
-      alert('There was an error creating the account. Please try again.');
     },
   });
 }

@@ -24,14 +24,11 @@ export class SuccessfulAccountComponent {
   constructor(private router: Router, private loginService: LoginService, private authService: AuthService
   ) {}
   ngOnInit(): void {
-    const storedCredentials = this.authService['credentialsSubject'].value;
-    this.userName = storedCredentials.username;
-    this.password = storedCredentials.password;
-
-    this.authService.credentials$.subscribe((credentials) => {
-      this.userName = credentials.username;
-      this.password = credentials.password;
-    });
+    const storedCredentials = this.authService.getCredentials();
+    if (storedCredentials.username && storedCredentials.password) {
+      this.userName = storedCredentials.username;
+      this.password = storedCredentials.password;
+    }
   }
   onClickLoginButton() {
     this.loginFormErrorMessage = '';
