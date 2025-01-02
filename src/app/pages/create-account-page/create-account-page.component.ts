@@ -97,7 +97,7 @@ filteredCountriesList = this.countrie;
     companyAddress: new FormControl(''),
     captchaInput: new FormControl('', [Validators.required]),
     companyAddressBangla: new FormControl('',[Validators.required,banglaTextValidator()]),
-    rlNo: new FormControl(null, [Validators.pattern('^[0-9]*$')]),
+    rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }
 );
   usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
@@ -653,8 +653,6 @@ checkCaptchaValidity() {
 onContinue() {
   this.checkCaptchaValidity(); 
   console.log('Current form values:', this.employeeForm.value);
-
-
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
