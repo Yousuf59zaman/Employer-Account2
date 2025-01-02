@@ -64,7 +64,7 @@ filteredCountriesList = this.countrie;
   employeeForm: FormGroup = new FormGroup({
     
     isPolicyAcceptedControl: new FormControl(''),
-    facilitiesForDisabilities: new FormControl(''),
+    facilitiesForDisabilities: new FormControl(0),
     username: new FormControl('', [Validators.minLength(4),Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
@@ -79,12 +79,12 @@ filteredCountriesList = this.countrie;
     contactDesignation: new FormControl('', [Validators.required]),
     contactEmail: new FormControl('', [Validators.required, Validators.email]),
     contactMobile: new FormControl(''),
-    inclusionPolicy: new FormControl(''),
+    inclusionPolicy: new FormControl(0),
     support: new FormControl(0),
     disabilityWrap: new FormControl(''),
-    training: new FormControl(''),
+    training: new FormControl(0),
     companyName: new FormControl('', [Validators.required]),
-    industryType: new FormControl(''),
+    industryType: new FormControl('',[Validators.required]),
     industryName: new FormControl(''),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
@@ -97,7 +97,7 @@ filteredCountriesList = this.countrie;
     companyAddress: new FormControl(''),
     captchaInput: new FormControl('', [Validators.required]),
     companyAddressBangla: new FormControl('',[Validators.required,banglaTextValidator()]),
-    rlNo: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+    rlNo: new FormControl(null, [Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }
 );
   usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
@@ -259,14 +259,20 @@ filteredCountriesList = this.countrie;
   onRLNoBlur(): void {
     this.employeeForm.controls['rlNo'].markAsTouched();
   
-    if (this.employeeForm.controls['rlNo'].valid) {
-      this.verifyRLNo();  
-    } else {
+    if (this.rlNoHasValue && this.employeeForm.controls['rlNo'].invalid) {
       this.showError = true;
-      this.rlErrorMessage = 'RL Number is required';
+      this.rlErrorMessage = 'RL Number is required';  
       this.showErrorModal = true; 
+    } else {
+      this.showError = false; 
+      this.showErrorModal = false; 
+    }
+  
+    if (this.rlNoHasValue && this.employeeForm.controls['rlNo'].valid) {
+      this.verifyRLNo();
     }
   }
+  
   verifyRLNo(): void {
     const rlNo: string = this.employeeForm.get('rlNo')?.value?.toString();
     const companyName: string = this.employeeForm.get('companyName')?.value?.toString();
@@ -629,10 +635,14 @@ private fetchThanas(districtFormattedValue: string): void {
 formValue : any
 currentValidationFieldIndex: number = 0;
 isContinueClicked: boolean = false;
+rlNoHasValue: boolean = false;
+
 
 onInputChange(event: Event) {
   const input = event.target as HTMLInputElement;
   input.value = input.value.replace(/[^0-9]/g, '');
+  this.rlNoHasValue = input.value.trim().length > 0;
+
 }
 toggleShowAll() {
   this.showAll = !this.showAll;
@@ -642,8 +652,8 @@ checkCaptchaValidity() {
 }
 onContinue() {
   this.checkCaptchaValidity(); 
-  this.isContinueClicked = true;
   console.log('Current form values:', this.employeeForm.value);
+
 
   const credentials = {
     username: this.employeeForm.value.username || '',
