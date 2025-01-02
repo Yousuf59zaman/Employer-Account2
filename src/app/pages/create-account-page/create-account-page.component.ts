@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CheckNamesService } from '../../Services/check-names.service';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -551,6 +551,15 @@ private fetchDistricts(): void {
 }
   toggleDropdown() {
     this.isOpen = !this.isOpen;
+  }
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: Event) {
+    const targetElement = event.target as HTMLElement;
+
+    const isInsideDropdown = targetElement.closest('.dropdown-container');
+    if (!isInsideDropdown) {
+      this.isOpen = false;
+    }
   }
 
   selectCountry(country: LocationResponseDTO) {
