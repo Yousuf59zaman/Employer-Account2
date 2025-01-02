@@ -84,7 +84,7 @@ filteredCountriesList = this.countrie;
     disabilityWrap: new FormControl(''),
     training: new FormControl(''),
     companyName: new FormControl('', [Validators.required]),
-    industryType: new FormControl('', Validators.required),
+    industryType: new FormControl(''),
     industryName: new FormControl(''),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
