@@ -123,6 +123,7 @@ filteredCountriesList = this.countrie;
   showAll: boolean = false;  
   showAddIndustryModal = false;
   selectedIndustryId: number = 0;
+  isPhoneDropdownOpen = false;
   searchControl: FormControl = new FormControl(''); 
 
   private usernameSubject: Subject<string> = new Subject();
@@ -550,6 +551,10 @@ private fetchDistricts(): void {
     },
   });
 }
+
+Dropdown() {
+  this.isPhoneDropdownOpen = !this.isPhoneDropdownOpen;
+}
   toggleDropdown() {
     this.isOpen = !this.isOpen;
   }
@@ -634,7 +639,7 @@ private fetchThanas(districtFormattedValue: string): void {
   chooseCountry(country: any) {
     this.currentCountry = country;
     this.currentFlagPath = this.filePath[country.name];
-    this.isOpen = false; 
+    this.isPhoneDropdownOpen = false;
   }
   private updateFlagPath() {
    const countryCode = this.employeeForm.controls['contactMobile'].value;
