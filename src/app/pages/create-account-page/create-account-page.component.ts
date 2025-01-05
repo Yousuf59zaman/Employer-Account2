@@ -72,13 +72,13 @@ filteredCountriesList = this.countrie;
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
     companySize: new FormControl('', Validators.required),
     outSideBd: new FormControl(''),
-    businessDesc: new FormControl(''),
+    businessDesc: new FormControl('', [Validators.required]),
     tradeNo: new FormControl(''),
     webUrl: new FormControl(''),
     contactName: new FormControl('', [Validators.required]),
     contactDesignation: new FormControl('', [Validators.required]),
     contactEmail: new FormControl('', [Validators.required, Validators.email]),
-    contactMobile: new FormControl(''),
+    contactMobile: new FormControl('', [Validators.required]),
     inclusionPolicy: new FormControl(0),
     support: new FormControl(0),
     disabilityWrap: new FormControl(''),
@@ -102,7 +102,8 @@ filteredCountriesList = this.countrie;
 );
   usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
   companyNameControl = computed(() => this.employeeForm.get('companyName') as FormControl<string>);
-  industryTypeControl = computed(() => this.employeeForm.get('industryType') as FormControl<string>);
+  // industryTypeControl = computed(() => this.employeeForm.get('industryType') as FormControl<string>);
+
   // countryControl = computed(() => this.employeeForm.get('country') as FormControl<string>);
   // districtControl = computed(() => this.employeeForm.get('district') as FormControl<string>);
   // thanaControl = computed(() => this.employeeForm.get('thana') as FormControl<string>);
@@ -661,6 +662,8 @@ checkCaptchaValidity() {
 }
 onContinue() {
   this.checkCaptchaValidity(); 
+  this.isContinueClicked = true;
+
   console.log('Current form values:', this.employeeForm.value);
   const credentials = {
     username: this.employeeForm.value.username || '',
