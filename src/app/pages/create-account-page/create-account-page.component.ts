@@ -660,53 +660,7 @@ toggleShowAll() {
 checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
-// onContinue() {
-//   this.checkCaptchaValidity(); 
-//   this.isContinueClicked = true;
 
-//   console.log('Current form values:', this.employeeForm.value);
-//   const credentials = {
-//     username: this.employeeForm.value.username || '',
-//     password: this.employeeForm.value.password || '',
-//   };
-//   this.authService.updateCredentials(credentials);
-//   // console.log('Credentials stored in AuthService:', credentials);
-//   const fieldsOrder = [
-//     'username', 
-//     'password',
-//     'confirmPassword',
-//     'companyName',
-//     'yearsOfEstablishMent',
-//     'companySize',
-//     'companyAddress',
-//     'companyAddressBangla',
-//     'contactName',
-//     'contactDesignation',
-//     'contactEmail',
-//     'captchaInput', 
-
-//   ];
-
-//   const currentField = fieldsOrder[this.currentValidationFieldIndex];
-//   const control = this.employeeForm.get(currentField);
-
-//   if (control && control.invalid) {
-//     control.markAsTouched();
-//     console.error(`Field ${currentField} is invalid:`, control.errors);
-//     return;
-//   }
-//   const payload = this.employeeForm.value;
-  
-//   this.checkNamesService.insertAccount(payload).subscribe({
-//     next: (response) => {
-//       console.log('Account created successfully:', response);
-//       this.router.navigate(['/account-created-successfully']);
-//     },
-//     error: (error) => {
-//       console.error('Error creating account:', error);
-//     },
-//   });
-// }
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
