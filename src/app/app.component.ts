@@ -7,7 +7,7 @@ import { ErrorModalComponent } from './components/error-modal/error-modal.compon
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent,ErrorModalComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
