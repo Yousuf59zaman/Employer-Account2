@@ -665,12 +665,13 @@ onContinue() {
   this.isContinueClicked = true;
 
   console.log('Current form values:', this.employeeForm.value);
+
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
   };
   this.authService.updateCredentials(credentials);
-  // console.log('Credentials stored in AuthService:', credentials);
+
   const fieldsOrder = [
     'username', 
     'password',
@@ -684,7 +685,6 @@ onContinue() {
     'contactDesignation',
     'contactEmail',
     'captchaInput', 
-
   ];
 
   const currentField = fieldsOrder[this.currentValidationFieldIndex];
@@ -695,8 +695,21 @@ onContinue() {
     console.error(`Field ${currentField} is invalid:`, control.errors);
     return;
   }
+
+  if (this.employeeForm.invalid) {
+    Object.keys(this.employeeForm.controls).forEach((key) => {
+      const ctrl = this.employeeForm.get(key);
+      if (ctrl) {
+        ctrl.markAsTouched();
+      }
+    });
+
+    console.error('Form is invalid. Please correct the errors before submitting.');
+    return; 
+  }
+
   const payload = this.employeeForm.value;
-  
+
   this.checkNamesService.insertAccount(payload).subscribe({
     next: (response) => {
       console.log('Account created successfully:', response);
