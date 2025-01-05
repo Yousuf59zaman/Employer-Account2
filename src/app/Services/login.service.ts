@@ -97,4 +97,17 @@ private readonly DOMAIN_PARAM_ONLY = window.location.href.includes('gateway')
       throw new Error('Error decoding JWT');
     }
   }
+  increaseAuthTokenExpiration(): void {
+    console.log('Increasing token expiration');
+    const cookieNames = ['AUTHTOKEN', 'REFTOKEN', 'LoggedInDateTime', 'Company'];
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 20);
+
+    cookieNames.forEach((cookieName) => {
+      const cookieValue = this.cookieService.get(cookieName);
+      if (cookieValue) {
+        document.cookie = `${cookieName}=${cookieValue}; expires=${expirationDate.toUTCString()}; path=/; domain=.bdjobs.com`;
+      }
+    });
+  }
 }
