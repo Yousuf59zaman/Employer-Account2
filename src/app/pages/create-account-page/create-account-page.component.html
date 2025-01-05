@@ -389,16 +389,12 @@
             formControlName="industryType" 
             id="SelCat" 
             class="flex w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
-         <option value="" disabled>All</option>
+         <option value="0" disabled>All</option>
          @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
       }
     </select>
-    <div class="text-red-600">
-      @if(employeeForm.controls['industryType'].touched && employeeForm.controls['industryType'].errors?.['required']) {
-        <span class="error-message">This is required</span>
-      }
-  </div>  
+   
   </div>
 
   @if (showAddIndustryButton)
@@ -489,6 +485,11 @@
           placeholder="Write Business Description"
           [rows]="4"
           ></app-text-area> 
+          <div class="text-red-600">
+            @if (employeeForm.controls['businessDesc'].touched &&  employeeForm.controls['businessDesc'].errors?.['required']) {
+            <span class="error-message">This is required</span>
+            }
+        </div>
           <div class="flex flex-col sm:flex-row sm:gap-6">
             <div class="flex-1">
               <app-input-field
@@ -502,6 +503,7 @@
               [isRequired]="false"
               >
             </app-input-field>
+          
             </div>
             <div class="flex-1">
               <label for="rlNo" class="block mb-1 text-sm font-semibold text-gray-700">
@@ -677,10 +679,10 @@
                 
               <div class="text-red-600 ">
                 @if (employeeForm.controls['contactMobile'].touched &&  employeeForm.controls['contactMobile'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+                <span class="mt-4 text-sm">This is required</span>
                 }
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {
-                  <span class="error-message">Please enter a valid mobile number</span>
+                  <span class="mt-4 text-sm">Please enter a valid mobile number</span>
                 }
             </div>          
               </div>

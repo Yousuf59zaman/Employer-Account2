@@ -68,9 +68,9 @@ filteredCountriesList = this.countrie;
     username: new FormControl('', [Validators.minLength(4),Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
-    companyNameBangla: new FormControl('',[Validators.required,banglaTextValidator()]),
+    companyNameBangla: new FormControl('',[banglaTextValidator()]),
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
-    companySize: new FormControl('', Validators.required),
+    companySize: new FormControl('', [Validators.required]),
     outSideBd: new FormControl(''),
     businessDesc: new FormControl('', [Validators.required]),
     tradeNo: new FormControl(''),
@@ -84,7 +84,7 @@ filteredCountriesList = this.countrie;
     disabilityWrap: new FormControl(''),
     training: new FormControl(0),
     companyName: new FormControl('', [Validators.required]),
-    industryType: new FormControl('',[Validators.required]),
+    industryType: new FormControl(0),
     industryName: new FormControl(''),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
@@ -96,7 +96,7 @@ filteredCountriesList = this.countrie;
     outsideBDCompanyAddressBng: new FormControl(''),
     companyAddress: new FormControl(''),
     captchaInput: new FormControl('', [Validators.required]),
-    companyAddressBangla: new FormControl('',[Validators.required,banglaTextValidator()]),
+    companyAddressBangla: new FormControl('',[banglaTextValidator()]),
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }
 );
@@ -660,56 +660,87 @@ toggleShowAll() {
 checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
+// onContinue() {
+//   this.checkCaptchaValidity(); 
+//   this.isContinueClicked = true;
+
+//   console.log('Current form values:', this.employeeForm.value);
+//   const credentials = {
+//     username: this.employeeForm.value.username || '',
+//     password: this.employeeForm.value.password || '',
+//   };
+//   this.authService.updateCredentials(credentials);
+//   // console.log('Credentials stored in AuthService:', credentials);
+//   const fieldsOrder = [
+//     'username', 
+//     'password',
+//     'confirmPassword',
+//     'companyName',
+//     'yearsOfEstablishMent',
+//     'companySize',
+//     'companyAddress',
+//     'companyAddressBangla',
+//     'contactName',
+//     'contactDesignation',
+//     'contactEmail',
+//     'captchaInput', 
+
+//   ];
+
+//   const currentField = fieldsOrder[this.currentValidationFieldIndex];
+//   const control = this.employeeForm.get(currentField);
+
+//   if (control && control.invalid) {
+//     control.markAsTouched();
+//     console.error(`Field ${currentField} is invalid:`, control.errors);
+//     return;
+//   }
+//   const payload = this.employeeForm.value;
+  
+//   this.checkNamesService.insertAccount(payload).subscribe({
+//     next: (response) => {
+//       console.log('Account created successfully:', response);
+//       this.router.navigate(['/account-created-successfully']);
+//     },
+//     error: (error) => {
+//       console.error('Error creating account:', error);
+//     },
+//   });
+// }
 onContinue() {
-  this.checkCaptchaValidity(); 
+  this.checkCaptchaValidity();
   this.isContinueClicked = true;
 
   console.log('Current form values:', this.employeeForm.value);
 
+  // Update credentials in AuthService
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
   };
   this.authService.updateCredentials(credentials);
 
-  const fieldsOrder = [
-    'username', 
-    'password',
-    'confirmPassword',
-    'companyName',
-    'yearsOfEstablishMent',
-    'companySize',
-    'companyAddress',
-    'companyAddressBangla',
-    'contactName',
-    'contactDesignation',
-    'contactEmail',
-    'captchaInput', 
-  ];
+  const requiredFields = Object.keys(this.employeeForm.controls).filter((key) => {
+    const control = this.employeeForm.get(key);
+    return control && control.hasValidator(Validators.required);
+  });
 
-  const currentField = fieldsOrder[this.currentValidationFieldIndex];
-  const control = this.employeeForm.get(currentField);
+  let hasErrors = false;
+  requiredFields.forEach((key) => {
+    const control = this.employeeForm.get(key);
+    if (control && control.invalid) {
+      control.markAsTouched();
+      console.error(`Field ${key} is invalid:`, control.errors);
+      hasErrors = true;
+    }
+  });
+  if (hasErrors) {
+    console.error('Form has errors in required fields. Please correct them before submitting.');
+    alert('Form has errors in required fields. Please correct them before submitting.');
 
-  if (control && control.invalid) {
-    control.markAsTouched();
-    console.error(`Field ${currentField} is invalid:`, control.errors);
     return;
   }
-
-  if (this.employeeForm.invalid) {
-    Object.keys(this.employeeForm.controls).forEach((key) => {
-      const ctrl = this.employeeForm.get(key);
-      if (ctrl) {
-        ctrl.markAsTouched();
-      }
-    });
-
-    console.error('Form is invalid. Please correct the errors before submitting.');
-    return; 
-  }
-
   const payload = this.employeeForm.value;
-
   this.checkNamesService.insertAccount(payload).subscribe({
     next: (response) => {
       console.log('Account created successfully:', response);
@@ -717,7 +748,11 @@ onContinue() {
     },
     error: (error) => {
       console.error('Error creating account:', error);
+      alert('There was an error creating the account. Please try again.');
+
     },
   });
 }
+
+
 }
