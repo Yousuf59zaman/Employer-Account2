@@ -96,7 +96,28 @@ export class SuccessfulAccountComponent {
       },
     });
   }
-
+  
+  private handleSuccessfulLogin(redirectUrl: string): void {
+    this.loginService.setCookies().subscribe({
+      next: () => {
+        if (this.authService.hasValidToken()) {
+          window.location.href = 'https://recruiter.bdjobs.com/dashboard';
+        } else {
+          this.handleError('Login failed. Invalid token.');
+        }
+      },
+      error: () => this.handleError('Failed to set authentication cookies.'),
+    });
+  }
+  
+  private handleError(message: string): void {
+    this.loginFormErrorMessage = message;
+    this.isLoginApiCallPending = false;
+  }
+  
 }
+
+
+
 
 
