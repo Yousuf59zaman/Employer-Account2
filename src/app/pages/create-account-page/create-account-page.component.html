@@ -476,7 +476,7 @@
     }
   </div>
           <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">
-            Business Description <span class="text-red-500">*</span>
+            Business Description
           </h2>      
           <app-text-area
           name="txtDescription"
@@ -485,11 +485,7 @@
           placeholder="Write Business Description"
           [rows]="4"
           ></app-text-area> 
-          <div class="text-red-600">
-            @if (employeeForm.controls['businessDesc'].touched &&  employeeForm.controls['businessDesc'].errors?.['required']) {
-            <span class="error-message">This is required</span>
-            }
-        </div>
+        
           <div class="flex flex-col sm:flex-row sm:gap-6">
             <div class="flex-1">
               <app-input-field
@@ -661,8 +657,7 @@
                         </ul>
                       </div>
                     }
-                  </div>
-                
+                  </div>                
                   <!-- Mobile Number Input -->
                   <input 
                     type="text" 
@@ -678,7 +673,7 @@
                 </div>
                 
               <div class="text-red-600 ">
-                @if (employeeForm.controls['contactMobile'].touched &&  employeeForm.controls['contactMobile'].errors?.['required']) {
+                @if (employeeForm.controls['contactMobile'].touched && employeeForm.controls['contactMobile'].errors?.['required']) {
                 <span class="mt-4 text-sm">This is required</span>
                 }
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {

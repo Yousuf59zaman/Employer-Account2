@@ -72,7 +72,7 @@ filteredCountriesList = this.countrie;
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
     companySize: new FormControl('', [Validators.required]),
     outSideBd: new FormControl(''),
-    businessDesc: new FormControl('', [Validators.required]),
+    businessDesc: new FormControl(''),
     tradeNo: new FormControl(''),
     webUrl: new FormControl(''),
     contactName: new FormControl('', [Validators.required]),
@@ -103,7 +103,6 @@ filteredCountriesList = this.countrie;
   usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
   companyNameControl = computed(() => this.employeeForm.get('companyName') as FormControl<string>);
   // industryTypeControl = computed(() => this.employeeForm.get('industryType') as FormControl<string>);
-
   // countryControl = computed(() => this.employeeForm.get('country') as FormControl<string>);
   // districtControl = computed(() => this.employeeForm.get('district') as FormControl<string>);
   // thanaControl = computed(() => this.employeeForm.get('thana') as FormControl<string>);
