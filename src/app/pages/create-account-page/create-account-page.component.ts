@@ -422,9 +422,12 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
           const newIndustry: IndustryTypeResponseDTO = {
             IndustryValue: Date.now() % 2147483647,
             IndustryName: industryName,
+
           };
           this.industryTypes.push(newIndustry);
           this.selectedIndustries.push(newIndustry);
+          this.filteredIndustryTypes = [...this.industryTypes];
+
         } else if (existingIndustry) {
           if (!this.selectedIndustries.includes(existingIndustry)) {
             this.selectedIndustries.push(existingIndustry);
@@ -486,12 +489,22 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     this.selectedIndustries = this.selectedIndustries.filter(
       (selected) => selected.IndustryValue !== industry.IndustryValue
     );
+    this.industryTypes = this.industryTypes.filter(
+      (type) => type.IndustryValue !== industry.IndustryValue
+    );
+  
+    // Update the filtered list of industries
+    this.filteredIndustryTypes = [...this.industryTypes];
     const checkbox = document.getElementById(
       `industry_type_${industry.IndustryValue}`
     ) as HTMLInputElement;
     if (checkbox) {
       checkbox.checked = false;
     }
+    const selectedValues = this.selectedIndustries
+    .map((industry) => industry.IndustryValue)
+    .join(',');
+  this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
   }
   // Fetch countries (Outside Bangladesh included)
   private fetchCountries(): void {
