@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IndustryType } from '../../Models/company';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-industry-modal.component.html',
-  styleUrls: ['./add-industry-modal.component.scss']
+  styleUrls: ['./add-industry-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None 
+
 })
 export class AddIndustryModalComponent implements OnChanges {
   @Input() closeModal!: () => void;
@@ -36,6 +38,14 @@ export class AddIndustryModalComponent implements OnChanges {
       }
     }
   }
+ 
+  ngOnInit(): void {
+    document.body.classList.add('no-scroll');
+  }
+  ngOnDestroy(): void {
+    document.body.classList.remove('no-scroll');
+  }
+
 
 addIndustry(): void {
   const formValue = this.employeeForm.value; 
@@ -54,6 +64,7 @@ addIndustry(): void {
     return;
   }
   this.newIndustry.emit({ IndustryName: industryName });
+  
   this.closeModal();
 }
 }

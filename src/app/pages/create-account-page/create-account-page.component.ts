@@ -668,7 +668,7 @@ private fetchThanas(districtFormattedValue: string): void {
   onCategoryChange(event: Event): void {
     const selectedIndustryId = parseInt((event.target as HTMLSelectElement).value);
     this.fetchIndustryTypes(selectedIndustryId);
-    this.onIndustryTypeChange(selectedIndustryId);
+    // this.onIndustryTypeChange(selectedIndustryId);
     this.showAddIndustryButton = false;
   }
   chooseCountry(country: any) {
