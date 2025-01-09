@@ -35,3 +35,24 @@ export function banglaTextValidator(): ValidatorFn {
     return null;
   };
 }
+export function specialCharacterValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    const whitelistRegex = /^[\w\s\/\?\\|\;\:\[\]\{\}\+\-\*\!\^\=]*$/;
+
+    const blacklistRegex = /['"%<>&()\s]/;
+
+    if (value) {
+      if (!whitelistRegex.test(value)) {
+        return { invalidCharacters: true };
+      }
+
+      if (blacklistRegex.test(value)) {
+        return { blacklistedCharacters: true };
+      }
+    }
+
+    return null;
+  };
+}

@@ -35,11 +35,9 @@
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               }
               @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['pattern']) {
-                <span class="error-message">Username must not contain any special characters.</span>
+                <span class="error-message"> Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
               }
-              @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['minlength']) {
-                <span class="error-message">Username cannot be less than 4 characters.</span>
-              }
+           
             </div>
           </div>
           
