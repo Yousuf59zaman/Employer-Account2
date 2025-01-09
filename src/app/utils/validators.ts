@@ -16,7 +16,7 @@ export function yearValidator(): ValidatorFn {
 
     const currentYear = new Date().getFullYear();
 
-    if (!year || isNaN(year) || year < 1900 || year > currentYear) {
+    if (!year || isNaN(year) || year < 1800 || year > currentYear) {
       return { invalidYear: true };
     }
 
@@ -26,8 +26,7 @@ export function yearValidator(): ValidatorFn {
 export function banglaTextValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
-    const banglaRegex = /^[\u0980-\u09FF\s]+$/; // Matches Bangla characters and spaces
-
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/; 
     if (value && !banglaRegex.test(value)) {
       return { invalidBanglaText: true };
     }

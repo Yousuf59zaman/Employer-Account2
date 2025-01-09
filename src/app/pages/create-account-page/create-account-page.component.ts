@@ -457,6 +457,11 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     const isChecked = (event.target as HTMLInputElement).checked;
   
     if (isChecked) {
+      if (this.selectedIndustries.length >= 10) {
+        alert('You cannot select more than 10 Industries.');
+        (event.target as HTMLInputElement).checked = false; 
+        return;
+      }
       this.selectedIndustries.push(industry);
     } else {
       this.selectedIndustries = this.selectedIndustries.filter(
