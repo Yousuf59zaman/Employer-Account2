@@ -418,6 +418,14 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
         const existingIndustry = this.industryTypes.find(
           (industry) => industry.IndustryName.toLowerCase() === industryName.toLowerCase()
         );
+        const isAlreadyChecked = this.selectedIndustries.some(
+          (industry) => industry.IndustryName.toLowerCase() === industryName.toLowerCase()
+        );
+      
+        if (isAlreadyChecked) {
+          alert('You have already added this industry.');
+          return;
+        }
         if (response.dataContext === 'Organization not found') {
           const newIndustry: IndustryTypeResponseDTO = {
             IndustryValue: Date.now() % 2147483647,
