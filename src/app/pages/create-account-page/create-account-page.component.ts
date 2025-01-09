@@ -65,7 +65,7 @@ filteredCountriesList = this.countrie;
     
     isPolicyAcceptedControl: new FormControl(''),
     facilitiesForDisabilities: new FormControl(0),
-    username: new FormControl('', [Validators.minLength(4),Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
+    username: new FormControl('', [Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
     companyNameBangla: new FormControl('',[banglaTextValidator()]),
