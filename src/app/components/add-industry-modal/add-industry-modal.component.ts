@@ -37,7 +37,17 @@ export class AddIndustryModalComponent implements OnChanges {
 
 addIndustry(): void {
   const formValue = this.employeeForm.value; 
-  const industryName = formValue.industryName; 
+  const industryName = formValue.industryName?.trim();
+  const invalidCharacters = /[!@&#${}%*]/;
+  if (!industryName) {
+    window.alert('Your Industry Name cannot be blank.');
+    this.employeeForm.controls['industryName'].setValue(''); 
+    return;
+  }
+  if (invalidCharacters.test(industryName)) {
+    window.alert('Use (A-Z), (a-z) and following characters (, ), - and / only.');
+    return;
+  }
 
   this.newIndustry.emit({ IndustryName: industryName });
   this.closeModal();
