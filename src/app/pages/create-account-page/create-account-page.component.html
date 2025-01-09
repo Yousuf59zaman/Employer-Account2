@@ -57,7 +57,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['password'].touched && employeeForm.controls['password'].errors?.['required']) {
-                <span class="error-message">Password is required</span>
+                <span class="error-message">Password can not be empty.</span>
               }  
             </div>
           </div>
@@ -176,7 +176,7 @@
         </app-radio-group>
         <div class="text-red-600">
           @if(employeeForm.controls['companySize'].touched && employeeForm.controls['companySize'].errors?.['required']) {
-            <span class="error-message">This is required</span>
+            <span class="-mt-8 text-sm ">This is required</span>
           }
       </div> 
   
@@ -260,7 +260,7 @@
             >
             <div class="text-red-600">
               @if (employeeForm.controls['outSideBd'].touched && employeeForm.controls['outSideBd'].hasError('required')) {
-                <span class="mt-10  text-sm">Type City Name</span>
+                <span class="mt-10 text-sm">Type City Name</span>
               }
             </div>
           </div>
@@ -401,10 +401,10 @@
   <!-- Add New Industry Button -->
   @if (showAddIndustryButton)
   {
-    <div class="ml-4 mt-16">
+    <div class="mt-16 ml-4">
       <button 
         type="button"
-        class="p-2 text-blue-500 rounded-lg hover:text-blue-800 flex items-center"
+        class="flex items-center p-2 text-blue-500 rounded-lg hover:text-blue-800"
         (click)="addNewIndustry()">
         <span class="mr-1 icon icon-plus"></span>Add a New Industry
       </button>
@@ -416,6 +416,7 @@
 @if (showAddIndustryModal)
 {
   <app-add-industry-modal 
+    [employeeForm]="employeeForm"
     [closeModal]="closeAddIndustryModal.bind(this)"
     [industries]="industries"
     [selectedIndustryId]="selectedIndustryId" 
@@ -567,7 +568,7 @@
               </app-input-field>
               <div class="mt-0 text-red-600">
                 @if (employeeForm.controls['contactName'].touched &&  employeeForm.controls['contactName'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+                <span class="error-message">Contact Person's Name can not be empty.</span>
                 }
             </div>
               </div>
@@ -585,7 +586,7 @@
               </app-input-field>
               <div class="text-red-600">
                 @if (employeeForm.controls['contactDesignation'].touched &&  employeeForm.controls['contactDesignation'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+                <span class="error-message">Contact Person's Designation can not be empty.</span>
                 }
             </div>
               </div>
@@ -606,7 +607,7 @@
               </app-input-field>
               <div class="text-red-600">
                 @if (employeeForm.controls['contactEmail'].touched &&  employeeForm.controls['contactEmail'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+                <span class="error-message">Contact Person's Email can not be empty.</span>
                 }
                 @else if (employeeForm.controls['contactEmail'].errors?.['email']) {
                   <span class="error-message">Please enter a valid email address</span>

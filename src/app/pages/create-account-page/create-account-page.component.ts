@@ -1,5 +1,5 @@
 import { Component, computed, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, ValidationErrors, AbstractControl } from '@angular/forms';
 import { CheckNamesService } from '../../Services/check-names.service';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
@@ -85,7 +85,7 @@ filteredCountriesList = this.countrie;
     training: new FormControl(0),
     companyName: new FormControl('', [Validators.required]),
     industryType: new FormControl(0),
-    industryName: new FormControl('', [Validators.maxLength(10)]),
+    industryName: new FormControl('', [Validators.maxLength(100), this.noBlacklistCharacters]),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
     rlNoStatus: new FormControl(''),
@@ -177,6 +177,20 @@ filteredCountriesList = this.countrie;
         this.fetchThanas(districtId);
       }
     });
+  }
+  noBlacklistCharacters(control: AbstractControl): ValidationErrors | null {
+    const value = control.value?.trim();
+    const invalidCharacters = /[!@&#${}%*]/;
+
+    if (!value) {
+      return { required: true }; // Handles empty case
+    }
+
+    if (invalidCharacters.test(value)) {
+      return { invalidCharacters: true }; // Handles blacklist characters
+    }
+
+    return null; // Valid case
   }
   filterCountries(): LocationResponseDTO[] {
     return this.countries.filter(country => 

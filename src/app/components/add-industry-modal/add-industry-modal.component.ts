@@ -18,6 +18,8 @@ export class AddIndustryModalComponent implements OnChanges {
   @Output() newIndustry = new EventEmitter<{ IndustryName: string }>();
   @Input() employeeForm: FormGroup;
 
+
+
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.employeeForm = this.fb.group({
       industryType: ['', Validators.required],
@@ -41,14 +43,16 @@ addIndustry(): void {
   const invalidCharacters = /[!@&#${}%*]/;
   if (!industryName) {
     window.alert('Your Industry Name cannot be blank.');
-    this.employeeForm.controls['industryName'].setValue(''); 
+    this.employeeForm.controls['industryName'].setValue('');
+    this.cdr.detectChanges();
+ 
     return;
   }
   if (invalidCharacters.test(industryName)) {
     window.alert('Use (A-Z), (a-z) and following characters (, ), - and / only.');
+    this.cdr.detectChanges();
     return;
   }
-
   this.newIndustry.emit({ IndustryName: industryName });
   this.closeModal();
 }

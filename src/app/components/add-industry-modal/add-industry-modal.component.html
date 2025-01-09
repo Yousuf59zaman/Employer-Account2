@@ -52,7 +52,11 @@
             id="industryName"
             placeholder="Type industry name"
             class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:ring-blue-500 focus:border-blue-500 text-black text-base font-normal font-inter leading-snug">
-            
+            <div class="text-red-600">
+              @if(employeeForm.controls['industryName'].touched && employeeForm.controls['industryName'].errors?.['invalidCharacters']) {
+                <span class="-mt-8 text-sm ">Use (A-Z), (a-z) and following characters (, ), - and / only.</span>
+              }
+          </div> 
         </div>
       </form>
     </div>
