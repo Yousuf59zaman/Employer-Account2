@@ -100,8 +100,8 @@ filteredCountriesList = this.countrie;
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }
 );
-  usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
-  companyNameControl = computed(() => this.employeeForm.get('companyName') as FormControl<string>);
+  // usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
+  // companyNameControl = computed(() => this.employeeForm.get('companyName') as FormControl<string>);
   // industryTypeControl = computed(() => this.employeeForm.get('industryType') as FormControl<string>);
   // countryControl = computed(() => this.employeeForm.get('country') as FormControl<string>);
   // districtControl = computed(() => this.employeeForm.get('district') as FormControl<string>);
@@ -672,33 +672,35 @@ onContinue() {
 
   console.log('Current form values:', this.employeeForm.value);
 
-  // Update credentials in AuthService
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
   };
   this.authService.updateCredentials(credentials);
 
-  const requiredFields = Object.keys(this.employeeForm.controls).filter((key) => {
-    const control = this.employeeForm.get(key);
-    return control && control.hasValidator(Validators.required);
-  });
+  const controls = this.employeeForm.controls;
+  let firstInvalidField: HTMLElement | null = null;
 
-  let hasErrors = false;
-  requiredFields.forEach((key) => {
-    const control = this.employeeForm.get(key);
-    if (control && control.invalid) {
-      control.markAsTouched();
-      console.error(`Field ${key} is invalid:`, control.errors);
-      hasErrors = true;
+  for (const key in controls) {
+    if (controls.hasOwnProperty(key)) {
+      const control = controls[key];
+      if (control.invalid) {
+        control.markAsTouched();
+
+        const element = document.getElementById(key);
+        if (element) {
+          firstInvalidField = element;
+          firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstInvalidField.focus();
+        }
+
+        console.error(`Field ${key} is invalid:`, control.errors);
+        alert(`The field "${key}" is required. Please fill it.`);
+        return; 
+      }
     }
-  });
-  if (hasErrors) {
-    console.error('Form has errors in required fields. Please correct them before submitting.');
-    alert('Form has errors in required fields. Please correct them before submitting.');
-
-    return;
   }
+
   const payload = this.employeeForm.value;
   this.checkNamesService.insertAccount(payload).subscribe({
     next: (response) => {
@@ -708,7 +710,6 @@ onContinue() {
     error: (error) => {
       console.error('Error creating account:', error);
       alert('There was an error creating the account. Please try again.');
-
     },
   });
 }

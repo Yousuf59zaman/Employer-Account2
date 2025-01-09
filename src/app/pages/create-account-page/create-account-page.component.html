@@ -5,7 +5,7 @@
    style="background: url('assets/images/mid-header.svg') no-repeat center; background-size: cover;">
 </div>
     <!-- Form -->
-    <form action="" [formGroup]="employeeForm">
+    <form action="" [formGroup]="employeeForm" (ngSubmit)="onContinue()">
   
       <!-- User Information Section -->
       <div class="w-[1290px] h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
@@ -19,10 +19,10 @@
             <app-input-field
               label="Username"
               name="txtUserName"
-              id="txtUserName"
+              id="username"
               [control]="formControlSignals()['username']"
               placeholder="Type Username"
-              [maxLength]="6"
+              [maxLength]="10"
               [isRequired]="true"
               icon="icon-user-name-outline"
               errorMessage="Username is required">
@@ -46,7 +46,7 @@
             <app-input-field
               label="Password"
               name="txtPassword"
-              id="txtPassword"
+              id="password"
               [control]="formControlSignals()['password']"
               placeholder="Type Password"
               [maxLength]="8"
@@ -67,7 +67,7 @@
             <app-input-field
               label="Confirm Password"
               name="txtConfirmPassword"
-              id="txtConfirmPassword"
+              id="confirmPassword"
               [control]="formControlSignals()['confirmPassword']"
               placeholder="Retype password"
               [maxLength]="8"
@@ -106,8 +106,8 @@
             <app-input-field
               label="Company Name"
               name="txtCompanyName"
-              id="txtCompanyName"
-              [control]="companyNameControl()"
+              id="companyName"
+              [control]="formControlSignals()['companyName']"
               placeholder="Type Company Name"
               [maxLength]="120"
               [isRequired]="true"
@@ -147,7 +147,7 @@
             <app-input-field
               label="Year of Establishment"
               name="txtCompanyEstablished"
-              id="txtCompanyEstablished"
+              id="yearsOfEstablishMent"
               [control]="formControlSignals()['yearsOfEstablishMent']"
               placeholder="Type Establishment Year"
               [maxLength]="4"
@@ -169,6 +169,7 @@
         <!-- Additional Company Information and Address -->
         <app-radio-group
           label="Number of Employees"
+          id="companySize"
           [control]="formControlSignals()['companySize']"
           [options]="['1-25', '26-50', '51-100', '101-500', '501-1000', '1000+']"
           [isRequired]="true">
@@ -250,12 +251,18 @@
           <div class="flex-1">
             <input
               type="text"
-              id="city"
+              id="outSideBd"
+              required
               placeholder="Type City Name"
               class="w-[388px] h-[50px]  p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['outSideBd']"
               maxlength="30"
             >
+            <div class="text-red-600">
+              @if (employeeForm.controls['outSideBd'].touched && employeeForm.controls['outSideBd'].hasError('required')) {
+                <span class="mt-10  text-sm">Type City Name</span>
+              }
+            </div>
           </div>
         } @else {
           <!-- District -->
@@ -309,7 +316,7 @@
             <div class="col-span-1">
             <app-text-area
               name="txtCompanyAddress"
-              id="txtCompanyAddress"
+              id="outsideBDCompanyAddress"
               placeholder="Write Company Detail Address In English"
               [control]="formControlSignals()['outsideBDCompanyAddress']"
               [maxLength]="300"
@@ -549,7 +556,7 @@
                 <app-input-field
                 label="Contact Person's Name"
                 name="txtContactPerson"
-                id="txtContactPerson"
+                id="contactName"
                 [control]="formControlSignals()['contactName']"
                 placeholder="Type contact person's name"
                 [value]="''"
@@ -567,7 +574,7 @@
                 <app-input-field
                 label="Contact Person's Designation"
                 name="txtDesignation"
-                id="txtDesignation"
+                id="contactDesignation"
                 [control]="formControlSignals()['contactDesignation']"
                 placeholder="Type contact person's designation"
                 [value]="''"
@@ -588,7 +595,7 @@
                 <app-input-field
                 label="Contact Person's Email"
                 name="txtContactEmail"
-                id="txtContactEmail"
+                id="contactEmail"
                 [control]="formControlSignals()['contactEmail']"
                 placeholder="Type contact person's email"
                 [value]="''"
@@ -658,7 +665,7 @@
                   <!-- Mobile Number Input -->
                   <input 
                     type="text" 
-                    id="txtContactMobile" 
+                    id="contactMobile" 
                     name="txtContactMobile" 
                     class="flex-1 px-2 py-1 text-black placeholder-gray-400 border-none font-inter focus:outline-none"
                     placeholder="Mobile Number" 
@@ -823,14 +830,13 @@
               </div>
               
               <section class="flex justify-end mx-auto mt-8 max-w-7xl">
-                <button 
-                        [disabled]="!employeeForm.get('isPolicyAcceptedControl')?.valid && !isCaptchaValid" 
-                        class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-[16px] font-inter px-5 py-3 shadow-md transition duration-300 ease-linear"
-                        [class.cursor-not-allowed]="!employeeForm.get('isPolicyAcceptedControl')?.value"
-                        [class.opacity-65]="!employeeForm.get('isPolicyAcceptedControl')?.value"
-                        (click)="onContinue()">
-                  Continue 
-                </button>
+            <button 
+              [disabled]="!employeeForm.get('isPolicyAcceptedControl')?.value && !isCaptchaValid" 
+              class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-[16px] font-inter px-5 py-3 shadow-md transition duration-300 ease-linear"
+              [class.cursor-not-allowed]="!employeeForm.get('isPolicyAcceptedControl')?.value"
+              [class.opacity-65]="!employeeForm.get('isPolicyAcceptedControl')?.value">
+              Continue
+            </button>
               </section>
               
               <div class="mt-6">
