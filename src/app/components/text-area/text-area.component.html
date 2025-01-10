@@ -1,15 +1,21 @@
-<div class="mb-[20px]" [id]="id + '-wrapper'">
-    <label [for]="id" class="block text-sm font-medium text-gray-700">
-      {{ label }}
-      <span ngIf="isRequired" class="text-red-600"></span>
-    </label>
-    <textarea
-      class="flex items-center gap-2 px-10 py-[14px] w-full rounded-lg border border-[#DAE5EC] bg-white shadow focus:outline-none focus:border-[#0F6DDB] placeholder:text-normal"
-      [name]="name"
-      [id]="id"
-      [placeholder]="placeholder"
-      [maxLength]="maxLength"
-      [formControl]="control"
-      [rows]="rows"
-    ></textarea>
-  </div>
+<div class="mb-[20px]">
+  <label [for]="id" class="text-gray-700 ">
+    {{ label }}
+    <span ngIf="isRequired" class="text-red-600"></span>
+  </label>
+  <textarea
+  class="flex  items-center  gap-2 px-10 py-[14px] font-inter w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+    [name]="name"
+    [id]="id"
+    [placeholder]="placeholder"
+    [maxLength]="maxLength"
+    [formControl]="control"
+    [rows]="rows"
+  ></textarea>
+</div>
+<style>
+  textarea::placeholder {
+    font-style: normal;
+    
+  }
+</style>
