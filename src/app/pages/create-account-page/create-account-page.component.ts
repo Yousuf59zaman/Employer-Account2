@@ -333,7 +333,9 @@ filteredCountriesList = this.countrie;
   }
   
   closeModal(): void {
-    this.showErrorModal = false; 
+  this.employeeForm.controls['rlNo'].reset(); // Clear the input field
+  this.rlNoHasValue = false; // Reset the flag
+  this.showErrorModal = false; 
   }
   // Fetch all industries
   fetchIndustries(): void {

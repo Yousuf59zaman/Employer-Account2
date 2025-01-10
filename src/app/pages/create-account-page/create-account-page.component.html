@@ -528,10 +528,11 @@
             </div>  
           </div>
             @if (showErrorModal && rlNoHasValue){
-            <app-error-modal></app-error-modal>
+            <app-error-modal>
+            </app-error-modal>
           }
             @if (showErrorModal){
-              <app-error-modal (modalClosed)="showErrorModal = false"></app-error-modal>
+              <app-error-modal (modalClosed)="closeModal()"></app-error-modal>
           }
               <div class="flex-1">
                     <app-input-field
