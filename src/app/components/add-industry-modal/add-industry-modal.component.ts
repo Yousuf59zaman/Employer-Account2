@@ -22,6 +22,7 @@ export class AddIndustryModalComponent implements OnChanges {
 
 
 
+
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.employeeForm = this.fb.group({
       industryType: ['', Validators.required],
@@ -64,6 +65,8 @@ addIndustry(): void {
     return;
   }
   this.newIndustry.emit({ IndustryName: industryName });
+  this.employeeForm.controls['industryName'].reset('');
+
   
   this.closeModal();
 }
