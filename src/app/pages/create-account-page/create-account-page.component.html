@@ -391,7 +391,7 @@
       formControlName="industryType" 
       id="SelCat" 
       class="flex w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
-      <option value="0" disabled>All</option>
+      <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
       }

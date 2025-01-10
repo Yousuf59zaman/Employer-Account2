@@ -51,6 +51,7 @@ export class CreateAccountPageComponent implements OnInit {
   fieldsOrder: string[] = [];
   industries: BehaviorSubject<IndustryType[]> = new BehaviorSubject<IndustryType[]>([]);
   industryTypes: IndustryTypeResponseDTO[] = [];
+  allIndustryTypes: IndustryTypeResponseDTO[] = []; 
   filteredIndustryTypes: IndustryTypeResponseDTO[] = [];
   countries: LocationResponseDTO[] = [];
   districts: LocationResponseDTO[] = [];
@@ -84,7 +85,7 @@ filteredCountriesList = this.countrie;
     disabilityWrap: new FormControl(''),
     training: new FormControl(0),
     companyName: new FormControl('', [Validators.required]),
-    industryType: new FormControl(0),
+    industryType: new FormControl(-1),
     industryName: new FormControl('', [Validators.maxLength(100), this.noBlacklistCharacters]),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
@@ -333,8 +334,8 @@ filteredCountriesList = this.countrie;
   }
   
   closeModal(): void {
-  this.employeeForm.controls['rlNo'].reset(); // Clear the input field
-  this.rlNoHasValue = false; // Reset the flag
+  this.employeeForm.controls['rlNo'].reset();
+  this.rlNoHasValue = false; 
   this.showErrorModal = false; 
   }
   // Fetch all industries
@@ -364,39 +365,80 @@ filteredCountriesList = this.countrie;
     });
   }
    // Fetch industry types based on selected IndustryId
-   private fetchIndustryTypes(industryId: number = -1): void {
-    this.showAddIndustryButton = industryId !== -1;
+  //  private fetchIndustryTypes(industryId: number = -1): void {
+  //   this.showAddIndustryButton = industryId !== -1;
 
+  //   this.checkNamesService.fetchIndustryTypes(industryId).subscribe({
+  //     next: (response: any) => {
+  //       if (response.responseCode === 1 && Array.isArray(response.data)) {
+  //         const industryData = response.data;
+  
+  //         if (industryData.length > 0) {
+  //           this.industryTypes = industryData.map((item: any) => ({
+  //             IndustryValue: item.industryValue,
+  //             IndustryName: item.industryName,
+  //           }));
+
+  //       if (industryId === -1) {
+  //         this.allIndustryTypes = industryData;
+  //       }
+  //           this.industryTypes = industryData;
+  //           this.filteredIndustryTypes = [...industryData];
+  //         } else {
+  //           console.warn(`No industry types found for IndustryId: ${industryId}.`);
+  //           this.industryTypes = [];
+  //           this.filteredIndustryTypes = [];
+  //         }
+  //       } else {
+  //         console.error('Unexpected response or responseCode:', response);
+  //         this.industryTypes = [];
+  //         this.filteredIndustryTypes = [];
+  //       }
+  //     },
+  //     error: (error: any) => {
+  //       console.error('Error fetching industry types:', error);
+  //       this.industryTypes = [];
+  //       this.filteredIndustryTypes = [];
+  //     },
+  //   });
+  // }
+  private fetchIndustryTypes(industryId: number = -1): void {
+    this.showAddIndustryButton = industryId !== -1;
+  
     this.checkNamesService.fetchIndustryTypes(industryId).subscribe({
       next: (response: any) => {
         if (response.responseCode === 1 && Array.isArray(response.data)) {
-          const industryData = response.data;
+          const industryData = response.data.map((item: any) => ({
+            IndustryValue: item.industryValue,
+            IndustryName: item.industryName,
+          }));
   
-          if (industryData.length > 0) {
-            this.industryTypes = industryData.map((item: any) => ({
-              IndustryValue: item.industryValue,
-              IndustryName: item.industryName,
-            }));
-  
-            this.filteredIndustryTypes = [...this.industryTypes];
-          } else {
-            console.warn(`No industry types found for IndustryId: ${industryId}.`);
-            this.industryTypes = [];
-            this.filteredIndustryTypes = [];
+          if (industryId === -1) {
+            this.allIndustryTypes = industryData;
           }
+          this.industryTypes = industryData;
+          this.filteredIndustryTypes = [...industryData];
         } else {
-          console.error('Unexpected response or responseCode:', response);
-          this.industryTypes = [];
-          this.filteredIndustryTypes = [];
+          console.warn(`Unexpected response or no industry types found for IndustryId: ${industryId}.`);
+          this.clearIndustryLists();
         }
       },
       error: (error: any) => {
         console.error('Error fetching industry types:', error);
-        this.industryTypes = [];
-        this.filteredIndustryTypes = [];
+        this.clearIndustryLists();
       },
     });
   }
+  
+  private clearIndustryLists(): void {
+    this.industryTypes = [];
+    this.filteredIndustryTypes = [];
+    if (this.allIndustryTypes.length === 0) {
+      this.allIndustryTypes = [];
+    }
+  }
+  
+
   onCheckboxChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     const value = parseInt(checkbox.value, 10);
@@ -469,8 +511,6 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     },
   });
 }
-
-
   // Trigger filtering of industries based on dropdown selection
   onIndustryTypeChange(selectedIndustryId: string | number): void {
     const parsedIndustryId = parseInt(selectedIndustryId as string, 10); 
@@ -494,8 +534,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       this.selectedIndustries = this.selectedIndustries.filter(
         (selected) => selected.IndustryValue !== industry.IndustryValue
       );
-    }
-  
+    } 
     // Update the form control value
     const selectedValues = this.selectedIndustries
       .map((industry) => industry.IndustryValue)
@@ -646,12 +685,12 @@ private fetchThanas(districtFormattedValue: string): void {
     },
   });
 }
-  setupSearch(): void {
-    this.searchControl.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((query: string) => {
-        this.filterIndustryTypes(query);
-      });
-  }
+setupSearch(): void {
+  this.searchControl.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+    .subscribe((query: string) => {
+      this.filterIndustryTypes(query);
+    });
+}
  
   getTypes(): IndustryTypeResponseDTO[] {
     return this.filteredIndustryTypes;
@@ -659,10 +698,10 @@ private fetchThanas(districtFormattedValue: string): void {
 
   filterIndustryTypes(query: string): void {
     if (!query) {
-      this.filteredIndustryTypes = [...this.industryTypes]; 
+      this.filteredIndustryTypes = [...this.allIndustryTypes]; // Always search across all industries
     } else {
       const lowerQuery = query.toLowerCase();
-      this.filteredIndustryTypes = this.industryTypes.filter(type =>
+      this.filteredIndustryTypes = this.allIndustryTypes.filter(type =>
         type.IndustryName.toLowerCase().includes(lowerQuery)
       );
     }
@@ -670,7 +709,7 @@ private fetchThanas(districtFormattedValue: string): void {
   onCategoryChange(event: Event): void {
     const selectedIndustryId = parseInt((event.target as HTMLSelectElement).value);
     this.fetchIndustryTypes(selectedIndustryId);
-    // this.onIndustryTypeChange(selectedIndustryId);
+    this.onIndustryTypeChange(selectedIndustryId);
     this.showAddIndustryButton = false;
   }
   chooseCountry(country: any) {
