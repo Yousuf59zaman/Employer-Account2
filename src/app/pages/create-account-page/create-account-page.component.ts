@@ -56,6 +56,7 @@ export class CreateAccountPageComponent implements OnInit {
   countries: LocationResponseDTO[] = [];
   districts: LocationResponseDTO[] = [];
   thanas: LocationResponseDTO[] = [];
+  newlyAddedIndustries: IndustryTypeResponseDTO[] = [];
   outsideBd: boolean = false;  
   selectedIndustries: { IndustryValue: number; IndustryName: string }[] = [];
 currentCountry = { name: 'Bangladesh', code: 'BD', phoneCode: '+880' }; 
@@ -424,8 +425,6 @@ filteredCountriesList = this.countrie;
       this.allIndustryTypes = [];
     }
   }
-  
-
   onCheckboxChange(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     const value = parseInt(checkbox.value, 10);
@@ -478,6 +477,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
 
           };
           this.industryTypes.push(newIndustry);
+          this.newlyAddedIndustries.push(newIndustry); 
           this.selectedIndustries.push(newIndustry);
           this.filteredIndustryTypes = [...this.industryTypes];
 
@@ -521,7 +521,18 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       this.selectedIndustries = this.selectedIndustries.filter(
         (selected) => selected.IndustryValue !== industry.IndustryValue
       );
+      if (this.newlyAddedIndustries.some((newIndustry) => newIndustry.IndustryValue === industry.IndustryValue)) {
+        this.newlyAddedIndustries = this.newlyAddedIndustries.filter(
+          (newIndustry) => newIndustry.IndustryValue !== industry.IndustryValue
+        );
+        this.industryTypes = this.industryTypes.filter(
+          (type) => type.IndustryValue !== industry.IndustryValue
+        );
+        this.filteredIndustryTypes = [...this.industryTypes];
+      }
+    
     } 
+    
     // Update the form control value
     const selectedValues = this.selectedIndustries
       .map((industry) => industry.IndustryValue)
@@ -751,7 +762,7 @@ onContinue() {
         control.markAsTouched();
 
         const element = document.getElementById(key);
-        if (element) {
+        if (element && !firstInvalidField) {
           firstInvalidField = element;
           firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
           firstInvalidField.focus();
@@ -759,9 +770,19 @@ onContinue() {
 
         console.error(`Field ${key} is invalid:`, control.errors);
         alert(`The field "${key}" is required. Please fill it.`);
-        return; 
+        return;
       }
     }
+  }
+
+  if (this.companyNameExistsMessage) {
+    const companyElement = document.getElementById('companyName');
+    if (companyElement) {
+      companyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      companyElement.focus();
+    }
+    alert(this.companyNameExistsMessage);
+    return;
   }
 
   const payload = this.employeeForm.value;
@@ -776,6 +797,5 @@ onContinue() {
     },
   });
 }
-
 
 }
