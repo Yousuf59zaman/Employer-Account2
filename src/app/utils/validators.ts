@@ -23,6 +23,14 @@ export function yearValidator(): ValidatorFn {
     return null;
   };
 }
+export function noBlacklistCharacters(control: AbstractControl): ValidationErrors | null {
+  const blacklistPattern = /[!@&#${}%*\s]/;
+  const value = control.value;
+  if (value && blacklistPattern.test(value)) {
+    return { invalidCharacters: true };
+  }
+  return null; 
+}
 export function banglaTextValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;

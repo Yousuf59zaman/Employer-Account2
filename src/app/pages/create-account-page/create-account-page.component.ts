@@ -86,7 +86,7 @@ filteredCountriesList = this.countrie;
     training: new FormControl(0),
     companyName: new FormControl('', [Validators.required]),
     industryType: new FormControl(-1),
-    industryName: new FormControl('', [Validators.maxLength(100), this.noBlacklistCharacters]),
+    industryName: new FormControl('', [Validators.maxLength(100),]),
     industryTypeArray: new FormControl(''),
     hidEntrepreneur: new FormControl(''),
     rlNoStatus: new FormControl(''),
@@ -179,20 +179,7 @@ filteredCountriesList = this.countrie;
       }
     });
   }
-  noBlacklistCharacters(control: AbstractControl): ValidationErrors | null {
-    const value = control.value?.trim();
-    const invalidCharacters = /[!@&#${}%*]/;
-
-    if (!value) {
-      return { required: true }; // Handles empty case
-    }
-
-    if (invalidCharacters.test(value)) {
-      return { invalidCharacters: true }; // Handles blacklist characters
-    }
-
-    return null; // Valid case
-  }
+ 
   filterCountries(): LocationResponseDTO[] {
     return this.countries.filter(country => 
       country.OptionText.toLowerCase().includes(this.searchTerm.value?.toLowerCase() || '')

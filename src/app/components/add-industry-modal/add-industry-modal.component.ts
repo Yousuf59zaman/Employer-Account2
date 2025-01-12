@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { IndustryType } from '../../Models/company';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { noBlacklistCharacters } from '../../utils/validators';
 
 @Component({
   selector: 'app-add-industry-modal',
@@ -25,8 +26,8 @@ export class AddIndustryModalComponent implements OnChanges {
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.employeeForm = this.fb.group({
-      industryType: ['', Validators.required],
-      industryName: ['', [Validators.required, Validators.minLength(3)]],
+      industryType: ['',],
+      industryName: ['',  noBlacklistCharacters],
     });
   }
 
@@ -65,9 +66,8 @@ addIndustry(): void {
     return;
   }
   this.newIndustry.emit({ IndustryName: industryName });
-  this.employeeForm.controls['industryName'].reset('');
-
-  
+ 
   this.closeModal();
+
 }
 }
