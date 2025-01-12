@@ -67,7 +67,7 @@ filteredCountriesList = this.countrie;
     isPolicyAcceptedControl: new FormControl(''),
     facilitiesForDisabilities: new FormControl(0),
     username: new FormControl('', [Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
-    password: new FormControl('', [Validators.required, Validators.minLength(4),Validators.maxLength(10)]),
+    password: new FormControl('', [Validators.required,Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
     companyNameBangla: new FormControl('',[banglaTextValidator()]),
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
@@ -770,8 +770,8 @@ onContinue() {
           firstInvalidField.focus();
         }
 
-        // console.error(`Field ${key} is invalid:`, control.errors);
-        // alert(`The field "${key}" is required. Please fill it.`);
+        console.error(`Field ${key} is invalid:`, control.errors);
+        alert(`The field "${key}" is required. Please fill it.`);
         return; 
       }
     }
