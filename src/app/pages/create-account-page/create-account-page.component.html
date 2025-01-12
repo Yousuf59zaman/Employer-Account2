@@ -167,7 +167,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
-                <span class="error-message">Please enter Year of Establishment.                </span>
+                <span class="error-message">Please enter Year of Establishment.</span>
               }
               @else if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
                 <span class="error-message">Please enter a valid year between 1800 and Current Year!
@@ -681,7 +681,7 @@
                     id="contactMobile" 
                     name="txtContactMobile" 
                     class="flex-1 px-2 py-1 text-black placeholder-gray-400 border-none font-inter focus:outline-none"
-                    placeholder="Mobile Number" 
+                    placeholder="Enter Mobile Number" 
                     (input)="onInputChange($event)"
                     [formControl]="formControlSignals()['contactMobile']"
                     maxlength="10" 
@@ -691,7 +691,8 @@
                 
               <div class="text-red-600 ">
                 @if (employeeForm.controls['contactMobile'].touched && employeeForm.controls['contactMobile'].errors?.['required']) {
-                <span class="mt-4 text-sm">This is required</span>
+                <span class="mt-4 text-sm">Contact Number can not be empty.
+                </span>
                 }
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {
                   <span class="mt-4 text-sm">Please enter a valid mobile number</span>
