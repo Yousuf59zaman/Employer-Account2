@@ -770,8 +770,8 @@ onContinue() {
           firstInvalidField.focus();
         }
 
-        console.error(`Field ${key} is invalid:`, control.errors);
-        alert(`The field "${key}" is required. Please fill it.`);
+        // console.error(`Field ${key} is invalid:`, control.errors);
+        // alert(`The field "${key}" is required. Please fill it.`);
         return; 
       }
     }

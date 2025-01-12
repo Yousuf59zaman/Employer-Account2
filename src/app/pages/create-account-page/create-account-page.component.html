@@ -115,7 +115,8 @@
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['companyName'].touched && employeeForm.controls['companyName'].errors?.['required']) {
-                <span class="error-message">Company Name is required</span>
+                <span class="error-message">Company Name can not be empty.
+                </span>
               }
               @else if(companyNameExistsMessage) {
                 <span class="error-message">{{ companyNameExistsMessage }}</span>
@@ -149,14 +150,14 @@
               name="txtCompanyEstablished"
               id="yearsOfEstablishMent"
               [control]="formControlSignals()['yearsOfEstablishMent']"
-              placeholder="Type Establishment Year"
+              placeholder="Type Company's Establishment Year"
               [maxLength]="4"
               (input)="onInputChange($event)"
               [isRequired]="true">
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+                <span class="error-message">Please enter Year of Establishment.                </span>
               }
               @else if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
                 <span class="error-message">Please enter a valid year between 1800 and Current Year!
