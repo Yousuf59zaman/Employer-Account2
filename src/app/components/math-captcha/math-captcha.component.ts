@@ -45,7 +45,7 @@ export class MathCaptchaComponent implements OnInit {
 
   generateCaptcha() {
     this.operator.set(this.randomOperator());
-
+  
     if (this.operator() === '-') {
       const [op1, op2] = [this.randomNumber(), this.randomNumber()].sort((a, b) => b - a);
       this.operand1.set(op1);
@@ -54,31 +54,22 @@ export class MathCaptchaComponent implements OnInit {
       const [op1, op2] = [this.randomNumber(), this.randomNumber()].sort((a, b) => a - b);
       this.operand1.set(op1);
       this.operand2.set(op2);
-    } else if (this.operator() === '/') {
-      let op1 = this.randomNumber();
-      let op2 = this.randomNumber();
-      while (op2 === 0) {
-        op2 = this.randomNumber();
-      }
-      if (op1 < op2) [op1, op2] = [op2, op1]; 
-      this.operand1.set(op1);
-      this.operand2.set(op2);
     } else {
       this.operand1.set(this.randomNumber());
       this.operand2.set(this.randomNumber());
     }
-
-    // Reset the captcha input and clear errors
+  
     this.captchaInput.reset();
     this.captchaInput.setErrors(null);
   }
+  
 
   private randomNumber(): number {
     return Math.floor(Math.random() * 10) + 1;
   }
 
   private randomOperator(): string {
-    const operators = ['+', '-', '*', '/'];
+    const operators = ['+', '-', '*'];
     return operators[Math.floor(Math.random() * operators.length)];
   }
 
