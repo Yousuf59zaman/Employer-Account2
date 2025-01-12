@@ -4,13 +4,13 @@
     <span ngIf="isRequired" class="text-red-600"></span>
   </label>
   <textarea
-  class="flex  items-center  gap-2 px-10 py-[14px] font-inter w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+  class="flex  items-center  gap-2 px-4 py-3.5 font-inter w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
     [name]="name"
     [id]="id"
     [placeholder]="placeholder"
     [maxLength]="maxLength"
     [formControl]="control"
-    [rows]="rows"
+    rows="2"
   ></textarea>
 </div>
 <style>

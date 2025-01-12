@@ -1,14 +1,25 @@
 
 <div class="bg-[#F9FAFB] w-auto h-auto">
    <!-- Header Section -->
-   <div class="flex flex-col md:flex-row justify-between items-center p-4 sm:p-6 lg:p-8 shadow-lg w-auto min-h-[257px] md:min-h-[287px] flex-shrink-0"
-   style="background: url('assets/images/mid-header.svg') no-repeat center; background-size: cover;">
+   <div
+  class="flex flex-col  md:flex-row justify-center items-center  sm:p-6 lg:p-8 shadow-lg w-full min-h-[257px] md:min-h-[287px]"
+  style="background: url('assets/images/mid-header.svg') no-repeat center; background-size: cover;"
+>
 </div>
+
+<style>
+  @media (max-width: 320px) {
+    div {
+      background: url('/public/assets/images/midBackground.svg') no-repeat center;
+      background-size: cover;
+    }
+  }
+</style>
     <!-- Form -->
     <form action="" [formGroup]="employeeForm" (ngSubmit)="onContinue()">
   
       <!-- User Information Section -->
-      <div class="w-[1290px] h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
+      <div class="w-auto sm:w-[1290px] h-auto sm:h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
           <span class="mr-2 icon icon-employer"></span> Let’s fill in the user information first
         </h2>
@@ -24,7 +35,7 @@
               placeholder="Type Username"
               [maxLength]="20"
               [isRequired]="true"
-              icon="icon-user-name-outline"
+              icon="icon-user-name-outline -mr-2"
               >
             </app-input-field>
             <div class="text-red-600">
@@ -189,7 +200,7 @@
           <div class="relative dropdown-container">
             <button
               type="button"
-              class="flex justify-between items-center mb-2 w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="flex justify-between items-center mb-2 w-auto sm:w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               (click)="toggleDropdown()"
             >
               @if (selectedCountry) {
@@ -269,7 +280,7 @@
           <div class="flex-1 mb-4">
             <select
               id="district"
-              class="gap-3 px-4 py-[14px] w-[388px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="gap-3 px-4 py-[14px] w-auto sm:w-[388px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['district']"
               [disabled]="districts.length === 0" 
             >
@@ -291,7 +302,7 @@
           <div class="flex-1">
             <select
               id="thana"
-              class="gap-3 px-4 py-[14px] w-[388px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="gap-3 px-4 py-[14px] w-[90%] lg:w-[388px] lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['thana']"
               [disabled]="thanas.length === 0"
             >
@@ -425,7 +436,7 @@
 }
 
 <!-- Industry Checkbox List Section -->
-<div class="flex flex-col items-start gap-6 self-stretch h-[282px] w-[1242px] overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5">
+<div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[80%] overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5">
   <div>
     <input [formControl]="searchControl"
            class="flex w-[1151px] p-[14px] px-[16px] justify-between items-center self-stretch rounded-[8px] border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]" 
@@ -433,7 +444,7 @@
   </div>
   <!-- Industry List Display -->
   <div 
-    class="grid grid-cols-3 p-[36px] items-start gap-[24px] self-stretch industry-list" 
+    class="lg:grid lg:grid-cols-3 grid grid-cols-1  items-start gap-[24px] self-stretch industry-list" 
     [class.expanded]="showAll">
     @if (filteredIndustryTypes.length > 0) {
       @for (item of getTypes(); track item.IndustryValue) {
@@ -458,7 +469,7 @@
   @if (!showAll) {
     <button 
       type="button"
-      class="text-[#0E73A9] text-sm font-semibold mt-2 focus:outline-none underline" 
+      class="text-[#0E73A9] text-sm font-semibold  focus:outline-none underline" 
       (click)="toggleShowAll()">
       See more
     </button>

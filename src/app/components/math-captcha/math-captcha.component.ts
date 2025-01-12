@@ -51,7 +51,7 @@ export class MathCaptchaComponent implements OnInit {
       this.operand1.set(op1);
       this.operand2.set(op2);
     } else if (this.operator() === '*') {
-      const [op1, op2] = [this.randomNumber(), this.randomNumber()].sort((a, b) => a - b);
+      const [op1, op2] = [this.randomNumber(), this.randomNumber()].sort((a, b) => b - a);
       this.operand1.set(op1);
       this.operand2.set(op2);
     } else {
