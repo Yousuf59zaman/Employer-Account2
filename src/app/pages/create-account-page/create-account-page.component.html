@@ -25,7 +25,7 @@
               [maxLength]="10"
               [isRequired]="true"
               icon="icon-user-name-outline"
-              errorMessage="Username is required">
+              >
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['required']) {
@@ -53,7 +53,7 @@
               [isRequired]="true"
               type="password"
               icon="icon-key-outline"
-              errorMessage="Password is required">
+             >
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['password'].touched && employeeForm.controls['password'].errors?.['required']) {
@@ -110,8 +110,7 @@
               [control]="formControlSignals()['companyName']"
               placeholder="Type Company Name"
               [maxLength]="120"
-              [isRequired]="true"
-              errorMessage="Company Name is required">
+              [isRequired]="true">
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['companyName'].touched && employeeForm.controls['companyName'].errors?.['required']) {
