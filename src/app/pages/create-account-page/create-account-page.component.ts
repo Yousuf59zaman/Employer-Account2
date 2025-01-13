@@ -70,6 +70,7 @@ filteredCountriesList = this.countrie;
     username: new FormControl('', [Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required,Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
+    companyName: new FormControl('', [Validators.required]),
     companyNameBangla: new FormControl('',[banglaTextValidator()]),
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
     companySize: new FormControl('', [Validators.required]),
@@ -85,7 +86,6 @@ filteredCountriesList = this.countrie;
     support: new FormControl(0),
     disabilityWrap: new FormControl(''),
     training: new FormControl(0),
-    companyName: new FormControl('', [Validators.required]),
     industryType: new FormControl(-1),
     industryName: new FormControl('', [Validators.maxLength(100),]),
     industryTypeArray: new FormControl(''),
@@ -740,63 +740,6 @@ checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
 
-// onContinue() {
-//   this.checkCaptchaValidity();
-//   this.isContinueClicked = true;
-
-//   console.log('Current form values:', this.employeeForm.value);
-
-//   const credentials = {
-//     username: this.employeeForm.value.username || '',
-//     password: this.employeeForm.value.password || '',
-//   };
-//   this.authService.updateCredentials(credentials);
-
-//   const controls = this.employeeForm.controls;
-//   let firstInvalidField: HTMLElement | null = null;
-
-//   for (const key in controls) {
-//     if (controls.hasOwnProperty(key)) {
-//       const control = controls[key];
-//       if (control.invalid) {
-//         control.markAsTouched();
-
-//         const element = document.getElementById(key);
-//         if (element && !firstInvalidField) {
-//           firstInvalidField = element;
-//           firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-//           firstInvalidField.focus();
-//         }
-
-//         console.error(`Field ${key} is invalid:`, control.errors);
-//         alert(`The field "${key}" is required. Please fill it.`);
-//         return;
-//       }
-//     }
-//   }
-
-//   if (this.companyNameExistsMessage) {
-//     const companyElement = document.getElementById('companyName');
-//     if (companyElement) {
-//       companyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-//       companyElement.focus();
-//     }
-//     alert(this.companyNameExistsMessage);
-//     return;
-//   }
-
-//   const payload = this.employeeForm.value;
-//   this.checkNamesService.insertAccount(payload).subscribe({
-//     next: (response) => {
-//       console.log('Account created successfully:', response);
-//       this.router.navigate(['/account-created-successfully']);
-//     },
-//     error: (error) => {
-//       console.error('Error creating account:', error);
-//       alert('There was an error creating the account. Please try again.');
-//     },
-//   });
-// }
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
@@ -815,8 +758,6 @@ onContinue() {
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
-
-      // Check standard validation errors
       if (control.invalid) {
         control.markAsTouched();
 
@@ -828,11 +769,20 @@ onContinue() {
         }
 
         console.error(`Field ${key} is invalid:`, control.errors);
-        alert(`The field "${key}" is required or invalid. Please check and fill it.`);
+        // alert(`The field "${key}" is required. Please fill it.`);
         return;
       }
-
     }
+  }
+
+  if (this.companyNameExistsMessage) {
+    const companyElement = document.getElementById('companyName');
+    if (companyElement) {
+      companyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      companyElement.focus();
+    }
+    alert(this.companyNameExistsMessage);
+    return;
   }
 
   const payload = this.employeeForm.value;
@@ -847,6 +797,8 @@ onContinue() {
     },
   });
 }
+
+
 
 
 }
