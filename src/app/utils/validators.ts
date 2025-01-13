@@ -14,12 +14,10 @@ export function yearValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const year = control.value;
     const currentYear = new Date().getFullYear();
-
-    if (year && year.toString().length === 4) {
-      if (isNaN(year) || year < 1800 || year > currentYear) {
-        return { invalidYear: true };
-      }
+    if (year && (!/^\d{4}$/.test(year) || isNaN(year) || year < 1800 || year > currentYear)) {
+      return { invalidYear: true };
     }
+
     return null;
   };
 }
