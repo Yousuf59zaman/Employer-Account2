@@ -11,11 +11,13 @@ export const routes: Routes = [
     },
     {
         path:'register',
-        component: CreateAccountPageComponent
+        component: CreateAccountPageComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: "account-created-successfully",
         component: SuccessfulAccountComponent,
+        canActivate: [AuthGuard]
     },
    
 ];
