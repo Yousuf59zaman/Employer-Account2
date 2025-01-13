@@ -85,7 +85,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['confirmPassword'].touched && employeeForm.controls['confirmPassword'].errors?.['required']) {
-                <span class="error-message">Confirm Password can not be empty</span>
+                <span class="error-message">Confirm Password can not be empty.</span>
               }
               @else if(employeeForm.controls['confirmPassword'].errors?.['minlength']) {
                 <span class="error-message">Minimum length should be 8</span>
