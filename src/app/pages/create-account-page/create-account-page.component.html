@@ -1,5 +1,5 @@
 
-<div  class="bg-[#F9FAFB] w-auto h-auto">
+<div  class="bg-[#F9FAFB] w-[320px] sm:w-auto h-auto">
    <!-- Header Section -->
    <div
    id="resImg"
@@ -196,7 +196,7 @@
           <div class="relative dropdown-container">
             <button
               type="button"
-              class="flex justify-between items-center mb-2 w-auto sm:w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="flex justify-between items-center mb-2 w-[96%] mx-auto sm:mx-0 sm:w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               (click)="toggleDropdown()"
             >
               @if (selectedCountry) {
@@ -261,7 +261,7 @@
               id="outSideBd"
               required
               placeholder="Type City Name"
-              class="w-[388px] h-[50px]  p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="w-[96%] mx-auto sm:mx-0 sm:w-[400px]  h-[50px]  p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['outSideBd']"
               maxlength="30"
             >
@@ -273,10 +273,10 @@
           </div>
         } @else {
           <!-- District -->
-          <div class="flex-1 mb-4">
+          <div class="flex-1 mb-1 sm:mb-4">
             <select
               id="district"
-              class="gap-3 px-4 py-[14px] w-auto sm:w-[388px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['district']"
               [disabled]="districts.length === 0" 
             >
@@ -298,7 +298,7 @@
           <div class="flex-1">
             <select
               id="thana"
-              class="gap-3 px-4 py-[14px] w-[90%] lg:w-[388px] lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['thana']"
               [disabled]="thanas.length === 0"
             >
@@ -397,7 +397,7 @@
     <select 
       formControlName="industryType" 
       id="SelCat" 
-      class="flex w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+      class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
       <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
