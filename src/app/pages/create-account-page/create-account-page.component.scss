@@ -42,3 +42,10 @@
   background-position: left center;
   background-size: 20px 20px; /* Adjust flag size */
 }
+
+@media (max-width: 320px) {
+  #resImg  {
+    background: url('/public/assets/images/midBackground.svg') no-repeat center;
+    background-size: cover;
+  }
+}
