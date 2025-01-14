@@ -723,6 +723,7 @@ setupSearch(): void {
 
 formValue : any
 currentValidationFieldIndex: number = 0;
+firstInvalidField: string | null = null;
 isContinueClicked: boolean = false;
 rlNoHasValue: boolean = false;
 
@@ -740,53 +741,103 @@ checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
 
+// onContinue() {
+//   this.checkCaptchaValidity();
+//   this.isContinueClicked = true;
+
+//   console.log('Current form values:', this.employeeForm.value);
+
+//   const credentials = {
+//     username: this.employeeForm.value.username || '',
+//     password: this.employeeForm.value.password || '',
+//   };
+//   this.authService.updateCredentials(credentials);
+
+//   const controls = this.employeeForm.controls;
+//   let firstInvalidField: HTMLElement | null = null;
+
+//   for (const key in controls) {
+//     if (controls.hasOwnProperty(key)) {
+//       const control = controls[key];
+//       if (control.invalid) {
+//         control.markAsTouched();
+
+//         const element = document.getElementById(key);
+//         if (element && !firstInvalidField) {
+//           firstInvalidField = element;
+//           firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//           firstInvalidField.focus();
+//         }
+
+//         console.error(`Field ${key} is invalid:`, control.errors);
+//         // alert(`The field "${key}" is required. Please fill it.`);
+//         return;
+//       }
+//     }
+//   }
+
+//   const payload = this.employeeForm.value;
+//   this.checkNamesService.insertAccount(payload).subscribe({
+//     next: (response) => {
+//       console.log('Account created successfully:', response);
+//       this.router.navigate(['/account-created-successfully']);
+//     },
+//     error: (error) => {
+//       console.error('Error creating account:', error);
+//       alert('There was an error creating the account. Please try again.');
+//     },
+//   });
+// }
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
 
-  console.log('Current form values:', this.employeeForm.value);
-
-  const credentials = {
-    username: this.employeeForm.value.username || '',
-    password: this.employeeForm.value.password || '',
-  };
-  this.authService.updateCredentials(credentials);
-
   const controls = this.employeeForm.controls;
-  let firstInvalidField: HTMLElement | null = null;
+  let firstInvalidKey: string | null = null;
 
+  // Iterate through form controls to find the first invalid field
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
       if (control.invalid) {
         control.markAsTouched();
 
-        const element = document.getElementById(key);
-        if (element && !firstInvalidField) {
-          firstInvalidField = element;
-          firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          firstInvalidField.focus();
+        // Set the first invalid key and stop further checks
+        if (!firstInvalidKey) {
+          firstInvalidKey = key;
+          this.firstInvalidField = key; // Update for conditional rendering
         }
-
-        console.error(`Field ${key} is invalid:`, control.errors);
-        // alert(`The field "${key}" is required. Please fill it.`);
-        return;
       }
     }
   }
 
-  const payload = this.employeeForm.value;
-  this.checkNamesService.insertAccount(payload).subscribe({
-    next: (response) => {
-      console.log('Account created successfully:', response);
-      this.router.navigate(['/account-created-successfully']);
-    },
-    error: (error) => {
-      console.error('Error creating account:', error);
-      alert('There was an error creating the account. Please try again.');
-    },
-  });
+  if (firstInvalidKey) {
+    // Scroll to the first invalid field and focus it
+    const element = document.getElementById(firstInvalidKey);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.focus();
+    }
+
+    return; // Stop execution to show only the first invalid field's error
+  }
+
+  // Proceed to submission if the form is valid
+  if (this.employeeForm.valid) {
+    const payload = this.employeeForm.value;
+    this.checkNamesService.insertAccount(payload).subscribe({
+      next: (response) => {
+        console.log('Account created successfully:', response);
+        this.router.navigate(['/account-created-successfully']);
+      },
+      error: (error) => {
+        console.error('Error creating account:', error);
+        alert('There was an error creating the account. Please try again.');
+      },
+    });
+  }
 }
+
 
 
 

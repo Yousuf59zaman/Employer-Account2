@@ -35,7 +35,7 @@
               >
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked && employeeForm.controls['username'].errors?.['required']) {
+              @if(isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['required']) {
                 <span class="error-message">Username cannot be empty.</span>
               }
               @else if(usernameExistsMessage) {
@@ -62,7 +62,7 @@
              >
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked  && employeeForm.controls['password'].errors?.['required']) {
+              @if(isContinueClicked && firstInvalidField === 'password' && employeeForm.controls['password'].errors?.['required']) {
                 <span class="error-message">Password can not be empty.</span>
               }  
             </div>
@@ -83,7 +83,7 @@
               errorMessage="Confirm Password is required">
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked  && employeeForm.controls['confirmPassword'].errors?.['required']) {
+              @if(isContinueClicked && firstInvalidField === 'confirmPassword' && employeeForm.controls['confirmPassword'].errors?.['required']) {
                 <span class="error-message">Confirm Password can not be empty.</span>
               }
               @else if(employeeForm.controls['confirmPassword'].errors?.['minlength']) {
@@ -119,7 +119,7 @@
               [isRequired]="true">
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked  && employeeForm.controls['companyName'].errors?.['required']) {
+              @if(isContinueClicked && firstInvalidField === 'companyName' && employeeForm.controls['companyName'].errors?.['required']) {
                 <span class="error-message">Company Name can not be empty.
                 </span>
               }
@@ -161,7 +161,7 @@
               [isRequired]="true">
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked  && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
+              @if(isContinueClicked && firstInvalidField === 'yearsOfEstablishMent' && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
                 <span class="error-message">Please enter Year of Establishment.</span>
               }
               @else if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
@@ -181,7 +181,7 @@
           [isRequired]="true">
         </app-radio-group>
         <div class="text-red-600">
-          @if(isContinueClicked  && employeeForm.controls['companySize'].errors?.['required']) {
+          @if(isContinueClicked && firstInvalidField === 'companySize' && employeeForm.controls['companySize'].errors?.['required']) {
             <span class="-mt-8 text-sm ">Select Company Size</span>
           }
       </div> 
@@ -265,7 +265,7 @@
               maxlength="30"
             >
             <div class="text-red-600">
-              @if (isContinueClicked  && employeeForm.controls['outSideBd'].hasError('required')) {
+              @if (isContinueClicked && firstInvalidField === 'outSideBd' && employeeForm.controls['outSideBd'].hasError('required')) {
                 <span class="mt-10 text-sm">City can not be empty.</span>
               }
             </div>
@@ -287,7 +287,7 @@
               }
             </select>
             <div class="mt-1 text-red-600">
-              @if (isContinueClicked  && employeeForm.controls['district'].hasError('required')) {
+              @if (isContinueClicked && firstInvalidField === 'district' && employeeForm.controls['district'].hasError('required')) {
                 <span class="-mt-20 text-sm">Select a District</span>
               }
             </div>
@@ -309,7 +309,7 @@
               }
             </select>
             <div class="mt-1 text-red-600">
-              @if (isContinueClicked  && employeeForm.controls['thana'].hasError('required')) {
+              @if (isContinueClicked && firstInvalidField === 'thana' && employeeForm.controls['thana'].hasError('required')) {
                 <span class="-mt-20 text-sm">Select a Thana</span>
               }
             </div>
@@ -363,7 +363,7 @@
           [rows]="4">
         </app-text-area>
         <div class="text-red-600">
-          @if(employeeForm.controls['companyAddress'].touched && employeeForm.controls['companyAddress'].errors?.['required']) {
+          @if(isContinueClicked && firstInvalidField === 'companyAddress'  && employeeForm.controls['companyAddress'].errors?.['required']) {
             <span class="error-message">Company Address can not be empty.
             </span>
           }
@@ -463,7 +463,7 @@
       }
     }
     <div class="text-red-600">
-      @if(employeeForm.controls['industryTypeArray'].touched && employeeForm.controls['industryTypeArray'].errors?.['industryTypeArray']) {
+      @if(isContinueClicked && firstInvalidField === 'industryTypeArray'  && employeeForm.controls['industryTypeArray'].errors?.['industryTypeArray']) {
         <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
         </span>
       }
@@ -582,7 +582,7 @@
                 >
               </app-input-field>
               <div class="mt-0 text-red-600">
-                @if (isContinueClicked &&  employeeForm.controls['contactName'].errors?.['required']) {
+                @if (isContinueClicked && firstInvalidField === 'contactName' &&  employeeForm.controls['contactName'].errors?.['required']) {
                 <span class="error-message">Contact Person's Name can not be empty.</span>
                 }
             </div>
@@ -600,7 +600,7 @@
                 >
               </app-input-field>
               <div class="text-red-600">
-                @if (isContinueClicked  &&  employeeForm.controls['contactDesignation'].errors?.['required']) {
+                @if (isContinueClicked && firstInvalidField === 'contactDesignation' &&  employeeForm.controls['contactDesignation'].errors?.['required']) {
                 <span class="error-message">Contact Person's Designation can not be empty.</span>
                 }
             </div>
@@ -621,7 +621,7 @@
                 >
               </app-input-field>
               <div class="text-red-600">
-                @if (isContinueClicked  &&  employeeForm.controls['contactEmail'].errors?.['required']) {
+                @if (isContinueClicked && firstInvalidField === 'contactEmail' &&  employeeForm.controls['contactEmail'].errors?.['required']) {
                 <span class="error-message">Contact Person's Email can not be empty.</span>
                 }
                 @else if (employeeForm.controls['contactEmail'].errors?.['email']) {
@@ -694,7 +694,7 @@
                 </div>
                 
               <div class="text-red-600 ">
-                @if (isContinueClicked  && employeeForm.controls['contactMobile'].errors?.['required']) {
+                @if (isContinueClicked && firstInvalidField === 'contactMobile'  && employeeForm.controls['contactMobile'].errors?.['required']) {
                 <span class="mt-4 text-sm">Contact Number can not be empty.
                 </span>
                 }
