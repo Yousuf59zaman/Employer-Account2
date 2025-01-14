@@ -17,7 +17,7 @@
       <!-- User Information Section -->
       <div class="w-auto sm:w-[1290px] h-auto sm:h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-          <span class="mr-2 icon icon-employer"></span>Let’s fill in the user information first
+          <span class="mr-2 icon icon-employer"></span>Let’s fill out the user information first
         </h2>
   
         <!-- Username Field -->
@@ -43,8 +43,7 @@
               }
               @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['pattern']) {
                 <span class="error-message"> Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
-              }
-           
+              }       
             </div>
           </div>
           
@@ -102,7 +101,7 @@
       <!-- Company Details Section -->
       <div class="flex-col items-start gap-5 p-6 mx-auto mt-6 bg-white shadow-lg max-w-7xl rounded-2xl">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-          <span class="mr-2 icon icon-commercial"></span> Now, fill in the detailed information
+          <span class="mr-2 icon icon-commercial"></span> Now, fill out the detailed information
         </h2>
   
         <!-- Company Name, Bangla Name, and Establishment Year -->
