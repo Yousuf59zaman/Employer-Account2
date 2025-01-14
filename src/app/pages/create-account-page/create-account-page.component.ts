@@ -79,7 +79,7 @@ filteredCountriesList = this.countrie;
     thana: new FormControl('',[Validators.required]), 
     outSideBd: new FormControl(''),
     industryType: new FormControl(-1),
-    industryTypeArray: new FormControl(0,[Validators.required]),
+    industryTypeArray: new FormControl(''),
     companyAddress: new FormControl('',[Validators.required]),
     businessDesc: new FormControl(''),
     tradeNo: new FormControl(''),
@@ -791,38 +791,39 @@ checkCaptchaValidity() {
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
+ console.log('Current form values:', this.employeeForm.value);
+
+   const credentials = {
+    username: this.employeeForm.value.username || '',
+    password: this.employeeForm.value.password || '',
+  };
+  this.authService.updateCredentials(credentials);
 
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
 
-  // Iterate through form controls to find the first invalid field
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
       if (control.invalid) {
         control.markAsTouched();
 
-        // Set the first invalid key and stop further checks
         if (!firstInvalidKey) {
           firstInvalidKey = key;
-          this.firstInvalidField = key; // Update for conditional rendering
+          this.firstInvalidField = key; 
         }
       }
     }
   }
 
   if (firstInvalidKey) {
-    // Scroll to the first invalid field and focus it
     const element = document.getElementById(firstInvalidKey);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       element.focus();
     }
-
-    return; // Stop execution to show only the first invalid field's error
+    return; 
   }
-
-  // Proceed to submission if the form is valid
   if (this.employeeForm.valid) {
     const payload = this.employeeForm.value;
     this.checkNamesService.insertAccount(payload).subscribe({
