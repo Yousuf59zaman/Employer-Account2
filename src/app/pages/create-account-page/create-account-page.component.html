@@ -1,5 +1,5 @@
 
-<div  class="bg-[#F9FAFB] w-[320px] sm:w-auto h-auto">
+<div  class="bg-[#F9FAFB] w-auto sm:w-auto h-auto">
    <!-- Header Section -->
    <div
    id="resImg"
@@ -182,7 +182,7 @@
         </app-radio-group>
         <div class="text-red-600">
           @if(employeeForm.controls['companySize'].touched && employeeForm.controls['companySize'].errors?.['required']) {
-            <span class="-mt-8 text-sm ">This is required</span>
+            <span class="-mt-8 text-sm ">Select Company Size</span>
           }
       </div> 
   
@@ -288,7 +288,7 @@
             </select>
             <div class="mt-1 text-red-600">
               @if (employeeForm.controls['district'].touched && employeeForm.controls['district'].hasError('required')) {
-                <span class="error-message">This is required</span>
+                <span class="-mt-20 text-sm">Select a District</span>
               }
             </div>
           </div>
@@ -310,7 +310,7 @@
             </select>
             <div class="mt-1 text-red-600">
               @if (employeeForm.controls['thana'].touched && employeeForm.controls['thana'].hasError('required')) {
-                <span class="error-message">This is required</span>
+                <span class="-mt-20 text-sm">Select a Thana</span>
               }
             </div>
           </div>
@@ -355,15 +355,17 @@
           <div class="col-span-1">      
           <app-text-area
           name="txtCompanyAddress"
-          id="txtCompanyAddress"
+          id="companyAddress"
           placeholder="Write Company Detail Address In English"
           [control]="formControlSignals()['companyAddress']"
           [maxLength]="300"
+          [isRequired]="true"
           [rows]="4">
         </app-text-area>
         <div class="text-red-600">
           @if(employeeForm.controls['companyAddress'].touched && employeeForm.controls['companyAddress'].errors?.['required']) {
-            <span class="error-message">This is required</span>
+            <span class="error-message">Company Address can not be empty.
+            </span>
           }
         </div> 
           </div>
@@ -439,6 +441,7 @@
   <!-- Industry List Display -->
   <div 
     class="lg:grid lg:grid-cols-3 grid grid-cols-1  items-start gap-[24px] self-stretch industry-list" 
+    
     [class.expanded]="showAll">
     @if (filteredIndustryTypes.length > 0) {
       @for (item of getTypes(); track item.IndustryValue) {
@@ -459,6 +462,12 @@
         </div>
       }
     }
+    <div class="text-red-600">
+      @if(employeeForm.controls['industryTypeArray'].touched && employeeForm.controls['industryTypeArray'].errors?.['industryTypeArray']) {
+        <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
+        </span>
+      }
+  </div>
   </div>
   @if (!showAll) {
     <button 
