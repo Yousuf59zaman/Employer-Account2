@@ -775,16 +775,6 @@ onContinue() {
     }
   }
 
-  if (this.companyNameExistsMessage) {
-    const companyElement = document.getElementById('companyName');
-    if (companyElement) {
-      companyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      companyElement.focus();
-    }
-    alert(this.companyNameExistsMessage);
-    return;
-  }
-
   const payload = this.employeeForm.value;
   this.checkNamesService.insertAccount(payload).subscribe({
     next: (response) => {
