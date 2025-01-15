@@ -793,7 +793,7 @@ checkCaptchaValidity() {
   onContinue() {
     this.checkCaptchaValidity();
     this.isContinueClicked = true;
-    this.isLoading = true; // Set loading to true
+    this.isLoading = true; 
 
     console.log('Current form values:', this.employeeForm.value);
 
@@ -826,7 +826,7 @@ checkCaptchaValidity() {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         element.focus();
       }
-      this.isLoading = false; // Reset loading state if validation fails
+      this.isLoading = false; 
       return;
     }
 
@@ -836,12 +836,12 @@ checkCaptchaValidity() {
         next: (response) => {
           console.log('Account created successfully:', response);
           this.router.navigate(['/account-created-successfully']);
-          this.isLoading = false; // Reset loading state on success
+          this.isLoading = false; 
         },
         error: (error) => {
           console.error('Error creating account:', error);
           alert('There was an error creating the account. Please try again.');
-          this.isLoading = false; // Reset loading state on error
+          this.isLoading = false; 
         },
       });
     }
