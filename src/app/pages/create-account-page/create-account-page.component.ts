@@ -696,59 +696,85 @@ toggleShowAll() {
 checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
-  onContinue() {
-    this.checkCaptchaValidity();
-    this.isContinueClicked = true;
-    this.isLoading = true; 
+onContinue() {
+  this.checkCaptchaValidity();
+  this.isContinueClicked = true;
+  this.isLoading = true; 
 
-    console.log('Current form values:', this.employeeForm.value);
+  console.log('Current form values:', this.employeeForm.value);
 
-    const credentials = {
-      username: this.employeeForm.value.username || '',
-      password: this.employeeForm.value.password || '',
-    };
-    this.authService.updateCredentials(credentials);
+  const credentials = {
+    username: this.employeeForm.value.username || '',
+    password: this.employeeForm.value.password || '',
+  };
+  this.authService.updateCredentials(credentials);
 
-    const controls = this.employeeForm.controls;
-    let firstInvalidKey: string | null = null;
+  const controls = this.employeeForm.controls;
+  let firstInvalidKey: string | null = null;
 
-    for (const key in controls) {
-      if (controls.hasOwnProperty(key)) {
-        const control = controls[key];
-        if (control.invalid) {
-          control.markAsTouched();
+  for (const key in controls) {
+    if (controls.hasOwnProperty(key)) {
+      const control = controls[key];
+      if (control.invalid) {
+        control.markAsTouched();
 
-          if (!firstInvalidKey) {
-            firstInvalidKey = key;
-            this.firstInvalidField = key;
+        if (control.errors) {
+          console.error(`Validation error in ${key}:`, control.errors);
+          if (control.errors['required']) {
+            console.error(`The field "${key}" is required.`);
           }
+        }
+
+        if (!firstInvalidKey) {
+          firstInvalidKey = key;
+          this.firstInvalidField = key;
         }
       }
     }
-
-    if (firstInvalidKey) {
-      const element = document.getElementById(firstInvalidKey);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        element.focus();
-      }
-      this.isLoading = false; 
-      return;
-    }
-
-    if (this.employeeForm.valid) {
-      const payload = this.employeeForm.value;
-      this.checkNamesService.insertAccount(payload).subscribe({
-        next: (response) => {
-          console.log('Account created successfully:', response);
-          this.router.navigate(['/account-created-successfully']);
-          this.isLoading = false; 
-        },
-        error: (error) => {
-          console.error('Error creating account:', error);
-          alert('There was an error creating the account. Please try again.');
-        },
-      });
-    }
   }
+
+  if (firstInvalidKey) {
+    const element = document.getElementById(firstInvalidKey);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.focus();
+    }
+    this.isLoading = false; 
+    return;
+  }
+
+  if (this.employeeForm.valid) {
+    const payload = this.employeeForm.value;
+    this.checkNamesService.insertAccount(payload).subscribe({
+      next: (response) => {
+        console.log('Account created successfully:', response);
+        this.router.navigate(['/account-created-successfully']);
+        this.isLoading = false; 
+      },
+      error: (error) => {
+        console.error('Error creating account:', error);
+
+        if (error.status) {
+          console.log('Error Status:', error.status);
+        }
+
+        if (error.message) {
+          console.log('Error Message:', error.message);
+        }
+
+        if (error.error) {
+          console.log('API Error Response:', error.error);
+        }
+
+        if (error.headers) {
+          console.log('Error Headers:', error.headers);
+        }
+
+        alert('There was an error creating the account. Please try again.');
+        this.isLoading = false; 
+      }
+    });
+  }
+}
+
 }
