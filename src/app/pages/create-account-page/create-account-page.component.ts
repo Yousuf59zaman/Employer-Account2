@@ -1,5 +1,5 @@
 import { Component, computed, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule, ValidationErrors, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import { CheckNamesService } from '../../Services/check-names.service';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
@@ -7,7 +7,7 @@ import { TextAreaComponent } from '../../components/text-area/text-area.componen
 import { CheckboxGroupComponent } from '../../components/checkbox-group/checkbox-group.component';
 import {  CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { IndustryTypeResponseDTO, IndustryType, LocationResponseDTO, RLNoRequestModel, CompanyNameCheckRequestDTO } from '../../Models/company';
+import { IndustryTypeResponseDTO, IndustryType, LocationResponseDTO, RLNoRequestModel } from '../../Models/company';
 import { ErrorModalComponent } from "../../components/error-modal/error-modal.component";
 import { RadioGroupComponent } from '../../components/radio-group/radio-group.component';
 import { PricingPolicyComponent } from '../../components/pricing-policy/pricing-policy.component';
@@ -40,7 +40,6 @@ export class CreateAccountPageComponent implements OnInit {
   filePath = filePath;
   countrie = countrie;
   disabilities = disabilities;
-
   @ViewChild(MathCaptchaComponent) captchaComponent!: MathCaptchaComponent;
   
   isCaptchaValid = false;
@@ -102,12 +101,6 @@ filteredCountriesList = this.countrie;
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }
 );
-  // usernameControl = computed(() => this.employeeForm.get('username') as FormControl<string>);
-  // companyNameControl = computed(() => this.employeeForm.get('companyName') as FormControl<string>);
-  // industryTypeControl = computed(() => this.employeeForm.get('industryType') as FormControl<string>);
-  // countryControl = computed(() => this.employeeForm.get('country') as FormControl<string>);
-  // districtControl = computed(() => this.employeeForm.get('district') as FormControl<string>);
-  // thanaControl = computed(() => this.employeeForm.get('thana') as FormControl<string>);
   formControlSignals = computed(() => {
     const signals: { [key: string]: FormControl<any> } = {};
     Object.keys(this.employeeForm.controls).forEach(key => {
@@ -130,7 +123,6 @@ filteredCountriesList = this.countrie;
   private companyNameSubject: Subject<string> = new Subject();
   constructor(private checkNamesService: CheckNamesService , private authService: AuthService ,
     private router: Router) {}
-
   ngOnInit(): void {
     this.searchControl.valueChanges
     .pipe(debounceTime(300)) 
@@ -180,7 +172,6 @@ filteredCountriesList = this.countrie;
       }
     });
   }
- 
   filterCountries(): LocationResponseDTO[] {
     return this.countries.filter(country => 
       country.OptionText.toLowerCase().includes(this.searchTerm.value?.toLowerCase() || '')
@@ -219,7 +210,6 @@ filteredCountriesList = this.countrie;
         this.checkUniqueCompanyName(value);
       });
   }
-  
   private checkUniqueUsername(username: string): void {
     this.checkNamesService.checkUniqueUserName(username).subscribe({
       next: (response: any) => {
@@ -257,7 +247,6 @@ filteredCountriesList = this.countrie;
     },
   });
 }
-
   // rl
   onRLNoBlur(): void {
     this.employeeForm.controls['rlNo'].markAsTouched();
@@ -282,9 +271,7 @@ filteredCountriesList = this.countrie;
   
     if (rlNo && companyName) {
       const rlRequest: RLNoRequestModel = { RLNo: rlNo };
-  
       console.log('Company Name Input:', companyName);
-  
       this.checkNamesService.verifyRLNo(rlRequest).subscribe({
         next: (response: any) => {
           console.log('RL No Response:', response);
@@ -320,7 +307,6 @@ filteredCountriesList = this.countrie;
       this.showErrorModal = true;
     }
   }
-  
   closeModal(): void {
   this.employeeForm.controls['rlNo'].reset();
   this.rlNoHasValue = false; 
@@ -352,44 +338,6 @@ filteredCountriesList = this.countrie;
       },
     });
   }
-   // Fetch industry types based on selected IndustryId
-  //  private fetchIndustryTypes(industryId: number = -1): void {
-  //   this.showAddIndustryButton = industryId !== -1;
-
-  //   this.checkNamesService.fetchIndustryTypes(industryId).subscribe({
-  //     next: (response: any) => {
-  //       if (response.responseCode === 1 && Array.isArray(response.data)) {
-  //         const industryData = response.data;
-  
-  //         if (industryData.length > 0) {
-  //           this.industryTypes = industryData.map((item: any) => ({
-  //             IndustryValue: item.industryValue,
-  //             IndustryName: item.industryName,
-  //           }));
-
-  //       if (industryId === -1) {
-  //         this.allIndustryTypes = industryData;
-  //       }
-  //           this.industryTypes = industryData;
-  //           this.filteredIndustryTypes = [...industryData];
-  //         } else {
-  //           console.warn(`No industry types found for IndustryId: ${industryId}.`);
-  //           this.industryTypes = [];
-  //           this.filteredIndustryTypes = [];
-  //         }
-  //       } else {
-  //         console.error('Unexpected response or responseCode:', response);
-  //         this.industryTypes = [];
-  //         this.filteredIndustryTypes = [];
-  //       }
-  //     },
-  //     error: (error: any) => {
-  //       console.error('Error fetching industry types:', error);
-  //       this.industryTypes = [];
-  //       this.filteredIndustryTypes = [];
-  //     },
-  //   });
-  // }
   private fetchIndustryTypes(industryId: number = -1): void {
     this.showAddIndustryButton = industryId !== -1;
   
@@ -417,7 +365,6 @@ filteredCountriesList = this.countrie;
       },
     });
   }
-  
   private clearIndustryLists(): void {
     this.industryTypes = [];
     this.filteredIndustryTypes = [];
@@ -554,7 +501,6 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       (type) => type.IndustryValue !== industry.IndustryValue
     );
   
-    // Update the filtered list of industries
     this.filteredIndustryTypes = [...this.industryTypes];
     const checkbox = document.getElementById(
       `industry_type_${industry.IndustryValue}`
@@ -571,7 +517,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
   private fetchCountries(): void {
     const selectedCountryText = this.selectedCountry?.OptionText || this.employeeForm.get('country')?.value;
     const requestPayload = { OutsideBd: '1', DistrictId: '',   CountryId: selectedCountryText,  };
-  
+
     this.checkNamesService.getLocations(requestPayload).subscribe({
       next: (response: any) => {
         console.log("Full response:", response);
@@ -609,8 +555,6 @@ private fetchDistricts(): void {
     next: (response: any) => {
       if (response.responseCode === 1 && Array.isArray(response.data)) {
         const districtData = response.data;
-
-        // Store both raw and formatted values
         this.districts = districtData.map((item: any) => ({
           OptionValue: `${item.optionValue}##${item.optionText}`, 
           OptionText: item.optionText,
@@ -628,7 +572,6 @@ private fetchDistricts(): void {
     },
   });
 }
-
   toggleDropdown() {
     this.isOpen = !this.isOpen;
   }
@@ -696,7 +639,7 @@ setupSearch(): void {
 
   filterIndustryTypes(query: string): void {
     if (!query) {
-      this.filteredIndustryTypes = [...this.allIndustryTypes]; // Always search across all industries
+      this.filteredIndustryTypes = [...this.allIndustryTypes]; 
     } else {
       const lowerQuery = query.toLowerCase();
       this.filteredIndustryTypes = this.allIndustryTypes.filter(type =>
@@ -838,9 +781,4 @@ onContinue() {
     });
   }
 }
-
-
-
-
-
 }
