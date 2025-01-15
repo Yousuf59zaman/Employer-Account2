@@ -32,7 +32,7 @@ export function noBlacklistCharacters(control: AbstractControl): ValidationError
 export function banglaTextValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
-    const banglaRegex = /^[\u0980-\u09FF\s]+$/; 
+    const banglaRegex = /^[\u0980-\u09FF\u09E6-\u09EF\s।,।()\[\]]+$/;
     if (value && !banglaRegex.test(value)) {
       return { invalidBanglaText: true };
     }
