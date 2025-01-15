@@ -448,7 +448,7 @@
         <div class="flex items-center sm:text-sm text-xs">
           <input 
             name="industry_type" 
-            id="industry_type_{{item.IndustryValue}}" 
+            id="industryTypeArray" 
             type="checkbox" 
             [value]="item.IndustryValue" 
             [checked]="isIndustryChecked(item.IndustryValue)"
@@ -461,14 +461,9 @@
           </label>
         </div>
       }
-    }
-    <div class="text-red-600">
-      @if(isContinueClicked && firstInvalidField === 'industryTypeArray'  && employeeForm.controls['industryTypeArray'].errors?.['industryTypeArray']) {
-        <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
-        </span>
-      }
+    } 
   </div>
-  </div>
+
   @if (!showAll) {
     <button 
       type="button"
@@ -478,7 +473,6 @@
     </button>
   }
 </div>
-
   <div class="flex flex-wrap gap-2 mt-4">
     @for (industry of selectedIndustries; track industry.IndustryValue) {
       <span
@@ -495,6 +489,11 @@
       </span>
     }
   </div>
+  <div class="text-red-600">
+    @if(isContinueClicked && firstInvalidField === 'industryTypeArray'  && employeeForm.controls['industryTypeArray'].errors?.['required']) {
+      <span class="mt-4 text-sm">Select  Industry Type </span>
+    }
+</div>
           <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">
             Business Description
           </h2>      

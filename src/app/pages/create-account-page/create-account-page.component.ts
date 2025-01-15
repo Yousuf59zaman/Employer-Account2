@@ -77,9 +77,9 @@ filteredCountriesList = this.countrie;
     district: new FormControl('',[Validators.required]),
     thana: new FormControl('',[Validators.required]), 
     outSideBd: new FormControl(''),
-    industryType: new FormControl(-1),
-    industryTypeArray: new FormControl(''),
     companyAddress: new FormControl('',[Validators.required]),
+    industryType: new FormControl(-1),
+    industryTypeArray: new FormControl('', [Validators.required]),
     businessDesc: new FormControl(''),
     tradeNo: new FormControl(''),
     webUrl: new FormControl(''),
@@ -485,7 +485,28 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       .map((industry) => industry.IndustryValue)
       .join(',');
     this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+    this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+    this.employeeForm.controls['industryTypeArray'].markAsTouched();
   }
+  // onIndustryCheckboxChange(event: Event, industry: IndustryTypeResponseDTO): void {
+  //   const isChecked = (event.target as HTMLInputElement).checked;
+  
+  //   if (isChecked) {
+  //     if (this.selectedIndustries.length >= 10) {
+  //       alert('You cannot select more than 10 Industries.');
+  //       (event.target as HTMLInputElement).checked = false; 
+  //       return;
+  //     }
+  //     this.selectedIndustries.push(industry);
+  //   } else {
+  //     this.selectedIndustries = this.selectedIndustries.filter(
+  //       (selected) => selected.IndustryValue !== industry.IndustryValue
+  //     );
+  //   }
+  //   const selectedValues = this.selectedIndustries.map(ind => ind.IndustryValue);
+  //   this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+  //   this.employeeForm.controls['industryTypeArray'].markAsTouched();
+  // }
   
   isIndustryChecked(industryValue: number): boolean {
     return this.selectedIndustries.some(
@@ -717,6 +738,8 @@ onContinue() {
       const control = controls[key];
       if (control.invalid) {
         control.markAsTouched();
+        if (key === 'industryTypeArray' && control.errors?.['required']) {
+        }
 
         if (control.errors) {
           console.error(`Validation error in ${key}:`, control.errors);
@@ -724,7 +747,6 @@ onContinue() {
             console.error(`The field "${key}" is required.`);
           }
         }
-
         if (!firstInvalidKey) {
           firstInvalidKey = key;
           this.firstInvalidField = key;
@@ -742,7 +764,6 @@ onContinue() {
     this.isLoading = false; 
     return;
   }
-
   if (this.employeeForm.valid) {
     const payload = this.employeeForm.value;
     this.checkNamesService.insertAccount(payload).subscribe({
@@ -753,28 +774,9 @@ onContinue() {
       },
       error: (error) => {
         console.error('Error creating account:', error);
-
-        if (error.status) {
-          console.log('Error Status:', error.status);
-        }
-
-        if (error.message) {
-          console.log('Error Message:', error.message);
-        }
-
-        if (error.error) {
-          console.log('API Error Response:', error.error);
-        }
-
-        if (error.headers) {
-          console.log('Error Headers:', error.headers);
-        }
-
         alert('There was an error creating the account. Please try again.');
-        this.isLoading = false; 
-      }
+      },
     });
   }
 }
-
 }
