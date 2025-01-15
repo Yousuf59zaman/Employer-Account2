@@ -669,6 +669,7 @@ currentValidationFieldIndex: number = 0;
 firstInvalidField: string | null = null;
 isContinueClicked: boolean = false;
 rlNoHasValue: boolean = false;
+isLoading: boolean = false;
 
 
 onInputChange(event: Event) {
@@ -731,54 +732,118 @@ checkCaptchaValidity() {
 //     },
 //   });
 // }
-onContinue() {
-  this.checkCaptchaValidity();
-  this.isContinueClicked = true;
- console.log('Current form values:', this.employeeForm.value);
+// onContinue() {
+//   this.checkCaptchaValidity();
+//   this.isContinueClicked = true;
+//   this.isLoading = true;
+//  console.log('Current form values:', this.employeeForm.value);
 
-   const credentials = {
-    username: this.employeeForm.value.username || '',
-    password: this.employeeForm.value.password || '',
-  };
-  this.authService.updateCredentials(credentials);
+//    const credentials = {
+//     username: this.employeeForm.value.username || '',
+//     password: this.employeeForm.value.password || '',
+//   };
+//   this.authService.updateCredentials(credentials);
 
-  const controls = this.employeeForm.controls;
-  let firstInvalidKey: string | null = null;
+//   const controls = this.employeeForm.controls;
+//   let firstInvalidKey: string | null = null;
 
-  for (const key in controls) {
-    if (controls.hasOwnProperty(key)) {
-      const control = controls[key];
-      if (control.invalid) {
-        control.markAsTouched();
+//   for (const key in controls) {
+//     if (controls.hasOwnProperty(key)) {
+//       const control = controls[key];
+//       if (control.invalid) {
+//         control.markAsTouched();
 
-        if (!firstInvalidKey) {
-          firstInvalidKey = key;
-          this.firstInvalidField = key; 
+//         if (!firstInvalidKey) {
+//           firstInvalidKey = key;
+//           this.firstInvalidField = key; 
+//         }
+//       }
+//     }
+//   }
+
+//   if (firstInvalidKey) {
+//     const element = document.getElementById(firstInvalidKey);
+//     if (element) {
+//       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//       element.focus();
+//     }
+//     this.isLoading = false;
+//     return; 
+//   }
+//   if (this.employeeForm.valid) {
+//     const payload = this.employeeForm.value;
+//     this.checkNamesService.insertAccount(payload).subscribe({
+//       next: (response) => {
+//         console.log('Account created successfully:', response);
+//         this.router.navigate(['/account-created-successfully']);
+//         this.isLoading = false;
+//       },
+//       error: (error) => {
+//         console.error('Error creating account:', error);
+//         alert('There was an error creating the account. Please try again.');
+//         this.isLoading = false; 
+//       },
+//     });
+//   }
+// }
+
+
+  
+
+  onContinue() {
+    this.checkCaptchaValidity();
+    this.isContinueClicked = true;
+    this.isLoading = true; // Set loading to true
+
+    console.log('Current form values:', this.employeeForm.value);
+
+    const credentials = {
+      username: this.employeeForm.value.username || '',
+      password: this.employeeForm.value.password || '',
+    };
+    this.authService.updateCredentials(credentials);
+
+    const controls = this.employeeForm.controls;
+    let firstInvalidKey: string | null = null;
+
+    for (const key in controls) {
+      if (controls.hasOwnProperty(key)) {
+        const control = controls[key];
+        if (control.invalid) {
+          control.markAsTouched();
+
+          if (!firstInvalidKey) {
+            firstInvalidKey = key;
+            this.firstInvalidField = key;
+          }
         }
       }
     }
-  }
 
-  if (firstInvalidKey) {
-    const element = document.getElementById(firstInvalidKey);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element.focus();
+    if (firstInvalidKey) {
+      const element = document.getElementById(firstInvalidKey);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
+      }
+      this.isLoading = false; // Reset loading state if validation fails
+      return;
     }
-    return; 
+
+    if (this.employeeForm.valid) {
+      const payload = this.employeeForm.value;
+      this.checkNamesService.insertAccount(payload).subscribe({
+        next: (response) => {
+          console.log('Account created successfully:', response);
+          this.router.navigate(['/account-created-successfully']);
+          this.isLoading = false; // Reset loading state on success
+        },
+        error: (error) => {
+          console.error('Error creating account:', error);
+          alert('There was an error creating the account. Please try again.');
+          this.isLoading = false; // Reset loading state on error
+        },
+      });
+    }
   }
-  if (this.employeeForm.valid) {
-    const payload = this.employeeForm.value;
-    this.checkNamesService.insertAccount(payload).subscribe({
-      next: (response) => {
-        console.log('Account created successfully:', response);
-        this.router.navigate(['/account-created-successfully']);
-      },
-      error: (error) => {
-        console.error('Error creating account:', error);
-        alert('There was an error creating the account. Please try again.');
-      },
-    });
-  }
-}
 }
