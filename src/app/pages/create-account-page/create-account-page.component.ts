@@ -488,32 +488,11 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
     this.employeeForm.controls['industryTypeArray'].markAsTouched();
   }
-  // onIndustryCheckboxChange(event: Event, industry: IndustryTypeResponseDTO): void {
-  //   const isChecked = (event.target as HTMLInputElement).checked;
-  
-  //   if (isChecked) {
-  //     if (this.selectedIndustries.length >= 10) {
-  //       alert('You cannot select more than 10 Industries.');
-  //       (event.target as HTMLInputElement).checked = false; 
-  //       return;
-  //     }
-  //     this.selectedIndustries.push(industry);
-  //   } else {
-  //     this.selectedIndustries = this.selectedIndustries.filter(
-  //       (selected) => selected.IndustryValue !== industry.IndustryValue
-  //     );
-  //   }
-  //   const selectedValues = this.selectedIndustries.map(ind => ind.IndustryValue);
-  //   this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
-  //   this.employeeForm.controls['industryTypeArray'].markAsTouched();
-  // }
-  
   isIndustryChecked(industryValue: number): boolean {
     return this.selectedIndustries.some(
       (industry) => industry.IndustryValue === industryValue
     );
   }
-  
 
   removeIndustry(industry: { IndustryValue: number; IndustryName: string }): void {
     this.selectedIndustries = this.selectedIndustries.filter(
