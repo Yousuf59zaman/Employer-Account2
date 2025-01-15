@@ -493,26 +493,38 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     );
   }
   
+
   removeIndustry(industry: { IndustryValue: number; IndustryName: string }): void {
     this.selectedIndustries = this.selectedIndustries.filter(
       (selected) => selected.IndustryValue !== industry.IndustryValue
     );
-    this.industryTypes = this.industryTypes.filter(
-      (type) => type.IndustryValue !== industry.IndustryValue
-    );
+  
+    if (this.newlyAddedIndustries.some((newIndustry) => newIndustry.IndustryValue === industry.IndustryValue)) {
+      this.newlyAddedIndustries = this.newlyAddedIndustries.filter(
+        (newIndustry) => newIndustry.IndustryValue !== industry.IndustryValue
+      );
+  
+      this.industryTypes = this.industryTypes.filter(
+        (type) => type.IndustryValue !== industry.IndustryValue
+      );
+    }
   
     this.filteredIndustryTypes = [...this.industryTypes];
+  
     const checkbox = document.getElementById(
       `industry_type_${industry.IndustryValue}`
     ) as HTMLInputElement;
     if (checkbox) {
       checkbox.checked = false;
     }
+  
     const selectedValues = this.selectedIndustries
-    .map((industry) => industry.IndustryValue)
-    .join(',');
-  this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+      .map((industry) => industry.IndustryValue)
+      .join(',');
+    this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
   }
+  
+
   // Fetch countries (Outside Bangladesh included)
   private fetchCountries(): void {
     const selectedCountryText = this.selectedCountry?.OptionText || this.employeeForm.get('country')?.value;
