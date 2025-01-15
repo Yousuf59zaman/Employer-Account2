@@ -826,6 +826,11 @@
               <app-math-captcha  
               [employeeForm]="employeeForm">
               </app-math-captcha>
+              <div class="text-red-600">
+                @if (isContinueClicked && firstInvalidField === 'captchaInput' &&  employeeForm.controls['captchaInput'].errors?.['required']) {
+                <span class="mt-6">Please type the Verification Code. </span>
+                }
+              </div>
             </div>
               <div class="max-w-7xl p-6 mx-auto flex-col mt-4 items-start gap-5 rounded-2xl bg-white border border-[#DAE5EC]">
                 <app-pricing-policy></app-pricing-policy>
