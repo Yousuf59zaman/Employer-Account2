@@ -36,7 +36,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['required']) {
-                <span class="error-message">Username cannot be empty.</span>
+                <span class="error-message">Username cannot be empty</span>
               }
               @else if(usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
@@ -63,7 +63,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(isContinueClicked && firstInvalidField === 'password' && employeeForm.controls['password'].errors?.['required']) {
-                <span class="error-message">Password can not be empty.</span>
+                <span class="error-message">Password can not be empty</span>
               }  
               @if(employeeForm.controls['password'].touched && employeeForm.controls['password'].errors?.['invalidCharacters']) {
                 <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space.</span>
@@ -87,13 +87,13 @@
             </app-input-field>
             <div class="text-red-600">
               @if(isContinueClicked && firstInvalidField === 'confirmPassword' && employeeForm.controls['confirmPassword'].errors?.['required']) {
-                <span class="error-message">Confirm Password can not be empty.</span>
+                <span class="error-message">Confirm Password can not be empty</span>
               }
               @else if(employeeForm.controls['confirmPassword'].errors?.['minlength']) {
                 <span class="error-message">Minimum length should be 8</span>
               }
               @else if(employeeForm.errors?.['passwordsDontMatch']) {
-                <span class="error-message">Passwords do not match.
+                <span class="error-message">Passwords do not match
                 </span>
               }
             </div>
@@ -150,7 +150,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(employeeForm.controls['companyNameBangla'].touched && employeeForm.controls['companyNameBangla'].errors?.['invalidBanglaText']) {
-                <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
+                <span class="error-message">Please use Bengali characters only  
                 </span>
               }
           </div>
@@ -170,7 +170,7 @@
             </app-input-field>
             <div class="text-red-600">
               @if(isContinueClicked && firstInvalidField === 'yearsOfEstablishMent' && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
-                <span class="error-message">Please enter Year of Establishment.</span>
+                <span class="error-message">Please enter Year of Establishment</span>
               }
               @else if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
                 <span class="error-message">Please enter a valid year within the range of 1800 to 2025
@@ -274,7 +274,7 @@
             >
             <div class="text-red-600">
               @if (isContinueClicked && firstInvalidField === 'outSideBd' && employeeForm.controls['outSideBd'].hasError('required')) {
-                <span class="mt-10 text-sm">City can not be empty.</span>
+                <span class="mt-10 text-sm">City can not be empty</span>
               }
             </div>
           </div>
@@ -353,7 +353,7 @@
             </app-text-area>
             <div class="text-red-600">
               @if(employeeForm.controls['outsideBDCompanyAddressBng'].touched && employeeForm.controls['outsideBDCompanyAddressBng'].errors?.['invalidBanglaText']) {
-                <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
+                <span class="error-message">Please use Bengali characters only 
                 </span>
               }
             </div>    
@@ -372,7 +372,7 @@
         </app-text-area>
         <div class="text-red-600">
           @if(isContinueClicked && firstInvalidField === 'companyAddress'  && employeeForm.controls['companyAddress'].errors?.['required']) {
-            <span class="error-message">Company Address can not be empty.
+            <span class="error-message">Company Address can not be empty
             </span>
           }
         </div> 
@@ -388,7 +388,7 @@
           </app-text-area>
           <div class="text-red-600">
             @if(employeeForm.controls['companyAddressBangla'].touched && employeeForm.controls['companyAddressBangla'].errors?.['invalidBanglaText']) {
-              <span class="error-message">অনুগ্রহ করে শুধুমাত্র বাংলা অক্ষর লিখুন।
+              <span class="error-message">Please use Bengali characters only   
               </span>
             }
         </div>
@@ -405,7 +405,7 @@
     </h2>
     <select 
       formControlName="industryType" 
-      id="SelCat" 
+      id="industryType" 
       class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
       <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
@@ -438,9 +438,9 @@
     (newIndustry)="onNewIndustryAdded($event)">
   </app-add-industry-modal>
 }
-
 <!-- Industry Checkbox List Section -->
-<div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[96%] sm:mx-0 mx-auto overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5">
+<div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[96%] sm:mx-0 mx-auto overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
+     [class.error-border]="isContinueClicked && firstInvalidField === 'industryType' && employeeForm.controls['industryType'].errors?.['defaultIndustryType']">
   <div>
     <input [formControl]="searchControl"
            class="flex w-auto sm:w-[1151px] px-2 py-1.5 sm:p-[14px] sm:px-[16px] justify-between items-center self-stretch rounded-[8px] border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]" 
@@ -448,8 +448,7 @@
   </div>
   <!-- Industry List Display -->
   <div 
-    class="lg:grid lg:grid-cols-3 grid grid-cols-1  items-start gap-[24px] self-stretch industry-list" 
-    
+    class="lg:grid lg:grid-cols-3 grid grid-cols-1 items-start gap-[24px] self-stretch industry-list" 
     [class.expanded]="showAll">
     @if (filteredIndustryTypes.length > 0) {
       @for (item of getTypes(); track item.IndustryValue) {
@@ -481,27 +480,30 @@
     </button>
   }
 </div>
-  <div class="flex flex-wrap gap-2 mt-4">
-    @for (industry of selectedIndustries; track industry.IndustryValue) {
-      <span
-        class="flex items-center bg-[#F3F4F6] text-[#212121] text-[14px] font-inter px-3 py-1 rounded-full shadow-sm"
+
+<div class="flex flex-wrap gap-2 mt-4">
+  @for (industry of selectedIndustries; track industry.IndustryValue) {
+    <span
+      class="flex items-center bg-[#F3F4F6] text-[#212121] text-[14px] font-inter px-3 py-1 rounded-full shadow-sm"
+    >
+      {{ industry.IndustryName }}
+      <button
+        type="button"
+        class="ml-2 text-[#212121] bg-[#E5E7EB] w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-300 focus:outline-none"
+        (click)="removeIndustry(industry)"
       >
-        {{ industry.IndustryName }}
-        <button
-          type="button"
-          class="ml-2 text-[#212121] bg-[#E5E7EB] w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-300 focus:outline-none"
-          (click)="removeIndustry(industry)"
-        >
-          &times;
-        </button>
-      </span>
-    }
-  </div>
-  <div class="text-red-600">
-    @if(isContinueClicked && firstInvalidField === 'industryTypeArray'  && employeeForm.controls['industryTypeArray'].errors?.['required']) {
-      <span class="mt-4 text-sm">Select Industry Type </span>
-    }
+        &times;
+      </button>
+    </span>
+  }
 </div>
+
+<div class="text-red-600">
+  @if(isContinueClicked && firstInvalidField === 'industryType' && employeeForm.controls['industryType'].errors?.['defaultIndustryType']) {
+    <span class="mt-4 text-sm">Select Industry Type </span>
+  }
+</div>
+
           <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">
             Business Description
           </h2>      

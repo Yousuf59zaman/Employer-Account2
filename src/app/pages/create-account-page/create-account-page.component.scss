@@ -25,6 +25,9 @@
   letter-spacing: 0.02em; 
   font-family: 'Inter', sans-serif;
 }
+.error-border {
+  border: 1px solid red;
+}
 
 .industry-list {
   max-height: 150px; /* Initial max height */

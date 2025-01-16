@@ -78,7 +78,7 @@ filteredCountriesList = this.countrie;
     thana: new FormControl('',[Validators.required]), 
     outSideBd: new FormControl(''),
     companyAddress: new FormControl('',[Validators.required]),
-    industryType: new FormControl(-1),
+    industryType: new FormControl('-1',[Validators.required]),
     industryTypeArray: new FormControl('', [Validators.required]),
     businessDesc: new FormControl(''),
     tradeNo: new FormControl(''),
@@ -247,7 +247,6 @@ filteredCountriesList = this.countrie;
     },
     error: (error: any) => {
       console.error('Error checking company name:', error);
-      this.companyNameExistsMessage = 'An error occurred while checking the company name.';
     },
   });
 }
@@ -714,6 +713,12 @@ onContinue() {
 
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
+
+  const industryTypeControl = controls['industryType'];
+  if (industryTypeControl && industryTypeControl.value === '-1') {
+    industryTypeControl.setErrors({ defaultIndustryType: true }); 
+    industryTypeControl.markAsTouched(); 
+  }
 
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
