@@ -1,0 +1,12 @@
+<button
+  class="fixed bottom-[50px] right-[10px] px-3 py-2 mb-0 text-sm font-normal leading-[1.42857143] text-center whitespace-nowrap align-middle select-none rounded-md bg-gray-700 text-white shadow-md transition-all duration-200 cursor-pointer z-20 block"
+  [class.opacity-0]="!showBackToTop"
+  [class.pointer-events-none]="!showBackToTop"
+  [class.opacity-100]="showBackToTop"
+  [class.show]="showBackToTop"
+  (click)="scrollToTop()"
+  id="toTop"
+>
+<span class="icon-angle-top"></span>
+  Back to Top
+</button>
