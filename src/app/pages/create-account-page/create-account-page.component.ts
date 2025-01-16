@@ -15,7 +15,7 @@ import { MathCaptchaComponent } from '../../components/math-captcha/math-captcha
 import { filePath,countrie ,disabilities} from '../../constants/file-path.constants';
 import { AddIndustryModalComponent } from "../../components/add-industry-modal/add-industry-modal.component";
 import { AuthService } from '../../Services/shared/auth.service';
-import { passwordMatchValidator, yearValidator, banglaTextValidator, noWhitespaceValidator } from '../../utils/validators';
+import { passwordMatchValidator, yearValidator, banglaTextValidator, noWhitespaceValidator, noBlacklistCharacters } from '../../utils/validators';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-account-page',
@@ -66,8 +66,8 @@ filteredCountriesList = this.countrie;
     
     isPolicyAcceptedControl: new FormControl(''),
     facilitiesForDisabilities: new FormControl(0),
-    username: new FormControl('', [Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
-    password: new FormControl('', [Validators.required,Validators.maxLength(10)]),
+    username: new FormControl('', [Validators.required, noBlacklistCharacters]),  
+    password: new FormControl('', [Validators.required,Validators.maxLength(10), noBlacklistCharacters]),
     confirmPassword: new FormControl('', [Validators.required]),
     companyName: new FormControl('', [Validators.required, noWhitespaceValidator()]),
     companyNameBangla: new FormControl('',[banglaTextValidator()]),
@@ -183,16 +183,16 @@ filteredCountriesList = this.countrie;
       .pipe(
         debounceTime(300), 
         distinctUntilChanged(), 
-        filter((value: string) => this.isValidUsername(value)) 
+        filter((value: string) => !this.containsBlacklistCharacters(value)) 
       )
       .subscribe((value) => {
         this.usernameSubject.next(value);
         this.checkUniqueUsername(value); 
       });
   }
-  private isValidUsername(value: string): boolean {
-    const usernameRegex = /^[a-zA-Z]+[a-zA-Z\d]*$/;
-    return usernameRegex.test(value);
+  private containsBlacklistCharacters(value: string): boolean {
+    const blacklistPattern = /[!@&#${}%*\s]/; 
+    return blacklistPattern.test(value);
   }
 
   filteredCountrie() {

@@ -41,7 +41,7 @@
               @else if(usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               }
-              @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['pattern']) {
+              @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
                 <span class="error-message"> Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
               }       
             </div>
@@ -65,6 +65,9 @@
               @if(isContinueClicked && firstInvalidField === 'password' && employeeForm.controls['password'].errors?.['required']) {
                 <span class="error-message">Password can not be empty.</span>
               }  
+              @if(employeeForm.controls['password'].touched && employeeForm.controls['password'].errors?.['invalidCharacters']) {
+                <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space.</span>
+              }   
             </div>
           </div>
   
@@ -496,7 +499,7 @@
   </div>
   <div class="text-red-600">
     @if(isContinueClicked && firstInvalidField === 'industryTypeArray'  && employeeForm.controls['industryTypeArray'].errors?.['required']) {
-      <span class="mt-4 text-sm">Select  Industry Type </span>
+      <span class="mt-4 text-sm">Select Industry Type </span>
     }
 </div>
           <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">

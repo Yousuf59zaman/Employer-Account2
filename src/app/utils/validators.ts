@@ -22,13 +22,15 @@ export function yearValidator(): ValidatorFn {
   };
 }
 export function noBlacklistCharacters(control: AbstractControl): ValidationErrors | null {
-  const blacklistPattern = /[!@&#${}%*\s]/;
+  const blacklistPattern = /[!@&#${}%*\s]/; 
   const value = control.value;
+
   if (value && blacklistPattern.test(value)) {
-    return { invalidCharacters: true };
+    return { invalidCharacters: true }; 
   }
   return null; 
 }
+
 export function noWhitespaceValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const isWhitespace = (control.value || '').trim().length === 0;
