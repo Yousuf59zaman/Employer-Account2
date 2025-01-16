@@ -435,6 +435,7 @@
     [closeModal]="closeAddIndustryModal.bind(this)"
     [industries]="industries"
     [selectedIndustryId]="selectedIndustryId" 
+    (industryTypeChanged)="onNewIndustryTypeChange($event)" 
     (newIndustry)="onNewIndustryAdded($event)">
   </app-add-industry-modal>
 }

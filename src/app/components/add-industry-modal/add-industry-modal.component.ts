@@ -20,6 +20,8 @@ export class AddIndustryModalComponent implements OnChanges {
   @Input() selectedIndustryId: number = 0;
   @Output() newIndustry = new EventEmitter<{ IndustryName: string }>();
   @Input() employeeForm: FormGroup;
+  @Output() industryTypeChanged = new EventEmitter<number>(); 
+
 
 
 
@@ -46,6 +48,10 @@ export class AddIndustryModalComponent implements OnChanges {
   }
   ngOnDestroy(): void {
     document.body.classList.remove('no-scroll');
+  }
+  onNewIndustryTypeChange(event: any): void {
+    const selectedValue = parseInt(event.target.value, 10);
+    this.industryTypeChanged.emit(selectedValue); // Emit the new value to the parent
   }
 
 

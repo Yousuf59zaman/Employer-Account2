@@ -448,6 +448,9 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     },
   });
 }
+onNewIndustryTypeChange(newIndustryId: number): void {
+  this.employeeForm.get('industryType')?.setValue(newIndustryId); 
+}
   // Trigger filtering of industries based on dropdown selection
   onIndustryTypeChange(selectedIndustryId: string | number): void {
     const parsedIndustryId = parseInt(selectedIndustryId as string, 10); 

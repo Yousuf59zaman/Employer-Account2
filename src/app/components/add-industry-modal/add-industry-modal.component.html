@@ -32,9 +32,10 @@
           </label>
           <select 
             formControlName="industryType" 
+            (change)="onNewIndustryTypeChange($event)"
             id="industryType"
             class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:ring-blue-500 focus:border-blue-500 text-[#212121] text-base font-normal font-inter leading-snug">
-            <option value="" disabled>All</option>
+            <option value="-1" disabled>All</option>
          @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
       }
