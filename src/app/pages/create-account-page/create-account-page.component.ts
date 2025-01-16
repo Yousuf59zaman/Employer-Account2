@@ -96,7 +96,7 @@ filteredCountriesList = this.countrie;
     rlNoStatus: new FormControl(''),
     outsideBDCompanyAddress: new FormControl(''),
     outsideBDCompanyAddressBng: new FormControl(''),
-    captchaInput: new FormControl('', [Validators.required]),
+    captchaInput: new FormControl('', [Validators.required, Validators.maxLength(2),Validators.pattern('^[0-9]*$')]),
     companyAddressBangla: new FormControl('',[banglaTextValidator()]),
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
   },{ validators: passwordMatchValidator() }

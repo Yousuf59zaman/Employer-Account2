@@ -833,10 +833,13 @@
                <!-- Verification -->
               <h2 class="font-inter text-[20px] mb-2 font-semibold leading-[38px] text-left text-[#0E73A9]">You’re Almost Done!</h2>
               <app-math-captcha  
-              [employeeForm]="employeeForm">
+              
+              [employeeForm]="employeeForm"
+              (input)="onInputChange($event)">
+
               </app-math-captcha>
               <div class="text-red-600">
-                @if (isContinueClicked && firstInvalidField === 'captchaInput' &&  employeeForm.controls['captchaInput'].errors?.['required']) {
+                @if (isContinueClicked && firstInvalidField === 'captchaInput' &&  employeeForm.controls['captchaInput'].errors?.['required'] || employeeForm.controls['captchaInput'].errors?.['maxLength']) {
                 <span class="mt-6 text-sm">Please type the Verification Code. </span>
                 }
               </div>

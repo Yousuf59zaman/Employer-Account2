@@ -11,8 +11,9 @@
 
   <!-- CAPTCHA Input with blur event -->
   <input
-    type="text"
+    type=""
     id="captchaInput"
+    [maxLength]="2"
     [formControl]="captchaInput"
     class="w-auto sm:w-[400px] px-4 py-2 ml-4 text-gray-600 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
     placeholder="Type the verification code here"
