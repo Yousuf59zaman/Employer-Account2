@@ -15,7 +15,7 @@ import { MathCaptchaComponent } from '../../components/math-captcha/math-captcha
 import { filePath,countrie ,disabilities} from '../../constants/file-path.constants';
 import { AddIndustryModalComponent } from "../../components/add-industry-modal/add-industry-modal.component";
 import { AuthService } from '../../Services/shared/auth.service';
-import { passwordMatchValidator, yearValidator, banglaTextValidator } from '../../utils/validators';
+import { passwordMatchValidator, yearValidator, banglaTextValidator, noWhitespaceValidator } from '../../utils/validators';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-account-page',
@@ -69,7 +69,7 @@ filteredCountriesList = this.countrie;
     username: new FormControl('', [Validators.required,Validators.pattern(/^[a-zA-Z]+[a-zA-Z\d]*$/)  ]),  
     password: new FormControl('', [Validators.required,Validators.maxLength(10)]),
     confirmPassword: new FormControl('', [Validators.required]),
-    companyName: new FormControl('', [Validators.required]),
+    companyName: new FormControl('', [Validators.required, noWhitespaceValidator()]),
     companyNameBangla: new FormControl('',[banglaTextValidator()]),
     yearsOfEstablishMent: new FormControl('', [Validators.required, yearValidator()]),
     companySize: new FormControl('', [Validators.required]),
@@ -229,7 +229,11 @@ filteredCountriesList = this.countrie;
   
   // Check for unique company name 
   private checkUniqueCompanyName(companyName: string): void {
-  this.checkNamesService.checkUniqueCompanyName(companyName).subscribe({
+    const trimmedCompanyName = companyName.trim();
+    if (!trimmedCompanyName) {
+      return;
+    }
+  this.checkNamesService.checkUniqueCompanyName(trimmedCompanyName).subscribe({
     next: (response: any) => {
       console.log('API Response:', response);
 
@@ -524,7 +528,6 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
   }
   
-
   // Fetch countries (Outside Bangladesh included)
   private fetchCountries(): void {
     const selectedCountryText = this.selectedCountry?.OptionText || this.employeeForm.get('country')?.value;

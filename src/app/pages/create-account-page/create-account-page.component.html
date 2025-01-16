@@ -119,8 +119,13 @@
               [isRequired]="true">
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked && firstInvalidField === 'companyName' && employeeForm.controls['companyName'].errors?.['required']) {
-                <span class="error-message">Company Name can not be empty.
+              @if (
+                isContinueClicked &&
+                firstInvalidField === 'companyName' &&
+                (employeeForm.controls['companyName'].errors?.['required'] || employeeForm.controls['companyName'].errors?.['whitespace'])
+              ) {
+                <span class="error-message">
+                  Company Name cannot be empty.
                 </span>
               }
               @else if(companyNameExistsMessage) {
