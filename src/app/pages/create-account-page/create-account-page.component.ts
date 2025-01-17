@@ -709,7 +709,6 @@ isContinueClicked: boolean = false;
 rlNoHasValue: boolean = false;
 isLoading: boolean = false;
 
-
 onInputChange(event: Event) {
   const input = event.target as HTMLInputElement;
   input.value = input.value.replace(/[^0-9]/g, '');
@@ -726,9 +725,8 @@ onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
   this.isLoading = true; 
-
+ 
   console.log('Current form values:', this.employeeForm.value);
-
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
@@ -743,7 +741,6 @@ onContinue() {
     industryTypeControl.setErrors({ defaultIndustryType: true }); 
     industryTypeControl.markAsTouched(); 
   }
-
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
@@ -765,7 +762,6 @@ onContinue() {
       }
     }
   }
-
   if (firstInvalidKey) {
     const element = document.getElementById(firstInvalidKey);
     if (element) {
@@ -774,6 +770,11 @@ onContinue() {
     }
     this.isLoading = false; 
     return;
+  }
+  if (!this.isCaptchaValid) {
+    console.error('Captcha validation failed.');
+    this.isLoading = false; 
+    return; 
   }
   if (this.employeeForm.valid) {
     const payload = this.employeeForm.value;

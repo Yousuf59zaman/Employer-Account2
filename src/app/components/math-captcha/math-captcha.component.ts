@@ -39,9 +39,14 @@ export class MathCaptchaComponent implements OnInit {
       });
   }
   isCaptchaValid(): boolean {
-    const userAnswer = parseFloat(this.captchaInput.value ?? '');
-    return !isNaN(userAnswer) && Math.abs(userAnswer - this.captchaAnswer()) < 0.01; 
+    const userAnswer = this.captchaInput.value?.trim();
+    if (!userAnswer) {
+      return false; 
+    }
+    const numericAnswer = parseFloat(userAnswer);
+    return !isNaN(numericAnswer) && Math.abs(numericAnswer - this.captchaAnswer()) < 0.01;
   }
+  
 
   generateCaptcha() {
     this.operator.set(this.randomOperator());
