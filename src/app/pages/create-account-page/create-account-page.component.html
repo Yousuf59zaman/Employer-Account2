@@ -337,8 +337,8 @@
               [rows]="4">
             </app-text-area>
             <div class="text-red-600">
-              @if(employeeForm.controls['outsideBDCompanyAddress'].touched && employeeForm.controls['outsideBDCompanyAddress'].errors?.['required']) {
-                <span class="error-message">This is required</span>
+              @if (isContinueClicked && firstInvalidField === 'outsideBDCompanyAddress' && employeeForm.controls['outsideBDCompanyAddress'].hasError('required')) {
+                <span class="error-message">Company Address can not be empty</span>
               }
             </div>
             </div>  
@@ -456,7 +456,7 @@
         <div class="flex items-center sm:text-sm text-xs">
           <input 
             name="industry_type" 
-            id="industryTypeArray" 
+            id="industry_type_{{item.IndustryValue}}" 
             type="checkbox" 
             [value]="item.IndustryValue" 
             [checked]="isIndustryChecked(item.IndustryValue)"

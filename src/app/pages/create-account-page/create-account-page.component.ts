@@ -76,8 +76,9 @@ filteredCountriesList = this.countrie;
     country: new FormControl('',[Validators.required]), 
     district: new FormControl('',[Validators.required]),
     thana: new FormControl('',[Validators.required]), 
-    outSideBd: new FormControl(''),
     companyAddress: new FormControl('',[Validators.required]),
+    outSideBd: new FormControl('',[Validators.required]),
+    outsideBDCompanyAddress: new FormControl('',[Validators.required]),
     industryType: new FormControl('-1',[Validators.required]),
     industryTypeArray: new FormControl('', [Validators.required]),
     businessDesc: new FormControl(''),
@@ -94,7 +95,6 @@ filteredCountriesList = this.countrie;
     industryName: new FormControl('', [Validators.maxLength(100),]),
     hidEntrepreneur: new FormControl(''),
     rlNoStatus: new FormControl(''),
-    outsideBDCompanyAddress: new FormControl(''),
     outsideBDCompanyAddressBng: new FormControl(''),
     captchaInput: new FormControl('', [Validators.required, Validators.maxLength(2),Validators.pattern('^[0-9]*$')]),
     companyAddressBangla: new FormControl('',[banglaTextValidator()]),
@@ -161,10 +161,31 @@ filteredCountriesList = this.countrie;
     this.employeeForm.get('country')?.valueChanges.subscribe((value: string) => {
             if (value === 'Bangladesh') {
               this.outsideBd = false;  
-              this.fetchDistricts();    
+              this.fetchDistricts();
+              this.employeeForm.get('district')?.setValidators([Validators.required]);
+              this.employeeForm.get('thana')?.setValidators([Validators.required]);
+              this.employeeForm.get('companyAddress')?.setValidators([Validators.required]);
+              this.employeeForm.get('outSideBd')?.clearValidators();
+              this.employeeForm.get('outSideBd')?.setValue(''); 
+              this.employeeForm.get('outsideBDCompanyAddress')?.clearValidators();
+              this.employeeForm.get('outsideBDCompanyAddress')?.setValue('');       
             } else {
-              this.outsideBd = true;    
+              this.outsideBd = true; 
+              this.employeeForm.get('district')?.clearValidators();
+              this.employeeForm.get('thana')?.clearValidators();
+              this.employeeForm.get('companyAddress')?.clearValidators();
+              this.employeeForm.get('district')?.setValue(''); 
+              this.employeeForm.get('thana')?.setValue(''); 
+              this.employeeForm.get('companyAddress')?.setValue(''); 
+              this.employeeForm.get('outSideBd')?.setValidators([Validators.required]); 
+              this.employeeForm.get('outsideBDCompanyAddress')?.setValidators([Validators.required]);   
             }
+            this.employeeForm.get('district')?.updateValueAndValidity();
+            this.employeeForm.get('thana')?.updateValueAndValidity();
+            this.employeeForm.get('companyAddress')?.updateValueAndValidity();
+            this.employeeForm.get('outSideBd')?.updateValueAndValidity();
+            this.employeeForm.get('outsideBDCompanyAddress')?.updateValueAndValidity();
+
           });
     this.employeeForm.get('district')?.valueChanges.subscribe(districtId => {
       if (districtId) {
