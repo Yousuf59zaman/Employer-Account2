@@ -52,3 +52,18 @@
     background-size: cover;
   }
 }
+.dropdown-container {
+  .dropdown-upwards {
+    bottom: 100%;
+    margin-bottom: 0.25rem;
+    top: auto;
+    margin-top: 0;
+  }
+
+  .dropdown-downwards {
+    top: 100%;
+    margin-top: 0.25rem;
+    bottom: auto;
+    margin-bottom: 0;
+  }
+}

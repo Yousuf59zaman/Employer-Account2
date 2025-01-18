@@ -45,6 +45,7 @@ export class CreateAccountPageComponent implements OnInit {
   isCaptchaValid = false;
   selectedCountry: LocationResponseDTO | null = null;
   searchTerm = new FormControl('');
+  isOpenCountry: boolean = false;
   isOpen: boolean = false;
   showAddIndustryButton: boolean = false; 
   fieldsOrder: string[] = [];
@@ -115,6 +116,7 @@ filteredCountriesList = this.countrie;
   showError: boolean = false;
   showErrorModal: boolean = false; 
   showAll: boolean = false;  
+  isDropdownUpwards = false;
   showAddIndustryModal = false;
   selectedIndustryId: number = 0;
   searchControl: FormControl = new FormControl(''); 
@@ -612,6 +614,21 @@ private fetchDistricts(): void {
 }
   toggleDropdown() {
     this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.checkDropdownPosition();
+    }
+  }
+  toggleDropdownCountry() {
+    this.isOpenCountry = !this.isOpenCountry; 
+  }
+  checkDropdownPosition() {
+    const dropdownButton = document.querySelector('.dropdown-container button') as HTMLElement;
+    const viewportHeight = window.innerHeight;
+
+    if (dropdownButton) {
+      const buttonRect = dropdownButton.getBoundingClientRect();
+      this.isDropdownUpwards = buttonRect.bottom + 200 > viewportHeight; 
+    }
   }
   @HostListener('document:click', ['$event'])
   closeDropdown(event: Event) {
@@ -620,6 +637,7 @@ private fetchDistricts(): void {
     const isInsideDropdown = targetElement.closest('.dropdown-container');
     if (!isInsideDropdown) {
       this.isOpen = false;
+      this.isOpenCountry = false;
     }
   }
 
