@@ -466,14 +466,14 @@
     [class.expanded]="showAll">
     @if (filteredIndustryTypes.length > 0) {
       @for (item of getTypes(); track item.IndustryValue) {
-        <div class="flex items-center sm:text-sm text-xs">
+        <div class="flex items-center text-xs sm:text-sm">
           <input 
             name="industry_type"
             id="industry_type_{{item.IndustryValue}}"
             type="checkbox" 
             [value]="item.IndustryValue" 
             [checked]="isIndustryChecked(item.IndustryValue)"
-            class="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 border shadow-inner cursor-pointer checkbox-input border-black/30 checked:bg-blue-600 checked:border-blue-600" 
+            class="w-3 h-3 text-blue-600 border shadow-inner cursor-pointer sm:w-4 sm:h-4 checkbox-input border-black/30 checked:bg-blue-600 checked:border-blue-600" 
             (change)="onIndustryCheckboxChange($event, item)" />
           <label 
           for="industry_type_{{item.IndustryValue}}" 
@@ -592,7 +592,7 @@
                   <span class="mr-2 icon icon-phone"></span> Fill out the contact info for whom we may reach out
                 </h2>
                 <!-- Contact -->
-            <div class="sm:flex-row gap-2 sm:gap-4 flex flex-col ">
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4 ">
               <div class="flex-1">
                 <app-input-field
                 label="Contact Person's Name"
@@ -642,7 +642,7 @@
               </div>
             </div>
           
-            <div class="sm:flex-row gap-2 sm:gap-4 flex flex-col">
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
               <div class="flex-1">
                 <app-input-field
                 label="Contact Person's Email"
@@ -842,14 +842,14 @@
             <div class="flex items-start">
               <input name="disability_type" 
                     [checked]="formControlSignals()['disabilityWrap'].value?.includes(item.value)" 
-                    id="disability_type_{{item.value}}" 
                     type="checkbox" 
+                    id="disability_wrap_{{item.value}}"
                     [value]="item.value" 
                     (change)="onCheckboxChange($event)" 
                     class="h-[16px] w-[16px] text-blue-600 cursor-pointer border-2 shadow-inner border-black/30 
                             checked:bg-blue-600 checked:border-blue-600 checked:appearance-auto" 
                     style="min-width: 16px; min-height: 16px;">
-              <label for="industry_type_{{item.value}}" class="text-[16px] leading-[1.42857143] font-inter text-black box-border ml-2">
+              <label for="disability_wrap_{{item.value}}"  class="text-[16px] leading-[1.42857143] font-inter text-black box-border ml-2">
                 {{ item.label }}
               </label>
             </div>            
@@ -899,7 +899,7 @@
               class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-[16px] font-inter px-5 py-3 shadow-md transition duration-300 ease-linear"
               [class.cursor-not-allowed]="!employeeForm.get('isPolicyAcceptedControl')?.value"
               [class.opacity-65]="!employeeForm.get('isPolicyAcceptedControl')?.value">
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="isLoading" class="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               Continue 
             </button>
               </section>
