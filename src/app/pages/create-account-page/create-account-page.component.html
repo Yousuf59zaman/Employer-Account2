@@ -407,7 +407,7 @@
     </h2>
     <select 
       formControlName="industryType" 
-      id="industryType" 
+      id="industryTypeArray"
       class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
       <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
@@ -443,7 +443,7 @@
 }
 <!-- Industry Checkbox List Section -->
 <div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[96%] sm:mx-0 mx-auto overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
-     [class.error-border]="isContinueClicked && firstInvalidField === 'industryType' && employeeForm.controls['industryType'].errors?.['defaultIndustryType']">
+     [class.error-border]="isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']">
   <div>
     <input [formControl]="searchControl"
            class="flex w-auto sm:w-[1151px] px-2 py-1.5 sm:p-[14px] sm:px-[16px] justify-between items-center self-stretch rounded-[8px] border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]" 
@@ -457,16 +457,16 @@
       @for (item of getTypes(); track item.IndustryValue) {
         <div class="flex items-center sm:text-sm text-xs">
           <input 
-            name="industry_type" 
-            id="industry_type_{{item.IndustryValue}}" 
+            name="industry_type"
+            id="industry_type_{{item.IndustryValue}}"
             type="checkbox" 
             [value]="item.IndustryValue" 
             [checked]="isIndustryChecked(item.IndustryValue)"
             class="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 border shadow-inner cursor-pointer checkbox-input border-black/30 checked:bg-blue-600 checked:border-blue-600" 
             (change)="onIndustryCheckboxChange($event, item)" />
           <label 
-            for="industry_type_{{item.IndustryValue}}" 
-            class="ml-2 text-xs sm:text-sm font-inter text-black leading-[1.42857143]">
+          for="industry_type_{{item.IndustryValue}}" 
+          class="ml-2 text-xs sm:text-sm font-inter text-black leading-[1.42857143]">
             {{ item.IndustryName }}
           </label>
         </div>
@@ -503,7 +503,7 @@
 </div>
 
 <div class="text-red-600">
-  @if(isContinueClicked && firstInvalidField === 'industryType' && employeeForm.controls['industryType'].errors?.['defaultIndustryType']) {
+  @if(isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']) {
     <span class="mt-4 text-sm">Select Industry Type </span>
   }
 </div>

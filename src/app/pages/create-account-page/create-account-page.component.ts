@@ -80,7 +80,7 @@ filteredCountriesList = this.countrie;
     companyAddress: new FormControl('',[Validators.required]),
     outSideBd: new FormControl('',[Validators.required]),
     outsideBDCompanyAddress: new FormControl('',[Validators.required]),
-    industryType: new FormControl('-1',[Validators.required]),
+    industryType: new FormControl('-1'),
     industryTypeArray: new FormControl('', [Validators.required]),
     businessDesc: new FormControl(''),
     tradeNo: new FormControl(''),
@@ -758,11 +758,11 @@ onContinue() {
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
 
-  const industryTypeControl = controls['industryType'];
-  if (industryTypeControl && industryTypeControl.value === '-1') {
-    industryTypeControl.setErrors({ defaultIndustryType: true }); 
-    industryTypeControl.markAsTouched(); 
-  }
+  // const industryTypeControl = controls['industryType'];
+  // if (industryTypeControl && industryTypeControl.value === '-1') {
+  //   industryTypeControl.setErrors({ defaultIndustryType: true }); 
+  //   industryTypeControl.markAsTouched(); 
+  // }
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
@@ -770,7 +770,6 @@ onContinue() {
         control.markAsTouched();
         if (key === 'industryTypeArray' && control.errors?.['required']) {
         }
-
         if (control.errors) {
           console.error(`Validation error in ${key}:`, control.errors);
           if (control.errors['required']) {
