@@ -17,7 +17,7 @@
       <!-- User Information Section -->
       <div class="w-auto sm:w-[1290px] h-auto sm:h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-          <span class="mr-2 icon icon-employer"></span>Let’s fill out the user information first
+          <span class="mr-2 icon icon-employer"></span>Let’s Start by Filling Out Your User Information
         </h2>
   
         <!-- Username Field -->
@@ -104,7 +104,7 @@
       <!-- Company Details Section -->
       <div class="flex-col items-start gap-5 p-6 mx-auto mt-6 bg-white shadow-lg max-w-7xl rounded-2xl">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-          <span class="mr-2 icon icon-commercial"></span> Now, fill out the detailed information
+          <span class="mr-2 icon icon-commercial"></span> Tell us about your company
         </h2>
   
         <!-- Company Name, Bangla Name, and Establishment Year -->
@@ -589,7 +589,7 @@
               </div>
               <div class="flex-col items-start gap-5 p-6 mx-auto mt-6 bg-white shadow-lg max-w-7xl rounded-2xl">
                 <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-                  <span class="mr-2 icon icon-phone"></span> Fill out the contact info for whom we may reach out
+                  <span class="mr-2 icon icon-phone"></span>Provide Contact Person Information
                 </h2>
                 <!-- Contact -->
             <div class="flex flex-col gap-2 sm:flex-row sm:gap-4 ">
@@ -748,33 +748,33 @@
 
  <div class="max-w-7xl p-6 mx-auto flex-col mt-6 items-start gap-5 rounded-2xl bg-white border border-[#DAE5EC]">
 
-     <!-- Accessibility Profile -->
-  <section class="my-6">
-    <h3 class="text-[#212121] font-inter text-[20px] font-medium leading-[30px] mb-2">
-      Accessibility Profile for inclusion of Persons with Disabilities as Employees
-    </h3>  
-   
-    <a href="https://corporate3.bdjobs.com/disability-inclusion-practices.asp" target="_blank" class="text-[#0E73A9] font-inter text-[16px] font-normal leading-[24px] underline mb-4">
-      Click to learn more
-    </a>
-    
-    <!-- Checkbox -->
-    <div class="flex mt-3">
-      <div class="flex items-center">
-        <input name="facility_for_disability" 
-               id="facility_for_disability" 
-               type="checkbox" 
-               [formControl]="formControlSignals()['facilitiesForDisabilities']"
-               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500 focus:ring-offset-0 focus:ring-2">
-      </div>
-      <div class="ml-3">
-        <label for="facility_for_disability" 
-               class="text-base font-normal text-black cursor-pointer">
-               Facilities for Person with Disabilities
-              </label>
-      </div>
-    </div>            
-  
+ <!-- Accessibility Profile -->
+<!-- Accessibility Profile -->
+<section class="my-4">
+  <h3 class="text-[#0E73A9] font-inter text-[18px] font-medium leading-[30px] mb-4">
+    <span class="icon icon-acsbi-person"></span>
+    Accessibility Profile for Inclusion of Persons with Disabilities
+  </h3>  
+
+  <!-- Checkbox -->
+  <div class="flex items-center mb-4">
+    <input name="facility_for_disability" 
+           id="facility_for_disability" 
+           type="checkbox" 
+           [formControl]="formControlSignals()['facilitiesForDisabilities']"
+           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500 focus:ring-offset-0 focus:ring-2">
+    <label for="facility_for_disability" 
+           class="ml-2 text-base font-normal text-black cursor-pointer">
+      Facilities for Person with Disabilities
+    </label>
+  </div>            
+
+  <a href="https://corporate3.bdjobs.com/disability-inclusion-practices.asp" target="_blank" 
+     class="text-[#0E73A9] font-inter text-[16px] font-normal leading-[24px] underline">
+    Click to learn more
+  </a>
+
+
   
   @if (employeeForm.get('facilitiesForDisabilities')?.value === 1) {
       <div  id="DisabilityPanel" class="block -mr-2">
