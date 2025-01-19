@@ -41,7 +41,7 @@
               @else if (!employeeForm.controls['username'].errors && usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               } 
-              @else if (employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
+              @else if ( employeeForm.controls['username'].errors?.['invalidCharacters']) {
                 <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
               }     
             </div>
@@ -65,7 +65,7 @@
               @if(isContinueClicked && firstInvalidField === 'password' && employeeForm.controls['password'].errors?.['required']) {
                 <span class="error-message">Password can not be empty</span>
               }  
-              @if(employeeForm.controls['password'].touched && employeeForm.controls['password'].errors?.['invalidCharacters']) {
+              @if(employeeForm.controls['password'].errors?.['invalidCharacters']) {
                 <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space.</span>
               }   
             </div>
@@ -172,7 +172,7 @@
               @if(isContinueClicked && firstInvalidField === 'yearsOfEstablishMent' && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
                 <span class="error-message">Please enter Year of Establishment</span>
               }
-              @else if(employeeForm.controls['yearsOfEstablishMent'].touched && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
+              @else if(employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
                 <span class="error-message">Please enter a valid year within the range of 1800 to 2025
                 </span>
               }
