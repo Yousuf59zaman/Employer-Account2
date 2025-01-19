@@ -619,7 +619,7 @@ private fetchDistricts(): void {
     }
   }
   toggleDropdownCountry() {
-    this.isOpenCountry = !this.isOpenCountry; 
+    this.isOpenCountry = !this.isOpenCountry;
   }
   checkDropdownPosition() {
     const dropdownButton = document.querySelector('.dropdown-container button') as HTMLElement;
@@ -712,7 +712,7 @@ setupSearch(): void {
   chooseCountry(country: any) {
     this.currentCountry = country;
     this.currentFlagPath = this.filePath[country.name];
-    this.isOpen = false;
+    this.isOpenCountry = false;
   }
   private updateFlagPath() {
    const countryCode = this.employeeForm.controls['contactMobile'].value;
