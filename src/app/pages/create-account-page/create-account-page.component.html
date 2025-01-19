@@ -35,15 +35,15 @@
               >
             </app-input-field>
             <div class="text-red-600">
-              @if(isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['required']) {
+              @if (isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['required']) {
                 <span class="error-message">Username cannot be empty</span>
-              }
-              @else if(usernameExistsMessage) {
+              } 
+              @else if (!employeeForm.controls['username'].errors && usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
-              }
-              @else if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
-                <span class="error-message"> Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
-              }       
+              } 
+              @else if (employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
+                <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
+              }     
             </div>
           </div>
           
