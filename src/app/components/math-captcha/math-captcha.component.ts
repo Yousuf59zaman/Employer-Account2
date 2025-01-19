@@ -51,23 +51,21 @@ export class MathCaptchaComponent implements OnInit {
   // Generate a new captcha
   generateCaptcha() {
     this.operator.set(this.randomOperator());
-
+  
     let op1 = this.randomNumber();
     let op2 = this.randomNumber();
-
-    if (this.operator() === '-') {
-      if (op1 < op2) {
-        [op1, op2] = [op2, op1]; 
-      }
+  
+    if (this.operator() === '-' && op1 < op2) {
+      [op1, op2] = [op2, op1]; 
     }
-
+  
     this.operand1.set(op1);
     this.operand2.set(op2);
-
+  
     this.captchaInput.reset();
     this.captchaInput.setErrors(null);
   }
-
+  
   // Generate a random number between 1 and 10
   private randomNumber(): number {
     return Math.floor(Math.random() * 10) + 1;
