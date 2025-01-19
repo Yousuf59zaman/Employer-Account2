@@ -759,19 +759,22 @@
     </a>
     
     <!-- Checkbox -->
-    <div class="flex items-center gap-3 mt-4">
-      <app-checkbox-group
-        name="DisabilitiesFacility"
-        id="chkDisabilitiesFacility"
-        value="1"
-        type="checkbox"
-        customClasses="text-[#0F6DDB] border-[#0F6DDB] rounded-sm"
-        [control]="formControlSignals()['facilitiesForDisabilities']"
-        ></app-checkbox-group>
-      <label for="chkDisabilitiesFacility" class="text-[#212121] font-inter text-[16px] font-normal leading-[24px]">
-        Facilities for Person with Disabilities
-      </label>
-    </div>
+    <div class="flex mt-3">
+      <div class="flex items-center">
+        <input name="facility_for_disability" 
+               id="facility_for_disability" 
+               type="checkbox" 
+               [formControl]="formControlSignals()['facilitiesForDisabilities']"
+               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500 focus:ring-offset-0 focus:ring-2">
+      </div>
+      <div class="ml-3">
+        <label for="facility_for_disability" 
+               class="text-base font-normal text-black cursor-pointer">
+               Facilities for Person with Disabilities
+              </label>
+      </div>
+    </div>            
+  
   
   @if (employeeForm.get('facilitiesForDisabilities')?.value === 1) {
       <div  id="DisabilityPanel" class="block -mr-2">
