@@ -794,6 +794,7 @@ onContinue() {
   }
   if (!this.isCaptchaValid) {
     console.error('Captcha validation failed.');
+    alert ('Enter the Valid Verification Code')
     this.isLoading = false; 
     return; 
   }
