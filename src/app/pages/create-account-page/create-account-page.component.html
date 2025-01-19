@@ -373,8 +373,13 @@
           [rows]="4">
         </app-text-area>
         <div class="text-red-600">
-          @if(isContinueClicked && firstInvalidField === 'companyAddress'  && employeeForm.controls['companyAddress'].errors?.['required']) {
-            <span class="error-message">Company Address can not be empty
+          @if (
+            isContinueClicked &&
+            firstInvalidField === 'companyAddress' &&
+            (employeeForm.controls['companyAddress'].errors?.['required'] || employeeForm.controls['companyAddress'].errors?.['whitespace'])
+          ) {
+            <span class="error-message">
+              Company Name cannot be empty.
             </span>
           }
         </div> 
@@ -595,9 +600,15 @@
                 >
               </app-input-field>
               <div class="mt-0 text-red-600">
-                @if (isContinueClicked && firstInvalidField === 'contactName' &&  employeeForm.controls['contactName'].errors?.['required']) {
-                <span class="error-message">Contact Person's Name can not be empty.</span>
-                }
+                @if (
+                isContinueClicked &&
+                firstInvalidField === 'contactName' &&
+                (employeeForm.controls['contactName'].errors?.['required'] || employeeForm.controls['contactName'].errors?.['whitespace'])
+              ) {
+                <span class="error-message">
+                  Contact Person's Name cannot be empty
+                </span>
+              }
             </div>
               </div>
               <div class="flex-1">
@@ -613,9 +624,14 @@
                 >
               </app-input-field>
               <div class="text-red-600">
-                @if (isContinueClicked && firstInvalidField === 'contactDesignation' &&  employeeForm.controls['contactDesignation'].errors?.['required']) {
-                <span class="error-message">Contact Person's Designation can not be empty.</span>
-                }
+                @if (
+                isContinueClicked &&
+                firstInvalidField === 'contactDesignation' &&
+                (employeeForm.controls['contactDesignation'].errors?.['required'] || employeeForm.controls['contactDesignation'].errors?.['whitespace'])
+              ) {
+                <span class="error-message">
+                  Contact Person's Designation can not be empty</span>
+              }
             </div>
               </div>
             </div>
@@ -634,8 +650,13 @@
                 >
               </app-input-field>
               <div class="text-red-600">
-                @if (isContinueClicked && firstInvalidField === 'contactEmail' &&  employeeForm.controls['contactEmail'].errors?.['required']) {
-                <span class="error-message">Contact Person's Email can not be empty.</span>
+                @if (
+                  isContinueClicked &&
+                  firstInvalidField === 'contactEmail' &&
+                  (employeeForm.controls['contactEmail'].errors?.['required'] || employeeForm.controls['contactEmail'].errors?.['whitespace'])
+                ) {
+                  <span class="error-message">
+                    Contact Person's Email can not be empty                  </span>
                 }
                 @else if (employeeForm.controls['contactEmail'].errors?.['email']) {
                   <span class="error-message">Please enter a valid email address</span>
