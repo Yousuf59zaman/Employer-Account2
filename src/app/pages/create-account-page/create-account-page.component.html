@@ -41,7 +41,7 @@
               @else if(usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               }
-              @if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
+              @else if(employeeForm.controls['username'].touched && employeeForm.controls['username'].errors?.['invalidCharacters']) {
                 <span class="error-message"> Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
               }       
             </div>

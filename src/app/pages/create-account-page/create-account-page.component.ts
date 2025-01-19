@@ -743,6 +743,10 @@ onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
   this.isLoading = true; 
+  if (this.isLoading &&!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
+    return; 
+  }
+
  
   console.log('Current form values:', this.employeeForm.value);
   const credentials = {
