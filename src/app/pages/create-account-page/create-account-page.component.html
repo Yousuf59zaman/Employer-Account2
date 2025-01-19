@@ -339,9 +339,15 @@
               [rows]="4">
             </app-text-area>
             <div class="text-red-600">
-              @if (isContinueClicked && firstInvalidField === 'outsideBDCompanyAddress' && employeeForm.controls['outsideBDCompanyAddress'].hasError('required')) {
-                <span class="error-message">Company Address can not be empty</span>
-              }
+              @if (
+            isContinueClicked &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            (employeeForm.controls['outsideBDCompanyAddress'].errors?.['required'] || employeeForm.controls['outsideBDCompanyAddress'].errors?.['whitespace'])
+          ) {
+            <span class="error-message">
+              Company Address cannot be empty
+            </span>
+          }
             </div>
             </div>  
           <div class="col-span-1">

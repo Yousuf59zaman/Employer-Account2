@@ -166,7 +166,7 @@ filteredCountriesList = this.countrie;
               this.fetchDistricts();
               this.employeeForm.get('district')?.setValidators([Validators.required]);
               this.employeeForm.get('thana')?.setValidators([Validators.required]);
-              this.employeeForm.get('companyAddress')?.setValidators([Validators.required]);
+              this.employeeForm.get('companyAddress')?.setValidators([Validators.required, noWhitespaceValidator()]);
               this.employeeForm.get('outSideBd')?.clearValidators();
               this.employeeForm.get('outSideBd')?.setValue(''); 
               this.employeeForm.get('outsideBDCompanyAddress')?.clearValidators();
@@ -180,7 +180,7 @@ filteredCountriesList = this.countrie;
               this.employeeForm.get('thana')?.setValue(''); 
               this.employeeForm.get('companyAddress')?.setValue(''); 
               this.employeeForm.get('outSideBd')?.setValidators([Validators.required]); 
-              this.employeeForm.get('outsideBDCompanyAddress')?.setValidators([Validators.required]);   
+              this.employeeForm.get('outsideBDCompanyAddress')?.setValidators([Validators.required,noWhitespaceValidator()]);   
             }
             this.employeeForm.get('district')?.updateValueAndValidity();
             this.employeeForm.get('thana')?.updateValueAndValidity();
