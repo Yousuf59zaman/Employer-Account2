@@ -728,7 +728,7 @@
                     placeholder="Enter Mobile Number" 
                     (input)="onInputChange($event)"
                     [formControl]="formControlSignals()['contactMobile']"
-                    maxlength="10" 
+                    maxlength="15" 
                     required 
                   />
                 </div>
@@ -882,13 +882,14 @@
                 <div class="flex mt-3">
                   <div class="flex items-center">
                     <input name="policy_accept" 
-                           id="policy_accept" 
+                           id="isPolicyAcceptedControl" 
                            type="checkbox" 
                            [formControl]="formControlSignals()['isPolicyAcceptedControl']"
+                           [class.error-border]="isContinueClicked && firstInvalidField === 'isPolicyAcceptedControl' && employeeForm.controls['isPolicyAcceptedControl'].errors?.['required']"
                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500 focus:ring-offset-0 focus:ring-2">
                   </div>
                   <div class="ml-3">
-                    <label for="policy_accept" 
+                    <label for="isPolicyAcceptedControl" 
                            class="text-base font-normal text-black cursor-pointer">
                       I Have Read Pricing Policy And Accepted It
                     </label>
@@ -898,10 +899,8 @@
               
               <section class="flex justify-end mx-auto mt-8 max-w-7xl">
             <button 
-              [disabled]="isLoading && !employeeForm.get('isPolicyAcceptedControl')?.value && !isCaptchaValid" 
-              class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-[16px] font-inter px-5 py-3 shadow-md transition duration-300 ease-linear"
-              [class.cursor-not-allowed]="!employeeForm.get('isPolicyAcceptedControl')?.value"
-              [class.opacity-65]="!employeeForm.get('isPolicyAcceptedControl')?.value">
+              class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-[16px] font-inter px-5 py-3 shadow-md transition duration-300 ease-linear"  
+             >
               <span *ngIf="isLoading" class="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               Continue 
             </button>

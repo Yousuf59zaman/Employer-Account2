@@ -65,7 +65,6 @@ filteredCountriesList = this.countrie;
 
   employeeForm: FormGroup = new FormGroup({
     
-    isPolicyAcceptedControl: new FormControl(''),
     facilitiesForDisabilities: new FormControl(0),
     username: new FormControl('', [Validators.required, noBlacklistCharacters]),  
     password: new FormControl('', [Validators.required,Validators.maxLength(10), noBlacklistCharacters]),
@@ -100,6 +99,7 @@ filteredCountriesList = this.countrie;
     captchaInput: new FormControl('', [Validators.required, Validators.maxLength(2),Validators.pattern('^[0-9]*$')]),
     companyAddressBangla: new FormControl('',[banglaTextValidator()]),
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
+    isPolicyAcceptedControl: new FormControl('',[Validators.required]),
   },{ validators: passwordMatchValidator() }
 );
   formControlSignals = computed(() => {
@@ -743,9 +743,7 @@ onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
   this.isLoading = true; 
-  if (this.isLoading &&!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
-    return; 
-  }
+  
 
  
   console.log('Current form values:', this.employeeForm.value);
@@ -757,12 +755,8 @@ onContinue() {
 
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
+ 
 
-  // const industryTypeControl = controls['industryType'];
-  // if (industryTypeControl && industryTypeControl.value === '-1') {
-  //   industryTypeControl.setErrors({ defaultIndustryType: true }); 
-  //   industryTypeControl.markAsTouched(); 
-  // }
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
@@ -798,6 +792,13 @@ onContinue() {
     this.isLoading = false; 
     return; 
   }
+
+  if (!this.employeeForm.get('isPolicyAcceptedControl')?.value) {
+    alert('Please accept the Pricing Policy before continuing.');
+    this.isLoading = false;
+    return;
+  }
+  
   if (this.employeeForm.valid) {
     const payload = this.employeeForm.value;
     this.checkNamesService.insertAccount(payload).subscribe({
