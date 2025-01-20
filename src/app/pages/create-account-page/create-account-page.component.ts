@@ -793,8 +793,8 @@ onContinue() {
     return; 
   }
 
-  if (!this.employeeForm.get('isPolicyAcceptedControl')?.value) {
-    alert('Please accept the Pricing Policy before continuing.');
+  if (!this.employeeForm.controls['isPolicyAcceptedControl'].value) {
+    alert('You must accept the pricing policy to continue.');
     this.isLoading = false;
     return;
   }
