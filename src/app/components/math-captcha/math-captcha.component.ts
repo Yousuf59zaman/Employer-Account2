@@ -55,8 +55,10 @@ export class MathCaptchaComponent implements OnInit {
     let op1 = this.randomNumber();
     let op2 = this.randomNumber();
   
-    if (this.operator() === '-' && op1 < op2) {
-      [op1, op2] = [op2, op1]; 
+    if (this.operator() === '-') {
+      if (op1 < op2) {
+        [op1, op2] = [op2, op1]; 
+      }
     }
   
     this.operand1.set(op1);

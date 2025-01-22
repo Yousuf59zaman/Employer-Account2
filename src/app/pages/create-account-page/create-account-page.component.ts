@@ -741,13 +741,11 @@ checkCaptchaValidity() {
 }
 
 get isButtonDisabled(): boolean {
-  return (
-         !this.employeeForm.get('isPolicyAcceptedControl')?.value && 
-         !this.isCaptchaValid);
+  return (!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid);
 }
 onDisabledButtonClick(event: Event): void {
   if (this.isButtonDisabled) {
-    alert('You must accept the pricing policy before continuing.');
+    alert('Please accept the pricing policy to proceed');
     return;
   }
 }
@@ -769,8 +767,6 @@ onContinue() {
 
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
- 
-
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
