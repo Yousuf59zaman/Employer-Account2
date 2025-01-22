@@ -740,7 +740,17 @@ checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
 
-
+get isButtonDisabled(): boolean {
+  return (
+         !this.employeeForm.get('isPolicyAcceptedControl')?.value && 
+         !this.isCaptchaValid);
+}
+onDisabledButtonClick(event: Event): void {
+  if (this.isButtonDisabled) {
+    alert('You must accept the pricing policy before continuing.');
+    return;
+  }
+}
 
 onContinue() {
   this.checkCaptchaValidity();
