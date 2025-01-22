@@ -99,7 +99,7 @@ filteredCountriesList = this.countrie;
     captchaInput: new FormControl('', [Validators.required, Validators.maxLength(2),Validators.pattern('^[0-9]*$')]),
     companyAddressBangla: new FormControl('',[banglaTextValidator()]),
     rlNo: new FormControl(null,[Validators.pattern('^[0-9]*$')]),
-    isPolicyAcceptedControl: new FormControl('',[Validators.required]),
+    isPolicyAcceptedControl: new FormControl('')
   },{ validators: passwordMatchValidator() }
 );
   formControlSignals = computed(() => {
@@ -739,13 +739,17 @@ toggleShowAll() {
 checkCaptchaValidity() {
   this.isCaptchaValid = this.captchaComponent.isCaptchaValid();
 }
+
+
+
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
   this.isLoading = true; 
-  
+  if (this.isLoading &&!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
+    return; 
+  }
 
- 
   console.log('Current form values:', this.employeeForm.value);
   const credentials = {
     username: this.employeeForm.value.username || '',
@@ -791,12 +795,6 @@ onContinue() {
     alert ('Enter the Valid Verification Code')
     this.isLoading = false; 
     return; 
-  }
-
-  if (!this.employeeForm.controls['isPolicyAcceptedControl'].value) {
-    alert('You must accept the pricing policy to continue.');
-    this.isLoading = false;
-    return;
   }
   
   if (this.employeeForm.valid) {
