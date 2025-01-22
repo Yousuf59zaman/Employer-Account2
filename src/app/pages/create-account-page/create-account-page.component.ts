@@ -4,8 +4,7 @@ import { CheckNamesService } from '../../Services/check-names.service';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
 import { TextAreaComponent } from '../../components/text-area/text-area.component';
-import { CheckboxGroupComponent } from '../../components/checkbox-group/checkbox-group.component';
-import {  CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IndustryTypeResponseDTO, IndustryType, LocationResponseDTO, RLNoRequestModel } from '../../Models/company';
 import { ErrorModalComponent } from "../../components/error-modal/error-modal.component";
@@ -20,19 +19,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-account-page',
   standalone: true,
-  imports: [
-    MathCaptchaComponent,
-    PricingPolicyComponent,
-    RadioGroupComponent,
-    InputFieldComponent,
-    TextAreaComponent,
-    CheckboxGroupComponent,
-    ReactiveFormsModule,
-    CommonModule,
-    ErrorModalComponent,
-    MathCaptchaComponent,
-    AddIndustryModalComponent
-],
+  imports: [MathCaptchaComponent,PricingPolicyComponent,RadioGroupComponent,InputFieldComponent,
+    TextAreaComponent,ReactiveFormsModule,CommonModule,ErrorModalComponent,MathCaptchaComponent,AddIndustryModalComponent],
   templateUrl: './create-account-page.component.html',
   styleUrls: ['./create-account-page.component.scss']
 })
@@ -41,7 +29,6 @@ export class CreateAccountPageComponent implements OnInit {
   countrie = countrie;
   disabilities = disabilities;
   @ViewChild(MathCaptchaComponent) captchaComponent!: MathCaptchaComponent;
-  
   isCaptchaValid = false;
   selectedCountry: LocationResponseDTO | null = null;
   searchTerm = new FormControl('');
