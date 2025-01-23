@@ -297,7 +297,7 @@
               }
             </select>
             <div class="mt-1 text-red-600">
-              @if (isContinueClicked && firstInvalidField === 'district' && employeeForm.controls['district'].hasError('required')) {
+              @if (isContinueClicked && firstInvalidField === 'district' && employeeForm.controls['district'].errors?.['required']) {
                 <span class="-mt-20 text-sm">Select a District</span>
               }
             </div>
@@ -319,7 +319,7 @@
               }
             </select>
             <div class="mt-1 text-red-600">
-              @if (isContinueClicked && firstInvalidField === 'thana' && employeeForm.controls['thana'].hasError('required')) {
+              @if (isContinueClicked && firstInvalidField === 'thana' && employeeForm.controls['thana'].errors?.['required']) {
                 <span class="-mt-20 text-sm">Select a Thana</span>
               }
             </div>
