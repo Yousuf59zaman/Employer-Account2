@@ -14,12 +14,10 @@ import { InputFieldComponent } from '../input-field/input-field.component';
 export class MathCaptchaComponent implements OnInit {
   @Input() employeeForm!: FormGroup;
 
-  // Reactive signals for operands and operator
   operand1 = signal(this.randomNumber());
   operand2 = signal(this.randomNumber());
   operator = signal(this.randomOperator());
 
-  // Display the captcha expression
   expressionDisplay = computed(() => {
     const operatorSymbol = this.operator() === '/' ? '÷' : this.operator();
     return `${this.operand1()} ${operatorSymbol} ${this.operand2()}`;
@@ -52,14 +50,8 @@ export class MathCaptchaComponent implements OnInit {
   generateCaptcha() {
     this.operator.set(this.randomOperator());
   
-    let op1 = this.randomNumber();
-    let op2 = this.randomNumber();
-  
-    if (this.operator() === '-') {
-      if (op1 < op2) {
-        [op1, op2] = [op2, op1]; 
-      }
-    }
+    const op1 = this.randomNumber();
+    const op2 = this.randomNumberInRange(1, op1);
   
     this.operand1.set(op1);
     this.operand2.set(op2);
@@ -67,13 +59,14 @@ export class MathCaptchaComponent implements OnInit {
     this.captchaInput.reset();
     this.captchaInput.setErrors(null);
   }
+  private randomNumberInRange(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min; 
+  }
   
-  // Generate a random number between 1 and 10
   private randomNumber(): number {
     return Math.floor(Math.random() * 10) + 1;
   }
 
-  // Randomly choose an operator
   private randomOperator(): string {
     const operators = ['+', '-', '*'];
     return operators[Math.floor(Math.random() * operators.length)];
