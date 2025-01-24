@@ -409,6 +409,7 @@ addNewIndustry(): void {
 closeAddIndustryModal(): void {
   this.showAddIndustryModal = false;
 }
+
 onNewIndustryAdded(event: { IndustryName: string }): void {
   const industryName = event.IndustryName.trim(); 
   const currentIndustryNames = this.employeeForm.controls['industryName'].value;
@@ -416,37 +417,55 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     ? `${currentIndustryNames}, ${industryName}`
     : industryName;
   this.employeeForm.controls['industryName'].setValue(updatedIndustryNames);
+
   this.checkNamesService.organizationCheck(industryName).subscribe({
     next: (response: any) => {
       if (response.responseCode === 200) {
-        const existingIndustry = this.industryTypes.find(
-          (industry) => industry.IndustryName.toLowerCase() === industryName.toLowerCase()
-        );
-        const isAlreadyChecked = this.selectedIndustries.some(
-          (industry) => industry.IndustryName.toLowerCase() === industryName.toLowerCase()
-        );
-      
-        if (isAlreadyChecked) {
-          alert('You have already added this industry.');
-          return;
-        }
-        if (response.dataContext === 'Organization not found') {
-          const newIndustry: IndustryTypeResponseDTO = {
-            IndustryValue: Date.now() % 2147483647,
-            IndustryName: industryName,
+        const responseData = response.data;
+        if (responseData && responseData.success && responseData.data === true) {
+          const { orgTypeName, orgTypeId, industryId } = responseData;
 
+          const isAlreadyChecked = this.selectedIndustries.some(
+            (industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase()
+          );
+
+          if (isAlreadyChecked) {
+            alert('You have already added this industry.');
+            return;
+          }
+          const backendIndustry: IndustryTypeResponseDTO = {
+            IndustryValue: orgTypeId,
+            IndustryName: orgTypeName,
+            IndustryId: industryId,
+          };
+
+          if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
+            this.industryTypes.push(backendIndustry);
+          }
+          this.selectedIndustries.push(backendIndustry);
+        } 
+        else if (responseData && responseData.success && responseData.data === false && response.dataContext === 'Organization not found') {
+          const selectedIndustryId = this.employeeForm.controls['IndustryType'].value; 
+          if (!selectedIndustryId) {
+            alert('Please select an industry from the dropdown before adding a new industry type.');
+            return;
+          }
+          const newIndustry: IndustryTypeResponseDTO = {
+            IndustryValue: Date.now() % 2147483647, 
+            IndustryName: industryName,
+            IndustryId: selectedIndustryId,
           };
           this.industryTypes.push(newIndustry);
-          this.newlyAddedIndustries.push(newIndustry); 
-          this.selectedIndustries.push(newIndustry);
-          this.filteredIndustryTypes = [...this.industryTypes];
+          this.newlyAddedIndustries.push(newIndustry);
 
-        } else if (existingIndustry) {
-          if (!this.selectedIndustries.includes(existingIndustry)) {
-            this.selectedIndustries.push(existingIndustry);
+          if (newIndustry.IndustryId === selectedIndustryId) {
+            this.selectedIndustries.push(newIndustry);
           }
         }
-        this.filteredIndustryTypes = [...this.industryTypes];
+        this.filteredIndustryTypes = this.industryTypes.filter(
+          (industry) => industry.IndustryId === this.employeeForm.controls['IndustryType'].value
+        );
+
         const selectedValues = this.selectedIndustries
           .map((industry) => industry.IndustryValue)
           .join(',');
@@ -458,6 +477,8 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     },
   });
 }
+
+
 onNewIndustryTypeChange(newIndustryId: number): void {
   this.employeeForm.get('industryType')?.setValue(newIndustryId); 
 }

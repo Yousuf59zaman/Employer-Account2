@@ -9,7 +9,8 @@ export interface CheckNamesResponseDTO {
 }
 export interface IndustryTypeResponseDTO {
     IndustryValue: number;  
-    IndustryName: string;   
+    IndustryName: string; 
+    IndustryId: number;  
   }
   
   export interface IndustryTypeRequestDTO {
