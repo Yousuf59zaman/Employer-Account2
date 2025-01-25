@@ -200,10 +200,10 @@
   
         <div class="px-0 flex flex-col sm:flex-row sm:gap-3">     
           <!-- Country Dropdown -->
-          <div class="relative dropdown-container h-[50px]">
+          <div class="relative dropdown-container mb-2 h-[50px]">
             <button
               type="button"
-              class="h-[50px] gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="h-[50px] gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] relative"
               (click)="toggleDropdown()"
             >
               @if (selectedCountry) {
@@ -217,8 +217,8 @@
                 <span class="text-black-400">Select Country</span>
               }
               <span class="absolute inset-y-0 right-0 flex items-center pr-2">
-                <i class="icon icon-angle-bottom  text-[15px] sm:text-[10px]"></i>
-                </span>
+                <i class="icon icon-angle-bottom text-[9px] sm:text-[10px] md:text-[10px] lg:text-[10px]"></i>
+              </span>
             </button>
             
             <!-- Dropdown List -->
