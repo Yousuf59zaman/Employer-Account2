@@ -420,58 +420,143 @@ closeAddIndustryModal(): void {
   this.showAddIndustryModal = false;
 }
 
+// onNewIndustryAdded(event: { IndustryName: string }): void {
+//   const industryName = event.IndustryName.trim(); 
+//   const currentIndustryId = this.selectedIndustryId;
+//   const currentIndustryNames = this.employeeForm.controls['industryName'].value;
+//   const updatedIndustryNames = currentIndustryNames
+//     ? `${currentIndustryNames}, ${industryName}`
+//     : industryName;
+//   this.employeeForm.controls['industryName'].setValue(updatedIndustryNames);
+
+//   this.checkNamesService.organizationCheck(industryName).subscribe({
+//     next: (response: any) => {
+//       if (response.responseCode === 200) {
+//         if (response.responseCode === 200) {
+//           const responseData = response.data;
+//           if (responseData && responseData.success && responseData.data === true) {
+//             const { orgTypeName, orgTypeId, industryId } = responseData;
+  
+//             const isAlreadyChecked = this.selectedIndustries.some(
+//               (industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase()
+//             );
+  
+//             if (isAlreadyChecked) {
+//               alert('You have already added this industry.');
+//               return;
+//             }
+//             const backendIndustry: IndustryTypeResponseDTO = {
+//               IndustryValue: orgTypeId,
+//               IndustryName: orgTypeName,
+//               IndustryId: industryId,
+//             };
+  
+//             if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
+//               this.industryTypes.push(backendIndustry);
+//             }
+//             this.selectedIndustries.push(backendIndustry);
+//             const selectedValues = this.selectedIndustries
+//             .map((industry) => industry.IndustryValue)
+//             .join(',');
+//           this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+//         } 
+           
+//           else if (response.dataContext === 'Organization not found') {
+//           const newIndustry: IndustryTypeResponseDTO = {
+//             IndustryValue: Date.now() % 2147483647, 
+//             IndustryName: industryName,
+//             IndustryId: 0,
+
+//           };
+//           if (!this.newlyAddedIndustriesnew[currentIndustryId]) {
+//             this.newlyAddedIndustriesnew[currentIndustryId] = [];
+//           }
+//           this.newlyAddedIndustriesnew[currentIndustryId].push(newIndustry);
+//           if (this.selectedIndustryId === currentIndustryId) {
+//             this.industryTypes.push(newIndustry);
+//             this.filteredIndustryTypes = [...this.industryTypes];
+//           }
+//           this.selectedIndustries.push(newIndustry);
+//           const selectedValues = this.selectedIndustries
+//             .map((industry) => industry.IndustryValue)
+//             .join(',');
+//           this.employeeForm.controls['industryName'].setValue(selectedValues);
+//         }
+//         }
+//       }
+//     },
+//     error: (error: any) => {
+//       console.error('Error validating industry name:', error);
+//     },
+//   });
+// }
 onNewIndustryAdded(event: { IndustryName: string }): void {
   const industryName = event.IndustryName.trim();
   const currentIndustryId = this.selectedIndustryId;
-
   this.checkNamesService.organizationCheck(industryName).subscribe({
     next: (response: any) => {
       if (response.responseCode === 200) {
-        if (response.responseCode === 200) {
-          const responseData = response.data;
-          if (responseData && responseData.success && responseData.data === true) {
-            const { orgTypeName, orgTypeId, industryId } = responseData;
-  
-            const isAlreadyChecked = this.selectedIndustries.some(
-              (industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase()
-            );
-  
-            if (isAlreadyChecked) {
-              alert('You have already added this industry.');
-              return;
-            }
-            const backendIndustry: IndustryTypeResponseDTO = {
-              IndustryValue: orgTypeId,
-              IndustryName: orgTypeName,
-              IndustryId: industryId,
-            };
-  
-            if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
-              this.industryTypes.push(backendIndustry);
-            }
-            this.selectedIndustries.push(backendIndustry);
-          } 
-          else if (response.dataContext === 'Organization not found') {
-          const newIndustry: IndustryTypeResponseDTO = {
-            IndustryValue: Date.now() % 2147483647, 
-            IndustryName: industryName,
-            IndustryId: 0,
+        const responseData = response.data;
 
+        // If the industry name matches an existing type
+        if (responseData && responseData.success && responseData.data === true) {
+          const { orgTypeName, orgTypeId, industryId } = responseData;
+
+          const isAlreadyChecked = this.selectedIndustries.some(
+            (industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase()
+          );
+
+          if (isAlreadyChecked) {
+            alert('You have already added this industry.');
+            return;
+          }
+
+          const backendIndustry: IndustryTypeResponseDTO = {
+            IndustryValue: orgTypeId,
+            IndustryName: orgTypeName,
+            IndustryId: industryId,
           };
-          if (!this.newlyAddedIndustriesnew[currentIndustryId]) {
-            this.newlyAddedIndustriesnew[currentIndustryId] = [];
+
+          // Add to industryTypes if not already present
+          if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
+            this.industryTypes.push(backendIndustry);
           }
-          this.newlyAddedIndustriesnew[currentIndustryId].push(newIndustry);
-          if (this.selectedIndustryId === currentIndustryId) {
-            this.industryTypes.push(newIndustry);
-            this.filteredIndustryTypes = [...this.industryTypes];
-          }
-          this.selectedIndustries.push(newIndustry);
+
+          // Add to selectedIndustries
+          this.selectedIndustries.push(backendIndustry);
+
+          // Update industryTypeArray control
           const selectedValues = this.selectedIndustries
             .map((industry) => industry.IndustryValue)
             .join(',');
           this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
-        }
+        } 
+        // If the industry name does not match and needs to be added as a new entry
+        else if (response.dataContext === 'Organization not found') {
+          const newIndustry: IndustryTypeResponseDTO = {
+            IndustryValue: Date.now() % 2147483647,
+            IndustryName: industryName,
+            IndustryId: currentIndustryId || 0,
+          };
+
+          // Add to newly added industries
+          if (!this.newlyAddedIndustriesnew[currentIndustryId]) {
+            this.newlyAddedIndustriesnew[currentIndustryId] = [];
+          }
+          this.newlyAddedIndustriesnew[currentIndustryId].push(newIndustry);
+
+          if (this.selectedIndustryId === currentIndustryId) {
+            this.industryTypes.push(newIndustry);
+            this.filteredIndustryTypes = [...this.industryTypes];
+          }
+
+          this.selectedIndustries.push(newIndustry);
+
+          const currentIndustryNames = this.employeeForm.controls['industryName'].value;
+          const updatedIndustryNames = currentIndustryNames
+            ? `${currentIndustryNames}, ${industryName}`
+            : industryName;
+          this.employeeForm.controls['industryName'].setValue(updatedIndustryNames);
         }
       }
     },
@@ -480,6 +565,8 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     },
   });
 }
+
+
 onNewIndustryTypeChange(newIndustryId: number): void {
   this.employeeForm.get('industryType')?.setValue(newIndustryId); 
 }
@@ -492,18 +579,60 @@ onIndustryTypeChange(selectedIndustryId: string | number): void {
     }
   }
  
+  // onIndustryCheckboxChange(event: Event, industry: IndustryTypeResponseDTO): void {
+  //   const isChecked = (event.target as HTMLInputElement).checked;
+  
+  //   if (isChecked) {
+  //     if (this.selectedIndustries.length >= 10) {
+  //       alert('You cannot select more than 10 Industries.');
+  //       (event.target as HTMLInputElement).checked = false; 
+  //       return;
+  //     }
+  
+  //     this.selectedIndustries.push(industry);
+  //   } else {
+  //     this.selectedIndustries = this.selectedIndustries.filter(
+  //       (selected) => selected.IndustryValue !== industry.IndustryValue
+  //     );
+  
+  //     const currentIndustryId = this.selectedIndustryId;
+  //     const newlyAddedIndustriesForId = this.newlyAddedIndustriesnew[currentIndustryId];
+  
+  //     if (newlyAddedIndustriesForId) {
+  //       const index = newlyAddedIndustriesForId.findIndex(
+  //         (newIndustry) => newIndustry.IndustryValue === industry.IndustryValue
+  //       );
+  
+  //       if (index !== -1) {
+  //         newlyAddedIndustriesForId.splice(index, 1); 
+  //         this.industryTypes = this.industryTypes.filter(
+  //           (type) => type.IndustryValue !== industry.IndustryValue
+  //         ); 
+  //         this.filteredIndustryTypes = [...this.industryTypes]; 
+  //       }
+  //     }
+  //   }
+  //   const selectedValues = this.selectedIndustries
+  //     .map((industry) => industry.IndustryValue)
+  //     .join(',');
+  //   this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+  //   this.employeeForm.controls['industryTypeArray'].markAsTouched();
+  // }
+
   onIndustryCheckboxChange(event: Event, industry: IndustryTypeResponseDTO): void {
     const isChecked = (event.target as HTMLInputElement).checked;
   
     if (isChecked) {
       if (this.selectedIndustries.length >= 10) {
         alert('You cannot select more than 10 Industries.');
-        (event.target as HTMLInputElement).checked = false; 
+        (event.target as HTMLInputElement).checked = false;
         return;
       }
   
+      // Add the industry to the selected industries
       this.selectedIndustries.push(industry);
     } else {
+      // Remove the industry from selected industries
       this.selectedIndustries = this.selectedIndustries.filter(
         (selected) => selected.IndustryValue !== industry.IndustryValue
       );
@@ -517,20 +646,30 @@ onIndustryTypeChange(selectedIndustryId: string | number): void {
         );
   
         if (index !== -1) {
-          newlyAddedIndustriesForId.splice(index, 1); 
+          newlyAddedIndustriesForId.splice(index, 1);
           this.industryTypes = this.industryTypes.filter(
             (type) => type.IndustryValue !== industry.IndustryValue
-          ); 
-          this.filteredIndustryTypes = [...this.industryTypes]; 
+          );
+          this.filteredIndustryTypes = [...this.industryTypes];
         }
       }
     }
+  
+    // Update the industryTypeArray form control
     const selectedValues = this.selectedIndustries
       .map((industry) => industry.IndustryValue)
       .join(',');
     this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
     this.employeeForm.controls['industryTypeArray'].markAsTouched();
+  
+    // **Update the industryName form control explicitly**
+    const updatedIndustryNames = this.selectedIndustries
+      .map((industry) => industry.IndustryName)
+      .join(', ');
+    this.employeeForm.controls['industryName'].setValue(updatedIndustryNames);
+    this.employeeForm.controls['industryName'].markAsTouched(); // Mark the control as touched if needed
   }
+  
   
   isIndustryChecked(industryValue: number): boolean {
     return this.selectedIndustries.some(
