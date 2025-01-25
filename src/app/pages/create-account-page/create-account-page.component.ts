@@ -433,20 +433,14 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
             IndustryValue: Date.now() % 2147483647, 
             IndustryName: industryName,
           };
-
-          // Add new industry to the map for the selected IndustryId
           if (!this.newlyAddedIndustriesnew[currentIndustryId]) {
             this.newlyAddedIndustriesnew[currentIndustryId] = [];
           }
           this.newlyAddedIndustriesnew[currentIndustryId].push(newIndustry);
-
-          // Update UI for the selected industry
           if (this.selectedIndustryId === currentIndustryId) {
             this.industryTypes.push(newIndustry);
             this.filteredIndustryTypes = [...this.industryTypes];
           }
-
-          // Add to selected industries
           this.selectedIndustries.push(newIndustry);
           const selectedValues = this.selectedIndustries
             .map((industry) => industry.IndustryValue)
@@ -464,8 +458,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
 onNewIndustryTypeChange(newIndustryId: number): void {
   this.employeeForm.get('industryType')?.setValue(newIndustryId); 
 }
-  // Trigger filtering of industries based on dropdown selection
-  onIndustryTypeChange(selectedIndustryId: string | number): void {
+onIndustryTypeChange(selectedIndustryId: string | number): void {
     const parsedIndustryId = parseInt(selectedIndustryId as string, 10); 
     if (!isNaN(parsedIndustryId)) {
       this.fetchIndustryTypes(parsedIndustryId); 
@@ -480,19 +473,16 @@ onNewIndustryTypeChange(newIndustryId: number): void {
     if (isChecked) {
       if (this.selectedIndustries.length >= 10) {
         alert('You cannot select more than 10 Industries.');
-        (event.target as HTMLInputElement).checked = false; // Prevent selection
+        (event.target as HTMLInputElement).checked = false; 
         return;
       }
   
-      // Add the industry to the selected list
       this.selectedIndustries.push(industry);
     } else {
-      // Remove the industry from the selected list
       this.selectedIndustries = this.selectedIndustries.filter(
         (selected) => selected.IndustryValue !== industry.IndustryValue
       );
   
-      // Check if the unchecked industry is a newly added industry
       const currentIndustryId = this.selectedIndustryId;
       const newlyAddedIndustriesForId = this.newlyAddedIndustriesnew[currentIndustryId];
   
@@ -501,18 +491,15 @@ onNewIndustryTypeChange(newIndustryId: number): void {
           (newIndustry) => newIndustry.IndustryValue === industry.IndustryValue
         );
   
-        // If found in newlyAddedIndustries, remove it
         if (index !== -1) {
-          newlyAddedIndustriesForId.splice(index, 1); // Remove from newlyAddedIndustriesnew
+          newlyAddedIndustriesForId.splice(index, 1); 
           this.industryTypes = this.industryTypes.filter(
             (type) => type.IndustryValue !== industry.IndustryValue
-          ); // Remove from the displayed list
-          this.filteredIndustryTypes = [...this.industryTypes]; // Update the UI
+          ); 
+          this.filteredIndustryTypes = [...this.industryTypes]; 
         }
       }
     }
-  
-    // Update the form control value
     const selectedValues = this.selectedIndustries
       .map((industry) => industry.IndustryValue)
       .join(',');
@@ -525,7 +512,6 @@ onNewIndustryTypeChange(newIndustryId: number): void {
       (industry) => industry.IndustryValue === industryValue
     );
   }
-
   removeIndustry(industry: { IndustryValue: number; IndustryName: string }): void {
     this.selectedIndustries = this.selectedIndustries.filter(
       (selected) => selected.IndustryValue !== industry.IndustryValue
@@ -540,16 +526,13 @@ onNewIndustryTypeChange(newIndustryId: number): void {
         (type) => type.IndustryValue !== industry.IndustryValue
       );
     }
-  
     this.filteredIndustryTypes = [...this.industryTypes];
-  
     const checkbox = document.getElementById(
       `industry_type_${industry.IndustryValue}`
     ) as HTMLInputElement;
     if (checkbox) {
       checkbox.checked = false;
     }
-  
     const selectedValues = this.selectedIndustries
       .map((industry) => industry.IndustryValue)
       .join(',');
@@ -560,14 +543,12 @@ onNewIndustryTypeChange(newIndustryId: number): void {
   private fetchCountries(): void {
     const selectedCountryText = this.selectedCountry?.OptionText || this.employeeForm.get('country')?.value;
     const requestPayload = { OutsideBd: '1', DistrictId: '',   CountryId: selectedCountryText,  };
-
     this.checkNamesService.getLocations(requestPayload).subscribe({
       next: (response: any) => {
         console.log("Full response:", response);
   
         if (response.responseCode === 1 && Array.isArray(response.data)) {  
           const countryData = response.data;
-  
           if (countryData.length > 0) {
             this.countries = countryData.map((item: any) => ({
               OptionValue: item.optionValue,
