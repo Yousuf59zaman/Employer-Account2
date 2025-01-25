@@ -498,7 +498,6 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       if (response.responseCode === 200) {
         const responseData = response.data;
 
-        // If the industry name matches an existing type
         if (responseData && responseData.success && responseData.data === true) {
           const { orgTypeName, orgTypeId, industryId } = responseData;
 
@@ -517,21 +516,17 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
             IndustryId: industryId,
           };
 
-          // Add to industryTypes if not already present
           if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
             this.industryTypes.push(backendIndustry);
           }
 
-          // Add to selectedIndustries
           this.selectedIndustries.push(backendIndustry);
 
-          // Update industryTypeArray control
           const selectedValues = this.selectedIndustries
             .map((industry) => industry.IndustryValue)
             .join(',');
           this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
         } 
-        // If the industry name does not match and needs to be added as a new entry
         else if (response.dataContext === 'Organization not found') {
           const newIndustry: IndustryTypeResponseDTO = {
             IndustryValue: Date.now() % 2147483647,
@@ -681,27 +676,42 @@ onIndustryTypeChange(selectedIndustryId: string | number): void {
       (selected) => selected.IndustryValue !== industry.IndustryValue
     );
   
-    if (this.newlyAddedIndustries.some((newIndustry) => newIndustry.IndustryValue === industry.IndustryValue)) {
-      this.newlyAddedIndustries = this.newlyAddedIndustries.filter(
-        (newIndustry) => newIndustry.IndustryValue !== industry.IndustryValue
+    const currentIndustryId = this.selectedIndustryId;
+    const newlyAddedIndustriesForId = this.newlyAddedIndustriesnew[currentIndustryId];
+  
+    if (newlyAddedIndustriesForId) {
+      const index = newlyAddedIndustriesForId.findIndex(
+        (newIndustry) => newIndustry.IndustryValue === industry.IndustryValue
       );
   
-      this.industryTypes = this.industryTypes.filter(
-        (type) => type.IndustryValue !== industry.IndustryValue
-      );
+      if (index !== -1) {
+        newlyAddedIndustriesForId.splice(index, 1);
+        this.industryTypes = this.industryTypes.filter(
+          (type) => type.IndustryValue !== industry.IndustryValue
+        );
+  
+        this.filteredIndustryTypes = [...this.industryTypes];
+      }
     }
-    this.filteredIndustryTypes = [...this.industryTypes];
+  
+    const selectedValues = this.selectedIndustries
+      .map((industry) => industry.IndustryValue)
+      .join(',');
+    this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
+  
+    const updatedIndustryNames = this.selectedIndustries
+      .map((industry) => industry.IndustryName)
+      .join(', ');
+    this.employeeForm.controls['industryName'].setValue(updatedIndustryNames);
+  
     const checkbox = document.getElementById(
       `industry_type_${industry.IndustryValue}`
     ) as HTMLInputElement;
     if (checkbox) {
       checkbox.checked = false;
     }
-    const selectedValues = this.selectedIndustries
-      .map((industry) => industry.IndustryValue)
-      .join(',');
-    this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
   }
+  
   
   // Fetch countries (Outside Bangladesh included)
   private fetchCountries(): void {
