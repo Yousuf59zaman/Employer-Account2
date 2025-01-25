@@ -5,7 +5,7 @@
   </button>
 
   <!-- Expression Display -->
-  <div class="flex items-center justify-center text-inter  font-semibold text-[#0A4A94] bg-blue-100 rounded-md w-[100px] sm:w-[135px] h-10 m:h-[50px]  py-2.5 sm:px-[33px] sm:py-[13px] border border-[#0E73A9]">
+  <div class="flex items-center justify-center text-inter  font-semibold text-[#0A4A94] bg-blue-100 rounded-md w-[100px] sm:w-[135px] h-10 md:h-[48px]  py-2.5 sm:px-[33px] sm:py-[13px] border border-[#0E73A9]">
     {{ expressionDisplay() }} =
   </div>
 
@@ -15,7 +15,7 @@
     id="captchaInput"
     [maxLength]="2"
     [formControl]="captchaInput"
-    class="w-auto sm:w-[400px] px-4 py-2 ml-4 text-gray-600 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+    class="h-[50px] w-auto sm:w-[400px] px-4 py-2 ml-4 text-gray-600 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
     placeholder="Type the verification code here"
     autocomplete="off"
     (blur)="validateAnswerOnBlur(captchaInput.value)"

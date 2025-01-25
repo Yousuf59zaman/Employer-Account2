@@ -198,9 +198,9 @@
           Company Address <span class="text-red-500">*</span>
         </h2>
   
-        <div class="flex flex-col sm:flex-row sm:gap-6">     
+        <div class="px-0 flex flex-col sm:flex-row sm:gap-3">     
           <!-- Country Dropdown -->
-          <div class="relative dropdown-container">
+          <div class="relative dropdown-container h-[50px]">
             <button
               type="button"
               class="flex justify-between items-center mb-2 w-[96%] mx-auto sm:mx-0 sm:w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
@@ -282,10 +282,10 @@
           </div>
         } @else {
           <!-- District -->
-          <div class="flex-1 mb-1 sm:mb-4">
+          <div class="flex-1 mb-1 sm:mb-0">
             <select
               id="district"
-              class="gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="h-[50px] gap-3 px-4 py-2.5  w-[96%] mx-auto sm:mx-0 sm:w-[400px]  rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['district']"
               [disabled]="districts.length === 0" 
             >
@@ -307,7 +307,7 @@
           <div class="flex-1">
             <select
               id="thana"
-              class="gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="h-[50px] gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               [formControl]="formControlSignals()['thana']"
               [disabled]="thanas.length === 0"
             >
@@ -670,10 +670,10 @@
             </div>
               </div>
               <div class="flex-1 dropdown-container">
-                <label for="contactMobile" class="block mb-1 text-sm font-semibold text-gray-700">
+                <label for="contactMobile" class="block mb-3 text-sm font-semibold text-gray-700">
                   Contact Person's Mobile <span class="text-red-500">*</span>
                 </label>
-                <div class="flex items-center border border-gray-300 rounded-lg px-3 py-2 mt-1 w-full h[24px]">
+                <div class="h-[50px] flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full h[24px]">
                   <img 
                     [src]="currentFlagPath" 
                     alt="Flag" 

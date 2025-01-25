@@ -1,5 +1,5 @@
 <div class="mb-4">
-  <label *ngIf="label" class="block mb-1 mx-[26px] sm:mx-0 text-sm font-semibold text-gray-700" [for]="id">
+  <label *ngIf="label" class="block mb-2 mx-[26px] sm:mx-0 text-base font-semibold text-gray-700" [for]="id">
     {{ label }} <span *ngIf="isRequired" class="text-red-500">*</span>
   </label>
 
@@ -12,7 +12,7 @@
   <input
     [type]="type"
     [ngClass]="{'px-5': !icon, 'px-10': icon}"
-    class="flex  items-center  py-[14px] font-inter mx-auto w-[80%] sm:w-full sm:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+    class="h-[50px] flex  items-center  py-[14px] font-inter mx-auto w-[80%] sm:w-full sm:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
     [name]="name"
     [id]="id"
     [maxLength]="maxLength"
