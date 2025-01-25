@@ -7,15 +7,15 @@ import { InputFieldComponent } from '../input-field/input-field.component';
 @Component({
   selector: 'app-math-captcha',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, InputFieldComponent],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './math-captcha.component.html',
   styleUrls: ['./math-captcha.component.scss']
 })
 export class MathCaptchaComponent implements OnInit {
   @Input() employeeForm!: FormGroup;
 
-  operand1 = signal(this.randomNumber());
-  operand2 = signal(this.randomNumber());
+  operand1 = signal(this.randomNumber(5, 10)); 
+  operand2 = signal(this.randomNumber(1, 5)); 
   operator = signal(this.randomOperator());
 
   expressionDisplay = computed(() => {
@@ -49,22 +49,19 @@ export class MathCaptchaComponent implements OnInit {
   // Generate a new captcha
   generateCaptcha() {
     this.operator.set(this.randomOperator());
-  
-    const op1 = this.randomNumber();
-    const op2 = this.randomNumberInRange(1, op1);
-  
+
+    const op1 = this.randomNumber(5, 10);
+    const op2 = this.randomNumber(1, op1); 
+
     this.operand1.set(op1);
     this.operand2.set(op2);
-  
+
     this.captchaInput.reset();
     this.captchaInput.setErrors(null);
   }
-  private randomNumberInRange(min: number, max: number): number {
+
+  private randomNumber(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min; 
-  }
-  
-  private randomNumber(): number {
-    return Math.floor(Math.random() * 10) + 1;
   }
 
   private randomOperator(): string {
