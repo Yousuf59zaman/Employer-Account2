@@ -420,6 +420,7 @@ closeAddIndustryModal(): void {
   this.showAddIndustryModal = false;
 }
 
+
 onNewIndustryAdded(event: { IndustryName: string }): void {
   const industryName = event.IndustryName.trim();
   const currentIndustryId = this.selectedIndustryId;
@@ -429,7 +430,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
       if (response.responseCode === 200) {
         if (response.dataContext === 'Organization not found') {
           const newIndustry: IndustryTypeResponseDTO = {
-            IndustryValue: Date.now() % 2147483647,
+            IndustryValue: Date.now() % 2147483647, 
             IndustryName: industryName,
           };
 
