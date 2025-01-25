@@ -203,7 +203,7 @@
           <div class="relative dropdown-container h-[50px]">
             <button
               type="button"
-              class="flex justify-between items-center mb-2 w-[96%] mx-auto sm:mx-0 sm:w-[400px] h-[50px] p-[14px] px-[16px] gap-[10px] rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
+              class="h-[50px] gap-3 px-4 py-[14px] w-[96%] mx-auto sm:mx-0 sm:w-[400px]  lg:mx-0 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]"
               (click)="toggleDropdown()"
             >
               @if (selectedCountry) {
@@ -216,18 +216,9 @@
               } @else {
                 <span class="text-black-400">Select Country</span>
               }
-              <svg
-                class="w-4 h-4 text-gray-600"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+              <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+                <i class="icon icon-angle-bottom  text-[15px] sm:text-[10px]"></i>
+                </span>
             </button>
             
             <!-- Dropdown List -->
