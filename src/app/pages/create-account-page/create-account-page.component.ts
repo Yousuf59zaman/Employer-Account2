@@ -420,7 +420,6 @@ closeAddIndustryModal(): void {
   this.showAddIndustryModal = false;
 }
 
-
 onNewIndustryAdded(event: { IndustryName: string }): void {
   const industryName = event.IndustryName.trim();
   const currentIndustryId = this.selectedIndustryId;
@@ -428,10 +427,36 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
   this.checkNamesService.organizationCheck(industryName).subscribe({
     next: (response: any) => {
       if (response.responseCode === 200) {
-        if (response.dataContext === 'Organization not found') {
+        if (response.responseCode === 200) {
+          const responseData = response.data;
+          if (responseData && responseData.success && responseData.data === true) {
+            const { orgTypeName, orgTypeId, industryId } = responseData;
+  
+            const isAlreadyChecked = this.selectedIndustries.some(
+              (industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase()
+            );
+  
+            if (isAlreadyChecked) {
+              alert('You have already added this industry.');
+              return;
+            }
+            const backendIndustry: IndustryTypeResponseDTO = {
+              IndustryValue: orgTypeId,
+              IndustryName: orgTypeName,
+              IndustryId: industryId,
+            };
+  
+            if (!this.industryTypes.find((industry) => industry.IndustryName.toLowerCase() === orgTypeName.toLowerCase())) {
+              this.industryTypes.push(backendIndustry);
+            }
+            this.selectedIndustries.push(backendIndustry);
+          } 
+          else if (response.dataContext === 'Organization not found') {
           const newIndustry: IndustryTypeResponseDTO = {
             IndustryValue: Date.now() % 2147483647, 
             IndustryName: industryName,
+            IndustryId: 0,
+
           };
           if (!this.newlyAddedIndustriesnew[currentIndustryId]) {
             this.newlyAddedIndustriesnew[currentIndustryId] = [];
@@ -447,6 +472,7 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
             .join(',');
           this.employeeForm.controls['industryTypeArray'].setValue(selectedValues);
         }
+        }
       }
     },
     error: (error: any) => {
@@ -454,7 +480,6 @@ onNewIndustryAdded(event: { IndustryName: string }): void {
     },
   });
 }
-
 onNewIndustryTypeChange(newIndustryId: number): void {
   this.employeeForm.get('industryType')?.setValue(newIndustryId); 
 }
