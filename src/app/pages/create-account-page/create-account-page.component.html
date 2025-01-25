@@ -444,7 +444,7 @@
   </app-add-industry-modal>
 }
 <!-- Industry Checkbox List Section -->
-<div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[96%] sm:mx-0 mx-auto overflow-y-scroll rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
+<div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1242px] w-[96%] sm:mx-0 mx-auto  rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
      [class.error-border]="isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']">
   <div>
     <input [formControl]="searchControl"
