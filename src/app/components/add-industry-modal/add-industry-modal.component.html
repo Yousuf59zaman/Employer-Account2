@@ -8,11 +8,11 @@
     <!-- Modal Header -->
     <div class="self-stretch mb-8 px-8 pt-8 pb-6 bg-white rounded-tl-2xl rounded-tr-2xl border-b border-[#dae5ec] flex justify-between items-center">
       <div class="flex items-center justify-start gap-5">
-        <div class="w-[60px] h-[60px] flex justify-center items-center p-3.5 bg-white rounded-md shadow border border-[#dae5ec]">
-          <div class="text-2xl text-blue-600 icon icon-plus"></div>
+        <div class="w-[50px] h-[50px] flex justify-center items-center p-3.5 bg-white rounded-md shadow border border-[#dae5ec]">
+          <div class="text-xl text-blue-600 icon icon-plus"></div>
         </div>
         <div class="flex-col">
-          <div class="text-[#212121] text-2xl font-bold font-inter tracking-tight">Add new industry</div>
+          <div class="text-[#212121] text-2xl font-bold font-inter tracking-tight">Add New Industry</div>
           <div class="text-[#595959] text-lg font-normal font-inter leading-normal">Please specify your industry</div>
         </div>
       </div>
@@ -52,9 +52,9 @@
             [maxLength]="100"
             id="txt"
             placeholder="Type industry name"
-            class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:ring-blue-500 focus:border-blue-500 text-black text-base font-normal font-inter leading-snug">
+            class="self-stretch px-4 py-3.5 bg-white rounded-lg shadow border border-[#dae5ec] focus:outline-none focus:border-[#0F6DDB] text-black text-base font-normal font-inter leading-snug">
             <div class="text-red-600">
-              @if(employeeForm.controls['industryName'].touched && employeeForm.controls['industryName'].errors?.['invalidCharacters']) {
+              @if( employeeForm.controls['industryName'].errors?.['invalidCharacters']) {
                 <span class="-mt-8 text-sm ">Use (A-Z), (a-z) and following characters (, ), - and / only.</span>
               }
           </div> 
