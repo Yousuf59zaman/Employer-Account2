@@ -70,7 +70,7 @@ filteredCountriesList = this.countrie;
     outsideBDCompanyAddress: new FormControl('',[Validators.required]),
     industryType: new FormControl('-1'),
     industryTypeArray: new FormControl('', [Validators.required]),
-    businessDesc: new FormControl(''),
+    businessDesc: new FormControl('',Validators.maxLength(120)),
     tradeNo: new FormControl(''),
     webUrl: new FormControl(''),
     contactName: new FormControl('', [Validators.required, noWhitespaceValidator()]),
