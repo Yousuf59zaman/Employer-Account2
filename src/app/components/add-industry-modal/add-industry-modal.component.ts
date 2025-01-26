@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { IndustryType } from '../../Models/company';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -29,7 +29,7 @@ export class AddIndustryModalComponent implements OnChanges {
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.employeeForm = this.fb.group({
       industryType: ['',],
-      industryName: ['',  noBlacklistCharacters],
+      industryName: ['',  this.invalidCharacterValidator()],
     });
   }
 
@@ -51,19 +51,26 @@ export class AddIndustryModalComponent implements OnChanges {
   }
   onNewIndustryTypeChange(event: any): void {
     const selectedValue = parseInt(event.target.value, 10);
-    this.industryTypeChanged.emit(selectedValue); // Emit the new value to the parent
+    this.industryTypeChanged.emit(selectedValue); 
   }
 
-
+  invalidCharacterValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const invalidCharacters = /[!@&#${},%*\d]/;
+      if (control.value && invalidCharacters.test(control.value)) {
+        return { invalidCharacters: true };
+      }
+      return null;
+    };
+  }
 addIndustry(): void {
   const formValue = this.employeeForm.value; 
   const industryName = formValue.industryName?.trim();
-  const invalidCharacters = /[!@&#${}%*]/;
+  const invalidCharacters = /[!@&#${},%*\d]/;
   if (!industryName) {
     window.alert('Your Industry Name cannot be blank.');
     this.employeeForm.controls['industryName'].setValue('');
     this.cdr.detectChanges();
- 
     return;
   }
   if (invalidCharacters.test(industryName)) {
