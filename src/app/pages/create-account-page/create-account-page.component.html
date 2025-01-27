@@ -42,7 +42,7 @@
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               } 
               @else if ( employeeForm.controls['username'].errors?.['invalidCharacters']) {
-                <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
+                <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space</span>
               }     
             </div>
           </div>
@@ -66,7 +66,7 @@
                 <span class="error-message">Password can not be empty</span>
               }  
               @if(employeeForm.controls['password'].errors?.['invalidCharacters']) {
-                <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space.</span>
+                <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space</span>
               }   
             </div>
           </div>
@@ -674,7 +674,7 @@
                   />
                   <div class="relative flex items-center">
                     <button 
-                      class="flex items-center py-2 pl-1 pr-2 sm:px-3 text-[16px] font-inter text-gray-900 bg-white border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
+                      class="flex items-center sm:py-2 pl-1 pr-1 sm:px-3 text-[16px] font-inter text-gray-900 bg-white border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
                       type="button"
                       (click)="toggleDropdownCountry()"
                     >
@@ -727,7 +727,7 @@
                 
               <div class="text-red-600 ">
                 @if (isContinueClicked && firstInvalidField === 'contactMobile'  && employeeForm.controls['contactMobile'].errors?.['required']) {
-                <span class="mt-4 text-sm">Contact Number can not be empty.
+                <span class="mt-4 text-sm">Contact Number can not be empty
                 </span>
                 }
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {
