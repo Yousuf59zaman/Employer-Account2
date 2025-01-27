@@ -410,7 +410,7 @@
     <select 
       formControlName="industryType" 
       id="industryTypeArray"
-      class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+      class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]">
       <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
