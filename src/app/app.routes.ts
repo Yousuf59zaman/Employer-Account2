@@ -6,7 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
     {
         path:"",
-        redirectTo: 'register',
+        redirectTo: 'account-created-successfully',
         pathMatch: 'full'
     },
     {
@@ -17,7 +17,7 @@ export const routes: Routes = [
     {
         path: "account-created-successfully",
         component: SuccessfulAccountComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
     },
    
 ];
