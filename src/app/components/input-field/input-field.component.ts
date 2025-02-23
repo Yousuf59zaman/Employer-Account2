@@ -20,5 +20,6 @@ export class InputFieldComponent {
   @Input() isRequired!: boolean;
   @Input() type: string = 'text';
   @Input() icon?: string; 
+  @Input() autocomplete: string = 'off';  
   @Input() control: FormControl<string> = new FormControl()
 }

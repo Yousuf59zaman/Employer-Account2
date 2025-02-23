@@ -1,5 +1,5 @@
 <div class="mb-4">
-  <label *ngIf="label" class="block mb-2 mx-0 sm:mx-0 text-base font-semibold text-gray-700" [for]="id">
+  <label *ngIf="label" class="block mx-0 mb-2 text-base font-semibold text-gray-700 sm:mx-0" [for]="id">
     {{ label }} <span *ngIf="isRequired" class="text-red-500">*</span>
   </label>
 
@@ -19,6 +19,7 @@
     [placeholder]="placeholder "
     [formControl]="control"
     [required]="isRequired"
+    [attr.autocomplete]="autocomplete" 
     
   />
 </div>
