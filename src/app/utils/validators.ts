@@ -22,7 +22,7 @@ export function yearValidator(): ValidatorFn {
   };
 }
 export function noBlacklistCharacters(control: AbstractControl): ValidationErrors | null {
-  const blacklistPattern = /[\s<>"_% , ' ]/; 
+  const blacklistPattern = /['"%<>&()\s]/; 
   const value = control.value;
 
   if (value && blacklistPattern.test(value)) {
