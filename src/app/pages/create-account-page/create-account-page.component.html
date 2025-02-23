@@ -2,7 +2,7 @@
 <div  class="bg-[#F9FAFB] w-auto sm:w-auto h-auto">
    <!-- Header Section -->
    <div
-   id="resImg"
+  id="resImg"
   class="flex flex-col  md:flex-row justify-center items-center  sm:p-6 lg:p-8 shadow-lg w-full min-h-[257px] md:min-h-[287px]"
   style="background: url('assets/images/mid-header.svg') no-repeat center; background-size: cover;"
 >
@@ -42,7 +42,7 @@
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               } 
               @else if ( employeeForm.controls['username'].errors?.['invalidCharacters']) {
-                <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space.</span>
+                <span class="error-message">Type a valid username except ', %, <, >, ", &, (, ), or space</span>
               }     
             </div>
           </div>
@@ -66,7 +66,7 @@
                 <span class="error-message">Password can not be empty</span>
               }  
               @if(employeeForm.controls['password'].errors?.['invalidCharacters']) {
-                <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space.</span>
+                <span class="error-message"> Type a valid password except ', %, <, >, ", &, (, ), or space</span>
               }   
             </div>
           </div>
@@ -410,7 +410,7 @@
     <select 
       formControlName="industryType" 
       id="industryTypeArray"
-      class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+      class="flex w-[96%] mx-auto sm:mx-0 sm:w-[611px] p-[14px_16px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]">
       <option value="-1" >All</option>
       @for (industry of industries | async; track industry.IndustryId) {
         <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
@@ -517,7 +517,6 @@
           name="txtDescription"
           id="txtDescription"
           [control]="formControlSignals()['businessDesc']"
-          [maxLength]="120"
           placeholder="Write Business Description"
           [rows]="4"
           ></app-text-area> 
@@ -674,7 +673,7 @@
                   />
                   <div class="relative flex items-center">
                     <button 
-                      class="flex items-center py-2 pl-1 pr-2 sm:px-3 text-[16px] font-inter text-gray-900 bg-white border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
+                      class="flex items-center sm:py-2 pl-1 pr-1 sm:px-3 text-[16px] font-inter text-gray-900 bg-white border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
                       type="button"
                       (click)="toggleDropdownCountry()"
                     >
@@ -727,7 +726,7 @@
                 
               <div class="text-red-600 ">
                 @if (isContinueClicked && firstInvalidField === 'contactMobile'  && employeeForm.controls['contactMobile'].errors?.['required']) {
-                <span class="mt-4 text-sm">Contact Number can not be empty.
+                <span class="mt-4 text-sm">Contact Number can not be empty
                 </span>
                 }
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {
