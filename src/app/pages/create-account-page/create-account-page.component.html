@@ -198,7 +198,7 @@
           Company Address <span class="text-red-500">*</span>
         </h2>
   
-        <div class="px-0 flex flex-col sm:flex-row sm:gap-3">     
+        <div class="flex flex-col px-0 sm:flex-row sm:gap-3">     
           <!-- Country Dropdown -->
           <div class="relative dropdown-container mb-2 h-[50px]">
             <button
@@ -678,7 +678,7 @@
                       (click)="toggleDropdownCountry()"
                     >
                       <span class="mr-1">{{ currentCountry.phoneCode }}</span>
-                      <svg class="sm:w-3 sm:h-3 w-2 h-2 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <svg class="w-2 h-2 ml-1 sm:w-3 sm:h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                       </svg>
                     </button>
@@ -715,11 +715,12 @@
                     type="text" 
                     id="contactMobile" 
                     name="txtContactMobile" 
-                    class="flex-1 px-2 py-1 text-black placeholder-gray-400 text-md border-none font-inter focus:outline-none"
+                    class="flex-1 px-2 py-1 text-black placeholder-gray-400 border-none text-md font-inter focus:outline-none"
                     placeholder="Enter Mobile Number" 
                     (input)="onInputChange($event)"
                     [formControl]="formControlSignals()['contactMobile']"
-                    maxlength="15" 
+                    minlength="10"
+                    maxlength="{{ isBangladesh ? '10' : '15' }}"
                     required 
                   />
                 </div>
@@ -729,6 +730,12 @@
                 <span class="mt-4 text-sm">Contact Number can not be empty
                 </span>
                 }
+                @else if (isBangladesh && (employeeForm.controls['contactMobile'].errors?.['minlength'] || employeeForm.controls['contactMobile'].errors?.['maxlength'])) {
+                  <span class="mt-4 text-sm">
+                    Contact Number must be exactly 10 digits except 0
+                  </span>
+                }
+                
                 @else if (employeeForm.controls['contactMobile'].errors?.['mobile']) {
                   <span class="mt-4 text-sm">Please enter a valid mobile number</span>
                 }
@@ -739,7 +746,6 @@
 
  <div class="max-w-7xl p-6 mx-auto flex-col mt-6 items-start gap-5 rounded-2xl bg-white border border-[#DAE5EC]">
 
- <!-- Accessibility Profile -->
 <!-- Accessibility Profile -->
 <section class="my-4">
   <h3 class="text-[#0E73A9] font-inter text-[18px] font-medium leading-[30px] mb-4">

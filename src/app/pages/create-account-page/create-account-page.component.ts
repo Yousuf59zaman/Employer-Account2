@@ -108,6 +108,7 @@ filteredCountriesList = this.countrie;
   isDropdownUpwards = false;
   showAddIndustryModal = false;
   selectedIndustryId: number = 0;
+  isBangladesh: boolean = false;
   searchControl: FormControl = new FormControl(''); 
 
   private usernameSubject: Subject<string> = new Subject();
@@ -120,7 +121,7 @@ filteredCountriesList = this.countrie;
     .subscribe(() => {
       this.filteredCountriesList = this.filteredCountrie();
     });
-
+    this.isBangladesh = true;
     this.setupUsernameCheck();
     this.setupCompanyNameCheck();
     this.fetchIndustries();
@@ -738,6 +739,7 @@ setupSearch(): void {
   }
   chooseCountry(country: any) {
     this.currentCountry = country;
+    this.isBangladesh = country.name === 'Bangladesh';
     this.currentFlagPath = this.filePath[country.name];
     this.isOpenCountry = false;
   }
