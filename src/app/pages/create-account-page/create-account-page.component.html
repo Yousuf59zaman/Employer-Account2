@@ -123,7 +123,7 @@
               [maxLength]="120"
               [isRequired]="true">
             </app-input-field>
-            <div class="text-red-600">
+            <div class="text-red-600" data-error-for="username">
               @if (
                 isContinueClicked &&
                 firstInvalidField === 'companyName' &&
@@ -150,7 +150,7 @@
               [maxLength]="120"
               [isRequired]="false">
             </app-input-field>
-            <div class="text-red-600">
+            <div class="text-red-600" data-error-for="companyNameBangla">
               @if(employeeForm.controls['companyNameBangla'].touched && employeeForm.controls['companyNameBangla'].errors?.['invalidBanglaText']) {
                 <span class="error-message">Please use Bengali characters only  
                 </span>

@@ -779,12 +779,81 @@ onDisabledButtonClick(event: Event): void {
   }
 }
 
+// onContinue() {
+//   this.checkCaptchaValidity();
+//   this.isContinueClicked = true;
+//   this.isLoading = true; 
+//   if (this.isLoading &&!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
+//     return; 
+//   }
+
+//   console.log('Current form values:', this.employeeForm.value);
+//   const credentials = {
+//     username: this.employeeForm.value.username || '',
+//     password: this.employeeForm.value.password || '',
+//   };
+//   this.authService.updateCredentials(credentials);
+
+//   const controls = this.employeeForm.controls;
+//   let firstInvalidKey: string | null = null;
+//   for (const key in controls) {
+//     if (controls.hasOwnProperty(key)) {
+//       const control = controls[key];
+//       if (control.invalid) {
+//         control.markAsTouched();
+//         if (key === 'industryTypeArray' && control.errors?.['required']) {
+//         }
+//         if (control.errors) {
+//           console.error(`Validation error in ${key}:`, control.errors);
+//           if (control.errors['required']) {
+//             console.error(`The field "${key}" is required.`);
+//           }
+//         }
+//         if (!firstInvalidKey) {
+//           firstInvalidKey = key;
+//           this.firstInvalidField = key;
+//         }
+//       }
+//     }
+//   }
+//   if (firstInvalidKey) {
+//     const element = document.getElementById(firstInvalidKey);
+//     if (element) {
+//       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//       element.focus();
+//     }
+//     this.isLoading = false; 
+//     return;
+//   }
+//   if (!this.isCaptchaValid) {
+//     console.error('Captcha validation failed.');
+//     alert ('Enter the Valid Verification Code')
+//     this.isLoading = false; 
+//     return; 
+//   }
+  
+//   if (this.employeeForm.valid) {
+//     const payload = this.employeeForm.value;
+//     this.checkNamesService.insertAccount(payload).subscribe({
+//       next: (response) => {
+//         console.log('Account created successfully:', response);
+//         this.router.navigate(['/account-created-successfully']);
+//         this.isLoading = false; 
+//       },
+//       error: (error) => {
+//         console.error('Error creating account:', error);
+//         alert('There was an error creating the account. Please try again.');
+//       },
+//     });
+//   }
+// }
 onContinue() {
   this.checkCaptchaValidity();
   this.isContinueClicked = true;
-  this.isLoading = true; 
-  if (this.isLoading &&!this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
-    return; 
+  this.isLoading = true;
+
+  if (this.isLoading && !this.employeeForm.get('isPolicyAcceptedControl')?.value && !this.isCaptchaValid) {
+    return;
   }
 
   console.log('Current form values:', this.employeeForm.value);
@@ -796,9 +865,12 @@ onContinue() {
 
   const controls = this.employeeForm.controls;
   let firstInvalidKey: string | null = null;
+  let firstErrorMsgElement: HTMLElement | null = null;
+
   for (const key in controls) {
     if (controls.hasOwnProperty(key)) {
       const control = controls[key];
+
       if (control.invalid) {
         control.markAsTouched();
         if (key === 'industryTypeArray' && control.errors?.['required']) {
@@ -809,6 +881,15 @@ onContinue() {
             console.error(`The field "${key}" is required.`);
           }
         }
+
+        const errorElements = document.querySelectorAll(`[data-error-for="${key}"]`);
+        
+        for (const errorElement of Array.from(errorElements)) {
+          if (!firstErrorMsgElement) {
+            firstErrorMsgElement = errorElement as HTMLElement;
+          }
+        }
+
         if (!firstInvalidKey) {
           firstInvalidKey = key;
           this.firstInvalidField = key;
@@ -816,29 +897,37 @@ onContinue() {
       }
     }
   }
+
+  if (firstErrorMsgElement) {
+    firstErrorMsgElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    this.isLoading = false;
+    return;
+  } 
+  
   if (firstInvalidKey) {
     const element = document.getElementById(firstInvalidKey);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       element.focus();
     }
-    this.isLoading = false; 
+    this.isLoading = false;
     return;
   }
+
   if (!this.isCaptchaValid) {
     console.error('Captcha validation failed.');
-    alert ('Enter the Valid Verification Code')
-    this.isLoading = false; 
-    return; 
+    alert('Enter the Valid Verification Code');
+    this.isLoading = false;
+    return;
   }
-  
+
   if (this.employeeForm.valid) {
     const payload = this.employeeForm.value;
     this.checkNamesService.insertAccount(payload).subscribe({
       next: (response) => {
         console.log('Account created successfully:', response);
         this.router.navigate(['/account-created-successfully']);
-        this.isLoading = false; 
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error creating account:', error);
@@ -847,4 +936,5 @@ onContinue() {
     });
   }
 }
+
 }
