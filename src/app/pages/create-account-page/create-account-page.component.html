@@ -174,7 +174,7 @@
               @if(isContinueClicked && firstInvalidField === 'yearsOfEstablishMent' && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
                 <span class="error-message">Please enter Year of Establishment</span>
               }
-              @else if(employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
+              @else if(isContinueClicked && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
                 <span class="error-message">Please enter a valid year within the range of 1800 to 2025
                 </span>
               }
