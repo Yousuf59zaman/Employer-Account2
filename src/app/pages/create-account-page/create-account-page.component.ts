@@ -366,12 +366,13 @@ filteredCountriesList = this.countrie;
             IndustryName: item.industryName,
           }));
   
-          // Assign fetched industry data to the industryTypes list
           this.industryTypes = [...industryData];
   
-          // Check if there are newly added industries for the selected industryId
           if (industryId !== -1 && this.newlyAddedIndustriesnew[industryId]) {
             this.industryTypes.push(...this.newlyAddedIndustriesnew[industryId]);
+          }
+          else if (industryId === -1) {
+            this.allIndustryTypes = industryData;
           }
   
           this.filteredIndustryTypes = [...this.industryTypes];
