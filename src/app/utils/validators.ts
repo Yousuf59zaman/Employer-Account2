@@ -69,3 +69,26 @@ export function specialCharacterValidator(): ValidatorFn {
     return null;
   };
 }
+
+export function companyAddressValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    
+    if (!value) {
+      return null;
+    }
+
+    // Check if input contains only dots, numbers, or spaces
+    const onlyDotsNumbersSpaces = /^[.\d\s]+$/;
+    if (onlyDotsNumbersSpaces.test(value)) {
+      return { invalidPattern: true };
+    }
+
+    // Check if input is less than 10 characters
+    if (value.length < 10) {
+      return { minlength: true };
+    }
+
+    return null;
+  };
+}

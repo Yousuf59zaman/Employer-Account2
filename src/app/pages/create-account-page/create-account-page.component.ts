@@ -14,7 +14,7 @@ import { MathCaptchaComponent } from '../../components/math-captcha/math-captcha
 import { filePath,countrie ,disabilities} from '../../constants/file-path.constants';
 import { AddIndustryModalComponent } from "../../components/add-industry-modal/add-industry-modal.component";
 import { AuthService } from '../../Services/shared/auth.service';
-import { passwordMatchValidator, yearValidator, banglaTextValidator, noWhitespaceValidator, noBlacklistCharacters } from '../../utils/validators';
+import { passwordMatchValidator, yearValidator, banglaTextValidator, noWhitespaceValidator, noBlacklistCharacters, companyAddressValidator } from '../../utils/validators';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-account-page',
@@ -65,7 +65,7 @@ filteredCountriesList = this.countrie;
     country: new FormControl('',[Validators.required]), 
     district: new FormControl('',[Validators.required]),
     thana: new FormControl('',[Validators.required]), 
-    companyAddress: new FormControl('', [Validators.required, noWhitespaceValidator()]),
+    companyAddress: new FormControl('', [Validators.required, noWhitespaceValidator(), companyAddressValidator()]),
     outSideBd: new FormControl('',[Validators.required]),
     outsideBDCompanyAddress: new FormControl('',[Validators.required]),
     industryType: new FormControl('-1'),
@@ -130,11 +130,21 @@ filteredCountriesList = this.countrie;
     this.fetchCountries();
     this.updateFlagPath();
     this.searchTerm.valueChanges.subscribe(() => this.filterCountries());
+
+    // Add real-time validation for company address
+    this.employeeForm.get('companyAddress')?.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(() => {
+        this.employeeForm.get('companyAddress')?.updateValueAndValidity();
+      });
+
     this.selectedCountry = {
       OptionText: 'Bangladesh',
       OptionValue: '118',
       flagPath: this.filePath['Bangladesh'],
-      
     };
   
     this.currentCountry = { name: 'Bangladesh', code: 'BD', phoneCode: '+880' };
@@ -156,7 +166,7 @@ filteredCountriesList = this.countrie;
               this.fetchDistricts();
               this.employeeForm.get('district')?.setValidators([Validators.required]);
               this.employeeForm.get('thana')?.setValidators([Validators.required]);
-              this.employeeForm.get('companyAddress')?.setValidators([Validators.required, noWhitespaceValidator()]);
+              this.employeeForm.get('companyAddress')?.setValidators([Validators.required, noWhitespaceValidator(),companyAddressValidator()]);
               this.employeeForm.get('outSideBd')?.clearValidators();
               this.employeeForm.get('outSideBd')?.setValue(''); 
               this.employeeForm.get('outsideBDCompanyAddress')?.clearValidators();
@@ -170,7 +180,7 @@ filteredCountriesList = this.countrie;
               this.employeeForm.get('thana')?.setValue(''); 
               this.employeeForm.get('companyAddress')?.setValue(''); 
               this.employeeForm.get('outSideBd')?.setValidators([Validators.required]); 
-              this.employeeForm.get('outsideBDCompanyAddress')?.setValidators([Validators.required,noWhitespaceValidator()]);   
+              this.employeeForm.get('outsideBDCompanyAddress')?.setValidators([Validators.required,noWhitespaceValidator(),companyAddressValidator()]);   
             }
             this.employeeForm.get('district')?.updateValueAndValidity();
             this.employeeForm.get('thana')?.updateValueAndValidity();

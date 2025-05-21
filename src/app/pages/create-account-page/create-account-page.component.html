@@ -17,7 +17,7 @@
       <!-- User Information Section -->
       <div class="w-auto sm:w-[1290px] h-auto sm:h-[183px] p-6 mx-auto flex-col -mt-24 items-start gap-5 rounded-2xl bg-white shadow-lg">
         <h2 class="flex items-center mb-4 text-[#0E73A9] font-inter text-[18px] font-semibold leading-[27px]">
-          <span class="mr-2 icon icon-employer"></span>Let’s Start by Filling Out Your User Information
+          <span class="mr-2 icon icon-employer"></span>Let's Start by Filling Out Your User Information
         </h2>
   
         <!-- Username Field -->
@@ -341,6 +341,22 @@
               Company Address cannot be empty
             </span>
           }
+            @else if (
+            (isContinueClicked || employeeForm.controls['outsideBDCompanyAddress'].touched) &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            employeeForm.controls['outsideBDCompanyAddress'].errors?.['minlength']
+          ) {
+            <span class="error-message">
+          Your input is too short. Please add more details            </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['outsideBDCompanyAddress'].touched) &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            employeeForm.controls['outsideBDCompanyAddress'].errors?.['invalidPattern']
+          ) {
+            <span class="error-message">
+            Please enter a valid address            </span>
+          }
             </div>
             </div>  
           <div class="col-span-1">
@@ -380,6 +396,22 @@
             <span class="error-message">
               Company Address cannot be empty
             </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['companyAddress'].touched) &&
+            firstInvalidField === 'companyAddress' &&
+            employeeForm.controls['companyAddress'].errors?.['minlength']
+          ) {
+            <span class="error-message">
+          Your input is too short. Please add more details            </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['companyAddress'].touched) &&
+            firstInvalidField === 'companyAddress' &&
+            employeeForm.controls['companyAddress'].errors?.['invalidPattern']
+          ) {
+            <span class="error-message">
+            Please enter a valid address            </span>
           }
         </div> 
           </div>
@@ -864,7 +896,7 @@
       </div>
       <div class="flex-col items-start gap-5 p-2 mx-auto mt-6 max-w-7xl ">
                <!-- Verification -->
-              <h2 class="font-inter text-[20px] mb-2 font-semibold leading-[38px] text-left text-[#0E73A9]">You’re Almost Done!</h2>
+              <h2 class="font-inter text-[20px] mb-2 font-semibold leading-[38px] text-left text-[#0E73A9]">You're Almost Done!</h2>
               <app-math-captcha  
               [employeeForm]="employeeForm"
               (input)="onInputChange($event)">
