@@ -458,9 +458,13 @@
     <div class="mt-16 ml-4">
       <button 
         type="button"
-        class="flex items-center p-2 text-blue-500 rounded-lg hover:text-blue-800"
+        class="flex items-center p-2"
         (click)="addNewIndustry()">
-        <span class="mr-1 icon icon-plus"></span>Add a New Industry
+        <span class="text-black">Can't find your industry?</span>
+        <span class="ml-1 flex items-center text-blue-500 hover:text-blue-800">
+          <span class="icon icon-plus mr-1"></span>
+          <span class="underline">Add New</span>
+        </span>
       </button>
     </div>
   }
@@ -479,12 +483,13 @@
 }
 <!-- Industry Checkbox List Section -->
 <div class="flex flex-col items-start gap-6 self-stretch h-[282px] lg:w-[1229px] w-[96%] sm:mx-0 mx-auto  rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
-     [class.error-border]="isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']">
-  <div>
-    <input [formControl]="searchControl"
-           class="flex w-auto sm:w-[1151px] px-2 py-1.5 sm:p-[14px] sm:px-[16px] justify-between items-center self-stretch rounded-[8px] border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]" 
-           placeholder="Search Industry Type">
-  </div>
+         [class.error-border]="isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']">
+      <div class="w-full relative">
+        <input [formControl]="searchControl"
+               class="w-full px-2 py-1.5 sm:p-[14px] sm:px-[16px] rounded-[8px] border border-[#DAE5EC] bg-white hover:border-[#0F6DDB] focus:outline-none focus:border-[#0F6DDB] focus:ring-1 focus:ring-[#0F6DDB] transition-colors duration-200 pr-10" 
+               placeholder="Search Industry">
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 icon icon-search text-gray-400"></span>
+      </div>
   <!-- Industry List Display -->
   <div 
     class="lg:grid lg:grid-cols-3 grid grid-cols-1 items-start gap-[24px] self-stretch industry-list" 
@@ -796,13 +801,13 @@
            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500 focus:ring-offset-0 focus:ring-2">
     <label for="facility_for_disability" 
            class="ml-2 text-base font-normal text-black cursor-pointer">
-      Facilities for Person with Disabilities
+           Enable Facilities for Person with Disabilities as Employees    
     </label>
   </div>            
 
   <a href="https://corporate3.bdjobs.com/disability-inclusion-practices.asp" target="_blank" 
      class="text-[#0E73A9] font-inter text-[16px] font-normal leading-[24px] underline">
-    Click to learn more
+    Learn More
   </a>
 
 
@@ -921,7 +926,7 @@
                   <div class="ml-3">
                     <label for="isPolicyAcceptedControl" 
                            class="text-base font-normal text-black cursor-pointer">
-                      I Have Read Pricing Policy And Accepted It
+                        I have read and accepted the Privacy Policy
                     </label>
                   </div>
                 </div>         
