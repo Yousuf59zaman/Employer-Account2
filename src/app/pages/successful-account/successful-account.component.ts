@@ -13,6 +13,8 @@ import { AuthService } from '../../Services/shared/auth.service';
 export class SuccessfulAccountComponent {
   userName: string = '';
   password: string = '';
+  systemId: number = 2;
+
   loginFormErrorMessage: string = '';
   isLoginApiCallPending = false;
   urlParams = new URLSearchParams(window.location.search);
@@ -46,49 +48,46 @@ export class SuccessfulAccountComponent {
 
     this.isLoginApiCallPending = true;
 
-    this.loginService.loginUser(this.userName, this.password).subscribe({
+    this.loginService.loginUser(this.userName, this.password, this.systemId).subscribe({
       next: (data) => {
-        //debugger;
         if (
           data &&
-          data.status === 200 &&
-          data.message === 'User logged in successfully.' &&
-          data.redirectUrl
+          data.event &&
+          data.event.eventType === 1 &&
+          Array.isArray(data.event.eventData)
         ) {
-          this.loginService.setCookies().subscribe({
+          const messageObj = data.event.eventData.find((item: any) => item.key === 'message');
+          if (
+            messageObj &&
+            messageObj.value &&
+            messageObj.value.message === 'successfuly login'
+          ) {
+            this.loginService.setCookies().subscribe({
             next: (data) => {
               
               if (data) {
                 console.log(data)
-                if (this.queryString === '') {
-                  window.location.href = 'https://recruiter.bdjobs.com/dashboard';
-                } else {
-
-                  setTimeout(() => {
-                    console.log('This is the query string value on login -- ' + this.queryString);
-                    const externalUrl = `https://recruiter.bdjobs.com/dashboard?selectedJobType=${encodeURIComponent(this.queryString)}`;
-                    window.location.href = externalUrl;
-                  }, 2000);
-                  
-
-                  // setTimeout(() => {
-                  //   console.log('this is the query string valu on login -- '+this.queryString)
-                  //   this.router.navigate(['dashboard'], { queryParams: { selectedJobType: this.queryString} });
-                  // }, 2000);
-                   
+                  if (this.queryString === '') {
+                    window.location.href = 'https://recruiter.bdjobs.com/dashboard';
+                  } else {
+                    setTimeout(() => {
+                      const externalUrl = `https://recruiter.bdjobs.com/dashboard?selectedJobType=${encodeURIComponent(this.queryString)}`;
+                      window.location.href = externalUrl;
+                    }, 2000);
+                  }
                 }
+              },
+              error: () => {
+                this.loginFormErrorMessage = 'Failed to set authentication cookies.';
+                this.isLoginApiCallPending = false;
               }
-            },
-          });
-        } else {
-          if (data) {
-            this.loginFormErrorMessage = data.message;
-            this.isLoginApiCallPending = false;
-          } else {
-            this.loginFormErrorMessage = 'An unknown error occurred.';
-            this.isLoginApiCallPending = false;
+            });
+            return;
           }
         }
+        // If not successful, show error
+        this.loginFormErrorMessage = 'Login failed. Please check your credentials.';
+        this.isLoginApiCallPending = false;
       },
       error: () => {
         this.loginFormErrorMessage = "Couldn't connect to the server.";

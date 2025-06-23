@@ -804,6 +804,7 @@ onContinue() {
   const credentials = {
     username: this.employeeForm.value.username || '',
     password: this.employeeForm.value.password || '',
+    systemId: 2
   };
   this.authService.updateCredentials(credentials);
 
