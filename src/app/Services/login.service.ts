@@ -21,7 +21,7 @@ private readonly DOMAIN_PARAM_ONLY = window.location.href.includes('gateway')
   ? '?domain=gateway'
   : '';
 
-  private readonly API_ENDPOINT: string =    'https://recruiter.bdjobs.com/authentication/api/Authentication';
+  private readonly API_ENDPOINT: string =    'https://api.bdjobs.com/auth/api/Login/Login';
   private readonly LEGACY_LOGIN_ENDPOINT: string = 'https://corporate3.bdjobs.com/SupportingData-test.asp';
 
 
@@ -33,11 +33,13 @@ private readonly DOMAIN_PARAM_ONLY = window.location.href.includes('gateway')
 
   loginUser(
     userName: string,
-    password: string
+    password: string,
+    systemId: number
   ): Observable<UserLoginInformation> {
     return this.http.post<UserLoginInformation>(this.API_ENDPOINT, {
       userName,
       password,
+      systemId : 2
     });
   }
 

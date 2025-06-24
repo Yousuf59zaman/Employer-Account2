@@ -9,6 +9,7 @@ export class AuthService {
   private credentialsSubject = new BehaviorSubject<UserCredentials>({
     username: '',
     password: '',
+    systemId: 2,
   });
 
   credentials$: Observable<UserCredentials> =
@@ -21,7 +22,7 @@ export class AuthService {
   }
 
   clearCredentials(): void {
-    this.credentialsSubject.next({ username: '', password: '' });
+    this.credentialsSubject.next({ username: '', password: '', systemId: 2 });
   }
 
   getCredentials(): UserCredentials {

@@ -1,6 +1,17 @@
 export interface UserLoginInformation {
-    status: Number;
-    message: string;
-    redirectUrl: string;
-  }
+  event: {
+    eventType: number;
+    eventData: Array<{
+      key: string;
+      value: {
+        message: string;
+        token: string;
+        refreshToken: string;
+        encryptId: string;
+        [key: string]: any;
+      };
+    }>;
+    eventId: number;
+  };
+}
   

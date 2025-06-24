@@ -47,6 +47,7 @@ export interface RLNoResponseModel {
 export interface UserCredentials {
   username: string;
   password: string;
+  systemId: number;
 }
 export interface CreateAccountResponseDTO {
   Message: string;
