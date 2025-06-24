@@ -40,7 +40,7 @@ private readonly DOMAIN_PARAM_ONLY = window.location.href.includes('gateway')
       userName,
       password,
       systemId : 2
-    });
+    },{withCredentials:true});
   }
 
   
