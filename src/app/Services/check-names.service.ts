@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs'; 
-import { CheckNamesResponseDTO, CompanyNameCheckRequestDTO, IndustryTypeResponseDTO, IndustryType, LocationRequestDTO, LocationResponseDTO, IndustryTypeRequestDTO, RLNoRequestModel, CreateAccountResponseDTO } from '../Models/company';
+import { CheckNamesResponseDTO, CompanyNameCheckRequestDTO, 
+  IndustryTypeResponseDTO, IndustryType, LocationRequestDTO, LocationResponseDTO, 
+  IndustryTypeRequestDTO, RLNoRequestModel, CreateAccountResponseDTO, UpdateAccountRequestModel, 
+  CompanyLogoResponse, CompanyLogoUploadResponse, CompanyLogoDeleteRequest, CompanyLogoDeleteResponse, 
+  CompanyLogoUpdateRequest, CompanyLogoUpdateResponse } from '../Models/company';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +19,12 @@ export class CheckNamesService {
   private rlnoapiUrl = 'https://api.bdjobs.com/employeraccount/api/CorporateCommon/RlNoCheck';
   private organizationCheckUrl = 'https://api.bdjobs.com/employeraccount/api/CorporateCommon/OrganizationCheck';
   private insertAccountApiUrl = 'https://api.bdjobs.com/employeraccount/api/CreateAccount/insert';
+  private editAccountApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/GetEditAccount';
+  private updateAccountApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/UpdateAccount';
+  private companyLogosApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/GetCompanyLogos';
+  private uploadLogoApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/InsertCompanyLogos';
+  private deleteLogoApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/DeleteCompanyLogo';
+  private updateLogoApiUrl = 'https://api.bdjobs.com/EmployerAccount/api/EditAccount/UpdateCompanyLogo';
   constructor(private http: HttpClient) {}
 
 
@@ -156,6 +166,76 @@ export class CheckNamesService {
       catchError((error) => {
         console.error('Error inserting account data:', error);
         return throwError(() => new Error('Failed to insert account data'));
+      })
+    );
+  }
+
+  // Get company information for edit account
+  getCompanyInformation(): Observable<any> {
+    const companyId = localStorage.getItem('CompanyId');
+    if (!companyId) {
+      console.error('Company ID not found in localStorage');
+      return throwError(() => new Error('Company ID not found in local storage'));
+    }
+    
+    console.log('Making API call with companyId:', companyId);
+    const url = `${this.editAccountApiUrl}?companyId=${encodeURIComponent(companyId)}`;
+    return this.http.get<any>(url).pipe(
+      catchError((error) => {
+        console.error('Error fetching company information:', error);
+        return throwError(() => new Error('Error fetching company information'));
+      })
+    );
+  }
+
+  updateAccount(data: UpdateAccountRequestModel): Observable<any> {
+    return this.http.post<any>(this.updateAccountApiUrl, data).pipe(
+      catchError((error) => {
+        console.error('Error updating account:', error);
+        return throwError(() => new Error('Failed to update account'));
+      })
+    );
+  }
+
+  getCompanyLogos(companyId: string): Observable<CompanyLogoResponse> {
+    return this.http.get<CompanyLogoResponse>(`${this.companyLogosApiUrl}?companyId=${encodeURIComponent(companyId)}`).pipe(
+      catchError((error) => {
+        console.error('Error fetching company logos from Api:', error);
+        return throwError(() => new Error('Failed to fetch company logos'));
+      })
+    );
+  }
+
+  uploadCompanyLogo(companyId: string, imageFile: File): Observable<CompanyLogoUploadResponse> {
+    const formData = new FormData();
+    formData.append('CompanyId', companyId);
+    formData.append('ImageFile', imageFile);
+
+    return this.http.post<CompanyLogoUploadResponse>(this.uploadLogoApiUrl, formData).pipe(
+      catchError((error) => {
+        if (error.error?.responseType === 'Error' && error.error?.dataContext) {
+          return throwError(() => error.error);
+        }
+        console.error('Error uploading company logo:', error);
+        return throwError(() => new Error('Failed to upload company logo'));
+      })
+    );
+  }
+
+  deleteCompanyLogo(request: CompanyLogoDeleteRequest): Observable<CompanyLogoDeleteResponse> {
+    return this.http.delete<CompanyLogoDeleteResponse>(this.deleteLogoApiUrl, { body: request }).pipe(
+      catchError((error) => {
+        console.error('Error deleting company logo:', error);
+        return throwError(() => new Error('Failed to delete company logo'));
+      })
+    );
+  }
+
+  updateCompanyLogo(request: CompanyLogoUpdateRequest): Observable<CompanyLogoUpdateResponse> {
+    return this.http.put<CompanyLogoUpdateResponse>(this.updateLogoApiUrl, request).pipe(
+      catchError((error) => {
+        console.error('Error updating company logo:', error);
+        return throwError(() => new Error('Failed to update company logo'));
       })
     );
   }

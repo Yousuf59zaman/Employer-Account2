@@ -31,6 +31,6 @@ export class AuthService {
 
   hasValidToken(): boolean {
     const token = this.cookieService.get('AUTHTOKEN');
-    return !!token; 
+    return !!token; // Check if token exists
   }
 }

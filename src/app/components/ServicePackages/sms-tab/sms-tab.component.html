@@ -1,0 +1,133 @@
+<div class="flex flex-col md:flex-row justify-between items-start gap-3 w-full">
+  <!-- Left: SMS (Lot) Sidebar Title -->
+  <div class="w-full md:w-80 h-auto md:h-[522px] bg-white rounded-md outline outline-1 outline-neutral-200">
+    <div class="px-4 py-3 bg-[#0e73a9] text-white rounded-tl-md rounded-tr-md">SMS (Lot)</div>
+  </div>
+
+  <!-- Center: Quantity and Order Card -->
+  <div class="w-full md:w-[544px] p-6 bg-white rounded-[10px] shadow-[2px_4px_14px_0px_rgba(217,235,244,1.00)] border border-sky-700">
+    <div class="space-y-6">
+      <div class="w-full flex justify-between items-center">
+        <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">SMS (Lot)</div>
+        <div class="flex items-end gap-1">
+          <div class="text-[#0E73A9] text-[20px] font-semibold font-['Inter']">{{ formatNumber(unitPrice) }} {{ currencyLabel }}</div>
+          <div class="text-[#667085] text-[16px] font-medium font-['Inter']">Per Lot</div>
+        </div>
+      </div>
+      <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
+      <!-- Quantity -->
+      <div class="w-full py-2 flex justify-between items-center">
+        <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Quantity</div>
+        <div class="flex justify-start items-center gap-3">
+          <button type="button" (click)="decrement()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
+            <div class="w-3.5 h-0.5 left-[5px] top-[11px] absolute bg-sky-700"></div>
+          </button>
+          <div class="px-4 py-2 bg-white rounded-md outline outline-1 outline-offset-[-1px] outline-sky-700 inline-flex flex-col justify-center items-center">
+            <input 
+              type="number"
+              class="justify-start text-zinc-800 text-base font-medium font-['Inter'] w-10 text-center outline-none no-spinner"
+              [formControl]="quantityControl"
+              min="1" max="9999"
+              appNumericOnly
+              [minValue]="1"
+              [maxValue]="9999"
+            />
+          </div>
+          <button type="button" (click)="increment()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
+            <div class="w-3.5 h-0.5 left-[5px] top-[11px] absolute bg-sky-700"></div>
+            <div class="w-0.5 h-3.5 left-[11px] top-[5px] absolute bg-sky-700"></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="h-px bg-gray-200"></div>
+
+      <!-- Price -->
+      <div class="flex items-center justify-between">
+        <div class="text-zinc-800 text-base font-semibold">Price</div>
+        <div class="text-zinc-800 text-base">{{ totalPrice }} {{ currencyLabel }}</div>
+      </div>
+
+      <div class="h-px bg-gray-200"></div>
+
+      <!-- Amount to Pay -->
+      <div class="flex items-center justify-between">
+        <div class="text-zinc-800 text-base font-semibold">Amount to Pay</div>
+        <div class="text-[#165273] text-xl font-bold">= {{ totalPrice }} {{ currencyLabel }}</div>
+      </div>
+
+      <!-- Place Order Button -->
+      <div>
+        <button type="button" class="w-full h-[48px] bg-[#2E7D32] text-white rounded-md" (click)="placeOrder()">Place Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Features -->
+  <div class="w-full md:w-80 h-auto md:h-[522px] bg-white rounded-md outline outline-1 outline-neutral-200 inline-flex flex-col justify-start items-center">
+    <!-- Header -->
+    <div class="self-stretch px-4 py-3 bg-white rounded-tl-md rounded-tr-md border-b border-neutral-200 inline-flex justify-between items-center">
+      <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Features</div>
+    </div>
+
+    <!-- Features Content (mirrors talent search rightbar style) -->
+    <div class="self-stretch flex-1 py-3 flex flex-col justify-start items-center gap-2">
+      <div class="self-stretch px-4 flex flex-col gap-0">
+        <div class="self-stretch flex flex-col gap-1">
+          <div class="space-y-4 mb-0">
+            <div class="self-stretch flex items-start gap-3 feature-item">
+              <div class="w-5 h-5 flex items-center justify-center bg-green-200 rounded">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 8.5L7 11.5L12 5.5" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="flex-1 text-zinc-800 text-[14px] font-normal font-['Inter'] leading-tight">
+                Each SMS costs <span class="font-bold">{{ perSmsDisplayLabel }}</span> (<span class="font-bold">1 Lot = {{ smsPerLotSize }} SMS</span>)
+              </div>
+            </div>
+
+            <div class="self-stretch flex items-start gap-3 feature-item">
+              <div class="w-5 h-5 flex items-center justify-center bg-green-200 rounded">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 8.5L7 11.5L12 5.5" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="flex-1 text-zinc-800 text-[14px] font-normal font-['Inter'] leading-tight">
+                Send SMS to invite for interview or notify about anything related to your job.
+              </div>
+            </div>
+
+            <div class="self-stretch flex items-start gap-3 feature-item">
+              <div class="w-5 h-5 flex items-center justify-center bg-green-200 rounded">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 8.5L7 11.5L12 5.5" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="flex-1 text-zinc-800 text-[14px] font-normal font-['Inter'] leading-tight">
+                Send SMS to the applicants applied in your job circulars using our system.
+              </div>
+            </div>
+
+            <div class="self-stretch flex items-start gap-3 feature-item">
+              <div class="w-5 h-5 flex items-center justify-center bg-green-200 rounded">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 8.5L7 11.5L12 5.5" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="flex-1 text-zinc-800 text-[14px] font-normal font-['Inter'] leading-tight">
+                Contact all your potential applicants at once through the service.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Modal -->
+@if (showVerificationModal) {
+  <app-sms-verification-modal (modalClosed)="showVerificationModal = false"></app-sms-verification-modal>
+}
+
+

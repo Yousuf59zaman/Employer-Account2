@@ -1,0 +1,395 @@
+<div class="bg-[#eeee] h-[auto] w-[auto] p-4">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-0">
+      <h2 class="flex items-center gap-2 text-2xl font-bold">
+      </h2>
+      <div class="flex gap-2">
+        <button 
+          class="bg-[#0c6899] hover:bg-[#08547a] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+          (click)="redirectTo('https://www.bdjobs.com/talent-search-dashboard/')">
+          <i class="icon icon-search"></i> Search Talent
+        </button>
+      
+        <!-- Post a New Job Button -->
+        <button 
+          class="bg-[#008A22] hover:bg-[#006617] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+          (click)="redirectTo('https://recruiter.bdjobs.com/jobposting/')">
+          <i class="icon icon-plus"></i> Post a New Job
+        </button>
+      </div>
+    </div>
+
+
+<!-- Header -->
+<h2 class="ml-1 text-[18px] text-[#0E73A9] font-semibold flex items-center gap-2 mt-0">
+<i class="icon icon-mail-sent text-[#0E73A9] mr-18"></i>
+{{ type === 'job' && jobId ? 'Emails for Invitation' : (c_Type === 'ap' ? 'Emails to Applicants' : (c_Type === 'iv' ? 'Emails for Invitation' : 'Sent Mails by CV Bank Candidates')) }}
+</h2>
+  <div class="p-4 mt-1 mb-2 bg-white border rounded-sm shadow-sm">
+  <!-- Description -->
+  <h3 class="text-[16px] font-bold text-gray-700 mb-2">Search
+  </h3> 
+   <!-- Search Bar -->
+   <div class="relative max-w-6xl mx-auto mt-2">
+    <div class="relative">
+      <input
+        type="text"
+        class="w-full p-1 pr-12 border rounded outline-none focus:to-blue-300"
+        [class.bg-gray-200]="isSearchDisabled()"
+        [class.opacity-75]="isSearchDisabled()"
+        [class.cursor-not-allowed]="isSearchDisabled()"
+        [class.border-gray-300]="isSearchDisabled()"
+        placeholder="Search by job title"
+        [formControl]="keyword"
+        (keyup.enter)="!isSearchDisabled() && onSearch()" 
+        [disabled]="isSearchDisabled()" 
+        [style.cursor]="isSearchDisabled() ? 'not-allowed' : 'text'"
+        [readonly]="isSearchDisabled()"
+      />
+      <i *ngIf="isSearchDisabled()" class="icon icon-disabled absolute right-24 top-1/2 transform -translate-y-1/2 text-gray-600"></i>
+    </div>
+    <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
+      <button 
+      class="bg-[#008C23] text-white px-4 py-1 rounded hover:bg-[#006617] transition flex items-center"
+      [class.opacity-50]="isSearchDisabled()"
+      [class.cursor-not-allowed]="isSearchDisabled()"
+      [disabled]="isSearchDisabled()"
+      [style.cursor]="isSearchDisabled() ? 'not-allowed' : 'pointer'"
+      (click)="!isSearchDisabled() && onSearch()">
+        <i *ngIf="isSearchDisabled()" class="icon icon-disabled mr-1"></i>
+        Search
+      </button>
+    </div>
+  </div>
+  <!-- Filters -->
+  <div class="mt-4 text-gray-700">
+    <div class="flex flex-wrap gap-4">
+      <label>
+        <input type="radio" name="emailCategory" class="mr-2" 
+          [checked]="selectedEmailCategory() === 'al'" 
+          (change)="updateEmailCategory('al')"
+          [disabled]="isEmailCategoryDisabled('al')"
+          [style.cursor]="isEmailCategoryDisabled('al') ? 'not-allowed' : 'pointer'">
+        All sent emails
+      </label>
+      <label>
+        <input type="radio" name="emailCategory" class="mr-2" 
+          [checked]="selectedEmailCategory() === 'cv'" 
+          (change)="updateEmailCategory('cv')"
+          [disabled]="isEmailCategoryDisabled('cv')"
+          [style.cursor]="isEmailCategoryDisabled('cv') ? 'not-allowed' : 'pointer'">
+        Sent emails using CV Bank
+      </label>
+      <label>
+        <input type="radio" name="emailCategory" class="mr-2" 
+          [checked]="selectedEmailCategory() === 'ap'" 
+          (change)="updateEmailCategory('ap')"
+          [disabled]="isEmailCategoryDisabled('ap')"
+          [style.cursor]="isEmailCategoryDisabled('ap') ? 'not-allowed' : 'pointer'">
+        Sent emails to applicants
+      </label>
+    </div>
+    <div class="flex flex-wrap gap-4 mt-2">
+      <label>
+        <input type="radio" name="readStatus" class="mr-2" [checked]="selectedReadStatus() === 'read'" (change)="updateReadStatus('read')" />
+        Read
+      </label>
+      <label>
+        <input type="radio" name="readStatus" class="mr-2" [checked]="selectedReadStatus() === 'unread'" (change)="updateReadStatus('unread')" />
+        Unread
+      </label>
+      <label>
+        <input type="radio" name="readStatus" class="mr-2" [checked]="selectedReadStatus() === 'all'" (change)="updateReadStatus('all')" />
+        All
+      </label>
+    </div>
+    <!-- Invite Checkbox -->
+    <div class="mt-2 mb-4">
+      <label>
+        <input 
+          type="checkbox" 
+          class="mr-2" 
+          [disabled]="isInviteDisabled()" 
+          [checked]="isInviteChecked()" 
+          (change)="toggleInviteSelection()"
+          [style.cursor]="isInviteDisabled() ? 'not-allowed' : 'pointer'" 
+        />
+        Invite
+      </label>
+    </div>
+  </div>
+
+  <!-- Loader -->
+<div *ngIf="loading()" class="flex items-center justify-center py-10">
+  <div class="w-12 h-12 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+</div>
+
+  <!-- Table -->
+  <div *ngIf="!loading()" class="overflow-hidden bg-white rounded-md">
+    <table class="w-full border border-gray-100">
+      <thead class="bg-[#f5f5f5] text-black text-[14px]">
+        <tr>
+          <th class="p-3 text-center">
+            <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllCheckboxes($event)" />
+          </th>
+          <!-- Action Dropdown -->
+          <th class="relative inline-block p-2 text-right">
+            <div class="relative inline-block">
+              <button class="border border-gray-300 font-normal text-sm p-1.5 text-[12px] w-24 rounded flex items-center justify-center gap-2" 
+                (click)="toggleDeleteButton()">
+                Action
+                <span class="text-xs icon icon-sort-down"></span> 
+              </button>
+              <button *ngIf="isDeleteSelectedVisible" 
+                class="absolute mt-0 top-full left-0 font-normal w-32 bg-white border border-gray-300 text-sm p-1.5 rounded shadow-lg transition-all duration-300 ease-in-out hover:text-black"
+                (click)="deleteSelectedEmails()">
+                Delete Selected
+              </button>
+            </div>
+          </th>
+          <!-- View Dropdown -->
+          <th class="p-2 text-[14px] text-left">
+            View
+            <select class="p-1 font-normal border border-gray-300 rounded" (change)="updatePageSize($event)">
+              <option *ngFor="let size of [10, 15, 20]" [value]="size">{{ size }}</option>
+            </select>
+          </th>
+          <th class="p-2 text-center text-black">
+            {{ getStartIndex() }} - {{ getEndIndex() }} of {{ totalRecords }}
+          </th>
+          <th class="p-3"></th>
+          <th class="flex items-center justify-end gap-2 p-3 text-right">
+            <button class="bg-[#0e73a9] text-white px-4 py-2 rounded hover:bg-[#08547a] transition whitespace-nowrap"
+              (click)="redirectToEmailTemplate()">
+              Email Templates
+            </button>
+          </th>
+        </tr>
+      </thead>   
+      <tbody>
+        <!-- No Emails Found Message -->
+        <ng-container *ngIf="emails.length === 0">
+          <tr>
+            <td colspan="6" class="py-16 text-sm font-medium text-center text-gray-500">
+              <div class="flex flex-col items-center justify-center">
+                <i class="icon icon-envelope text-gray-400 text-[64px] mb-2"></i>
+                <span class="text-[16px] font-bold text-[#0e73a9]">No email is found</span>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+    
+        <!-- Data Table Rows with Inline Expanded Row -->
+        <ng-container *ngIf="emails.length > 0; else noData">
+          <ng-container *ngFor="let email of emails; let i = index">
+            <!-- Main Row -->
+            <tr class="border-t cursor-pointer" [class.bg-[#ffffcc]]="selectedEmails.includes(email.rId)">
+              <td class="p-3 text-center">
+                <input type="checkbox" (change)="toggleCheckbox(i, $event)" [checked]="selectedEmails.includes(email.rId)" />
+              </td>
+              <td class="p-3">
+                <button class="relative flex items-center gap-4 cursor-pointer" (click)="toggleEmailDetail(i)">
+                  <span *ngIf="email.isRead" class="text-gray-500 icon icon-check-double" title="Read"></span>
+                  <span *ngIf="!email.isRead" class="text-gray-500 icon icon-check" title="Unread"></span>
+                  <span class="relative ml-8 group">
+                    {{ email.name }}
+                    <!-- Tooltip -->
+                    <span class="absolute hidden max-w-xs px-2 py-1 mb-2 text-xs text-white transition-opacity duration-200 transform -translate-x-1/2 bg-black rounded opacity-0 left-1/2 group-hover:block group-hover:opacity-100 bottom-full whitespace-nowrap">
+                      Click to view email details
+                    </span>
+                  </span>
+                </button>
+              </td>
+              
+              <td class="p-3">
+                <button class="relative font-semibold cursor-pointer group truncate max-w-[170px] block" (click)="toggleEmailDetail(i)">
+                  {{ email.subject }}
+                  <!-- Tooltip -->
+                  <span class="absolute hidden max-w-xs px-2 py-1 mb-2 text-xs text-white transition-opacity duration-200 transform -translate-x-1/2 bg-black rounded opacity-0 left-1/2 group-hover:block group-hover:opacity-100 bottom-full whitespace-nowrap">
+                    Click to view email details
+                  </span>
+                </button>
+              </td>
+              <td class="p-3">
+                <ng-container *ngIf="selectedEmailCategory() === 'ap' || selectedEmailCategory() === 'al'">
+                  <span *ngIf="email.job && email.job !== 'Null'; else noJob" class="truncate max-w-[200px] block">{{ email.job }}</span>
+                  <ng-template #noJob></ng-template>
+                </ng-container>
+              </td>
+              <td class="p-3 w-[1%] whitespace-nowrap">
+                <div class="flex items-center justify-end gap-2">
+                  <span class="text-gray-500 icon icon-calendar"></span> {{ email.date | date: 'd MMM yyyy' }}
+                </div>
+              </td>
+              <td class="p-3 w-[1%] whitespace-nowrap text-right">
+                <div class="flex justify-end">
+                  <button class="flex items-center border text-[12px] border-[#e0e0e0] text-[#757575] px-3 py-1 rounded hover:bg-red-600 hover:text-white"
+                    (click)="deleteEmail(email.rId)">
+                    <span class="mr-2 icon icon-trash"></span>Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <!-- No Data Found Message -->
+          <ng-template #noData>
+            <tr>
+              <td colspan="5" class="px-6 py-16 text-sm font-medium text-center text-gray-500">
+                <div class="flex flex-col items-center">
+                  <i class="text-gray-400 icon icon-envelope" style="font-size: 64px;"></i>
+                  <span class="text-[16px] font-semibold text-[#0e73a9] mt-2">No data found</span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          
+<!-- Expanded Row Directly Below the Clicked Row -->
+<tr *ngIf="expandedEmailIndex === i" class="border-t">
+  <td colspan="6" class="p-4 rounded-md shadow-md bg-white-100">
+    <div class="relative bg-white rounded-md">
+      <!-- Close Button -->
+      <button class="absolute px-3 py-1 text-gray-800 bg-white mb-1 border border-[#cccc] rounded-md right-2 hover:bg-gray-200"
+      (click)="toggleEmailDetail(i)">
+      Close <i class="ml-1 text-sm font-normal icon-times"></i>
+    </button>
+      <!-- Header Section -->
+      <div class="flex items-center justify-between p-3 bg-[##fff]  text-black -mb-6 text=[18px] font-inter rounded-t-md">
+        <div class="flex items-center gap-2 ">
+          <span class="text-[18px]">
+            <i class="icon-check-sign"></i> Sent Mail
+          </span>
+        </div>
+      </div>
+
+      <!-- Mail Info -->
+      <div class="p-4 ">
+        <div class="flex items-center gap-8 text-white bg-[#a72b72] p-2  rounded-t-md">
+          <p class="flex items-center gap-2">
+            <i class="icon-envelope"></i>
+            <span class="font-medium">Mailed From:</span> {{ emailDetail.company }}
+          </p>
+          <p class="flex items-center gap-2">
+            <i class="icon-calendar"></i>
+            <span class="font-medium">Mailed on:</span> {{ emailDetail.date | date:'d MMM yyyy' }}
+          </p>
+          <p class="flex items-center gap-2">
+            <i class="icon-file"></i>
+            <span class="font-medium">Subject:</span> {{ emailDetail.subject }}
+          </p>
+        </div>
+
+        <!-- Email Body -->
+        <div class="pt-2 bg-gray-100">
+          <p class="ml-2 font-semibold text-gray-800">
+            Dear <span class="font-semibold">{{ email.name }}</span>,
+          </p>
+          <div class="mt-0.5 ml-2 leading-tight text-gray-700 whitespace-pre-line">
+            {{ emailDetail.body }}
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="pt-4 mt-0 text-gray-700 bg-gray-100">
+          <p class="text-[#757575] tex-[14px] ml-2">
+          Regards, <br>
+          <span class="">{{ emailDetail.sender }}</span> <br>
+          {{ emailDetail.designation }}, {{ emailDetail.company }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+</ng-container>
+</ng-container>
+    
+        <!-- Optional No Data Template (if needed) -->
+        <ng-template #noData>
+          <tr>
+            <td colspan="6" class="px-6 py-16 text-sm font-medium text-center text-gray-500">
+              <div class="flex flex-col items-center">
+                <i class="text-gray-400 icon icon-envelope" style="font-size: 64px;"></i>
+                <span class="text-[16px] font-semibold text-[#0e73a9] mt-2">No data found</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>  
+    </table>
+  </div>
+  
+<!-- Pagination -->
+<div class="flex justify-start">
+  <ul class="pagination flex items-center border border-[#E0E0E0] rounded-lg text-sm shadow-sm bg-white mt-5 p-0">
+    <!-- Previous Arrow -->
+    <li *ngIf="totalPages > 1"
+      class="px-4 py-2 border-r cursor-pointer text-[#337ab7] hover:bg-gray-200 rounded-l-md"
+      [class.opacity-50]="currentPage === 1"
+      (click)="currentPage > 1 && goToPage(currentPage - 1)">
+      «
+    </li>
+
+    <li 
+      class="px-4 py-2 border-r cursor-pointer text-[#337ab7]"
+      [class.bg-[#337ab7]]="currentPage === 1"
+      [class.text-white]="currentPage === 1"
+      [class.rounded-l-md]="totalPages === 1"
+      (click)="goToPage(1)">
+      1
+    </li>
+
+    <li *ngIf="currentPage > 3" 
+        class="px-4 py-2 border-r cursor-pointer hover:bg-gray-200 text-[#337ab7]"
+        [class.bg-[#337ab7]]="currentPage === (currentPage - 1)"
+        [class.text-white]="currentPage === (currentPage - 1)"
+        [class.font-bold]="currentPage === (currentPage - 1)"
+        (click)="goToPage(currentPage - 1)">
+      {{ currentPage - 1 }}
+    </li>
+
+    <li *ngIf="currentPage > 1 && currentPage < totalPages"
+        class="px-4 py-2 border-r cursor-pointer hover:bg-gray-200 text-[#337ab7]"
+        [class.bg-[#337ab7]]="true"
+        [class.text-white]="true"
+        [class.font-bold]="true">
+      {{ currentPage }}
+    </li>
+
+    <li *ngIf="currentPage < totalPages - 1" 
+        class="px-4 py-2 border-r cursor-pointer hover:bg-gray-200 text-[#337ab7]"
+        [class.bg-[#337ab7]]="currentPage === (currentPage + 1)"
+        [class.text-white]="currentPage === (currentPage + 1)"
+        [class.font-bold]="currentPage === (currentPage + 1)"
+        (click)="goToPage(currentPage + 1)">
+      {{ currentPage + 1 }}
+    </li>
+
+    <li *ngIf="currentPage < totalPages - 2" 
+        class="px-4 py-2 border-r cursor-pointer hover:bg-gray-200 text-[#337ab7]"
+        (click)="goToPage(totalPages)">
+      ...{{ totalPages }}
+    </li>
+
+    <li *ngIf="currentPage === totalPages - 1"
+        class="px-4 py-2 border-r cursor-pointer hover:bg-gray-200 text-[#337ab7]"
+        [class.bg-[#337ab7]]="currentPage === totalPages"
+        [class.text-white]="currentPage === totalPages"
+        [class.font-bold]="currentPage === totalPages"
+        [class.rounded-r-md]="totalPages === 1"
+        (click)="goToPage(totalPages)">
+      {{ totalPages }}
+    </li>
+
+    <!-- Next Arrow -->
+    <li *ngIf="totalPages > 1"
+      class="px-4 py-2 cursor-pointer text-[#337ab7] hover:bg-gray-200 rounded-r-md"
+      [class.opacity-50]="currentPage === totalPages"
+      (click)="currentPage < totalPages && goToPage(currentPage + 1)">
+      »
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,1158 @@
+<div class="flex flex-col justify-center w-full -mb-6">
+  <h2 class="text-base font-semibold text-gray-900 mb-0">Edit Company Information</h2>
+  <p class="text-sm text-gray-600 mt-0">Set up your bdjobs recruiter presence and hiring needs.</p>
+</div>
+<hr class="my-10 mx-0 mb-0 border-gray-200" />
+
+<div class="flex justify-center">
+  <div class="bg-white w-full max-w-full h-auto">
+    <!-- Form -->
+    <form action="" [formGroup]="employeeForm" (ngSubmit)="onContinue()" class="pt-0 mt-0">
+    <!-- Company Details Section -->
+
+    <div class="flex-col items-start gap-5 pb-6 pl-6 pr-6 bg-white rounded-xl pt-0">
+
+    <!-- Company Logo/Avatar and Name Row -->
+    <div class="flex items-center mb-8 mt-8 ml-0">
+      <div class="flex flex-col items-center mr-2 relative w-20">
+        <div class="relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer"
+             [ngClass]="{
+               'bg-gray-600': !profileImageUrl, 
+               'bg-white': profileImageUrl
+             }"
+             (click)="openProfileImageModal()">
+          <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Company Profile" class="w-full h-full object-cover rounded-full" />
+          <img *ngIf="!profileImageUrl" src="assets/images/uploadPhoto.svg" alt="Upload Icon" class="w-7 h-7 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        <button *ngIf="profileImageUrl" (click)="$event.stopPropagation(); openProfileImageModal()" type="button" class="absolute -top-1 right-0 w-8 h-8 rounded-full flex items-center justify-center shadow-none">
+          <img src="assets/images/profile icon.svg" alt="Edit Profile" class="w-7 h-7" />
+        </button>
+        <span *ngIf="!profileImageUrl" class="text-[11px] text-gray-500 mt-2 -mr-4 whitespace-nowrap w-[110px] text-center">Upload your Company logo</span>
+      </div>
+      <div class="flex-1 flex items-start ml-2">
+        <span class="text-base font-semibold text-gray-900 self-start mt-1">{{ employeeForm.controls['companyName'].value }}</span>
+      </div>
+    </div>
+
+        <h2 id="company-details" class="flex items-center mb-4 text-[#0E73A9] font-inter text-sm font-semibold leading-[24px]">
+          <span class="mr-2 icon icon-commercial"></span> Company Details Information
+
+        </h2>
+  
+        <!-- Company Name, Bangla Name, and Establishment Year -->
+        <div class="flex flex-col sm:flex-row sm:gap-4">
+  
+          <!-- Company Name in English -->
+          <div class="flex-1">
+            <app-input-field
+              label="Company Name"
+              name="txtCompanyName"
+              id="companyName"
+              [control]="formControlSignals()['companyName']"
+              placeholder="Type Company Name"
+              [maxLength]="120"
+              [isRequired]="true"
+              [disabled]="true"
+              [ngClass]="{'opacity-75 bg-[#eee]': true}">
+            </app-input-field>
+            <div class="text-red-600 text-[13px]" data-error-for="username">
+              @if (
+                isContinueClicked &&
+                firstInvalidField === 'companyName' &&
+                (employeeForm.controls['companyName'].errors?.['required'] || employeeForm.controls['companyName'].errors?.['whitespace'])
+              ) {
+                <span class="error-message">
+                  Company Name cannot be empty.
+                </span>
+              }
+              @else if(companyNameExistsMessage) {
+                <span class="error-message">{{ companyNameExistsMessage }}</span>
+              }
+              @else if(employeeForm.controls['companyName'].errors?.['maxlength']) {
+                <span class="error-message">
+                  Maximum allowed length is 120 characters.
+                </span>
+              }
+            </div>
+          </div>
+  
+          <!-- Company Name in Bangla -->
+          <div class="flex-1">
+            <app-input-field
+              label="কোম্পানির নাম (বাংলায়)"
+              name="txtCompanyNameBangla"
+              id="txtCompanyNameBangla"
+              [control]="formControlSignals()['companyNameBangla']"
+              placeholder="Type Company Name"
+              [maxLength]="120"
+              [isRequired]="false">
+            </app-input-field>
+            <div class="text-red-600 text-[13px]" data-error-for="companyNameBangla">
+              @if(employeeForm.controls['companyNameBangla'].touched && employeeForm.controls['companyNameBangla'].errors?.['invalidBanglaText']) {
+                <span class="error-message">Please use Bengali characters only  
+                </span>
+              }
+              @else if(employeeForm.controls['companyNameBangla'].errors?.['maxlength']) {
+                <span class="error-message">
+                  Maximum allowed length is 120 characters.
+                </span>
+              }
+          </div>
+          </div>
+  
+          <!-- Year of Establishment -->
+          <div class="flex-1">
+            <app-input-field
+              label="Year of Establishment"
+              name="txtCompanyEstablished"
+              id="yearsOfEstablishMent"
+              [control]="formControlSignals()['yearsOfEstablishMent']"
+              placeholder="Type Company's Establishment Year"
+              [maxLength]="4"
+              (input)="onInputChange($event)"
+              [isRequired]="true">
+            </app-input-field>
+            <div class="text-red-600 text-[13px]">
+              @if(isContinueClicked && firstInvalidField === 'yearsOfEstablishMent' && employeeForm.controls['yearsOfEstablishMent'].errors?.['required']) {
+                <span class="error-message">Please enter Year of Establishment</span>
+              }
+              @else if(isContinueClicked && employeeForm.controls['yearsOfEstablishMent'].errors?.['invalidYear']) {
+                <span class="error-message">Please enter a valid year within the range of 1800 to 2025
+                </span>
+              }
+              @else if(employeeForm.controls['yearsOfEstablishMent'].errors?.['maxlength']) {
+                <span class="error-message">
+                  Maximum allowed length is 4 characters.
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+  
+        <!-- Additional Company Information and Address -->
+        <app-radio-group
+          label="Number of Employees"
+          id="companySize"
+          [control]="formControlSignals()['companySize']"
+          [options]="['1-25', '26-50', '51-100', '101-500', '501-1000', '1000+']"
+          [isRequired]="true">
+        </app-radio-group>
+        <div class="text-red-600">
+          @if(isContinueClicked && firstInvalidField === 'companySize' && employeeForm.controls['companySize'].errors?.['required']) {
+            <span class="-mt-8 text-sm ">Select Company Size</span>
+          }
+      </div> 
+  
+        <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">
+          Company Address <span class="text-red-500">*</span>
+        </h2>
+  
+        <div class="flex flex-col px-0 sm:flex-row sm:gap-3">
+          <!-- Country Dropdown -->
+          <div class="relative dropdown-container flex-1 h-10 mb-2">
+            <button
+              type="button"
+              class="h-10 w-full px-4 py-2 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+              (click)="toggleDropdown()"
+            >
+              @if (selectedCountry) {
+                <span class="flex items-center">
+                  @if (selectedCountry.flagPath) {
+                    <img *ngIf="showFlag" [src]="selectedCountry.flagPath" alt="Flag" class="w-5 h-5 mr-2" />
+                  }
+                  {{ selectedCountry.OptionText }}
+                </span>
+              } @else {
+                <span class="text-black-400">Select Country</span>
+              }
+              <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+                <i class="icon icon-angle-bottom text-[8px] sm:text-[9px] md:text-[9px] lg:text-[9px]"></i>
+              </span>
+            </button>
+            <!-- Dropdown List -->
+            @if (isOpen) {
+              <div
+                [class.dropdown-upwards]="isDropdownUpwards"
+                [class.dropdown-downwards]="!isDropdownUpwards"
+                class="absolute z-10 mt-1 flex flex-col items-start w-[320px] max-h-64 overflow-y-auto rounded-lg border border-[#DAE5EC] bg-white shadow-lg"
+              >
+                <!-- Search Input -->
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    [formControl]="searchTerm"
+                    class="w-full p-2 border-b border-gray-200 rounded-t-lg focus:outline-none text-sm"
+                    placeholder="Search"
+                    
+                  />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 icon icon-search text-gray-400"></span>
+                </div>
+                <!-- Dropdown Items -->
+                <ul class="w-full ">
+                  @for (country of filteredCountries; track country.OptionText) {
+                    <li
+                      (click)="selectCountry(country)"
+                      class="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm"
+                    >
+                      @if (country.flagPath) {
+                        <img *ngIf="showFlag" [src]="country.flagPath" alt="Flag" class="w-5 h-5 mr-2" />
+                      }
+                      {{ country.OptionText }}
+                    </li>
+                  } @empty {
+                    <li class="px-4 py-2 text-gray-500 text-sm">No countries found</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+          @if (selectedCountry && selectedCountry.OptionText !== 'Bangladesh') {
+            <div class="flex-1">
+              <input
+                type="text"
+                id="outSideBd"
+                required
+                placeholder="Type City Name"
+                class="w-full h-10 px-4 py-2 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+                [formControl]="formControlSignals()['outSideBd']"
+                maxlength="30"
+              />
+              <div class="text-red-600 text-[13px]">
+                @if (isContinueClicked && firstInvalidField === 'outSideBd' && employeeForm.controls['outSideBd'].hasError('required')) {
+                  <span class="mt-10 text-sm">City can not be empty</span>
+                }
+                @else if(employeeForm.controls['outSideBd'].errors?.['maxlength']) {
+                  <span class="error-message">
+                    Maximum allowed length is 30 characters.
+                  </span>
+                }
+              </div>
+            </div>
+          } @else {
+            <!-- District -->
+            <div class="flex-1 mb-1 sm:mb-0">
+              <select
+                id="district"
+                class="h-10 w-full px-4 py-2 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+                [formControl]="formControlSignals()['district']"
+                [disabled]="districts.length === 0" 
+              >
+                <option value="" disabled>Select District</option> 
+                @for (district of districts; track district) {
+                  <option [value]="district.OptionValue">
+                    {{ district.OptionText }}
+                  </option>
+                }
+              </select>
+              <div class="mt-1 text-red-600 text-[13px]">
+                @if (isContinueClicked && firstInvalidField === 'district' && employeeForm.controls['district'].errors?.['required']) {
+                  <span class="-mt-20 text-sm">Select a District</span>
+                }
+              </div>
+            </div>
+            <!-- Thana -->
+            <div class="flex-1">
+              <select
+                id="thana"
+                class="h-10 w-full px-4 py-2 rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+                [formControl]="formControlSignals()['thana']"
+                [disabled]="thanas.length === 0"
+              >
+                <option value="" disabled>Select Thana</option>
+                @for (thana of thanas; track thana) {
+                  <option [value]="thana.OptionValue">
+                    {{ thana.OptionText }}
+                  </option>
+                }
+              </select>
+              <div class="mt-1 text-red-600 text-[13px]">
+                @if (isContinueClicked && firstInvalidField === 'thana' && employeeForm.controls['thana'].errors?.['required']) {
+                  <span class="-mt-20 text-sm">Select a Thana</span>
+                }
+              </div>
+            </div>
+          }
+        </div>       
+        <!-- Company Address Fields -->
+        <div class="grid grid-cols-1 gap-4 mt-6 sm:grid-cols-2">
+            @if (selectedCountry && selectedCountry.OptionText !== 'Bangladesh') {
+            <div class="col-span-1">
+            <app-text-area
+              name="txtCompanyAddress"
+              id="outsideBDCompanyAddress"
+              placeholder="Write Company Detail Address In English"
+              [control]="formControlSignals()['outsideBDCompanyAddress']"
+              [maxLength]="300"
+              [rows]="4"
+              class="w-full">
+            </app-text-area>
+            <div class="text-red-600">
+              @if (
+            isContinueClicked &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            (employeeForm.controls['outsideBDCompanyAddress'].errors?.['required'] || employeeForm.controls['outsideBDCompanyAddress'].errors?.['whitespace'])
+          ) {
+            <span class="error-message">
+              Company Address cannot be empty
+            </span>
+          }
+            @else if (
+            (isContinueClicked || employeeForm.controls['outsideBDCompanyAddress'].touched) &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            employeeForm.controls['outsideBDCompanyAddress'].errors?.['minlength']
+          ) {
+            <span class="error-message">
+          Your input is too short. Please add more details            </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['outsideBDCompanyAddress'].touched) &&
+            firstInvalidField === 'outsideBDCompanyAddress' &&
+            employeeForm.controls['outsideBDCompanyAddress'].errors?.['invalidPattern']
+          ) {
+            <span class="error-message">
+            Please enter a valid address            </span>
+          }
+          @else if(employeeForm.controls['outsideBDCompanyAddress'].errors?.['maxlength']) {
+            <span class="error-message">
+              Maximum allowed length is 300 characters.
+            </span>
+          }
+            </div>
+            </div>  
+          <div class="col-span-1">
+            <app-text-area
+              name="txtCompanyAddressBng"
+              id="txtCompanyAddressBng"
+              placeholder="Write Company Detail Address In Bangla"
+              [control]="formControlSignals()['outsideBDCompanyAddressBng']"
+              [maxLength]="300"
+              [rows]="4"
+              class="w-full">
+            </app-text-area>
+            <div class="text-red-600">
+              @if(employeeForm.controls['outsideBDCompanyAddressBng'].touched && employeeForm.controls['outsideBDCompanyAddressBng'].errors?.['invalidBanglaText']) {
+                <span class="error-message">Please use Bengali characters only 
+                </span>
+              }
+              @else if(employeeForm.controls['outsideBDCompanyAddressBng'].errors?.['maxlength']) {
+                <span class="error-message">
+                  Maximum allowed length is 300 characters.
+                </span>
+              }
+            </div>    
+          </div> 
+        }        
+        @else {
+          <div class="col-span-1">      
+          <app-text-area
+          name="txtCompanyAddress"
+          id="companyAddress"
+          placeholder="Write Company Detail Address In English"
+          [control]="formControlSignals()['companyAddress']"
+          [maxLength]="300"
+          [isRequired]="true"
+          [rows]="4"
+          class="w-full">
+        </app-text-area>
+        <div class="text-red-600">
+          @if (
+            isContinueClicked &&
+            firstInvalidField === 'companyAddress' &&
+            (employeeForm.controls['companyAddress'].errors?.['required'] || employeeForm.controls['companyAddress'].errors?.['whitespace'])
+          ) {
+            <span class="error-message">
+              Company Address cannot be empty
+            </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['companyAddress'].touched) &&
+            firstInvalidField === 'companyAddress' &&
+            employeeForm.controls['companyAddress'].errors?.['minlength']
+          ) {
+            <span class="error-message">
+          Your input is too short. Please add more details            </span>
+          }
+          @else if (
+            (isContinueClicked || employeeForm.controls['companyAddress'].touched) &&
+            firstInvalidField === 'companyAddress' &&
+            employeeForm.controls['companyAddress'].errors?.['invalidPattern']
+          ) {
+            <span class="error-message">
+            Please enter a valid address            </span>
+          }
+          @else if(employeeForm.controls['companyAddress'].errors?.['maxlength']) {
+            <span class="error-message">
+              Maximum allowed length is 300 characters.
+            </span>
+          }
+        </div> 
+          </div>
+        <div class="col-span-1">
+          <app-text-area
+            name="txtCompanyAddressBng"
+            id="txtCompanyAddressBng"
+            placeholder="Write Company Detail Address In Bangla"
+            [control]="formControlSignals()['companyAddressBangla']"
+            [maxLength]="300"
+            [rows]="4"
+            class="w-full">
+          </app-text-area>
+          <div class="text-red-600">
+            @if(employeeForm.controls['companyAddressBangla'].touched && employeeForm.controls['companyAddressBangla'].errors?.['invalidBanglaText']) {
+              <span class="error-message">Please use Bengali characters only   
+              </span>
+            }
+            @else if(employeeForm.controls['companyAddressBangla'].errors?.['maxlength']) {
+              <span class="error-message">
+                Maximum allowed length is 300 characters.
+              </span>
+            }
+        </div>
+        </div>
+      }
+        </div>
+
+    <!-- Industry Type Section -->
+<div class="flex items-center justify-between mt-4">
+  <!-- Industry Type Dropdown -->
+  <div class="flex-grow">
+    <h2 class="block mb-2 text-sm font-semibold text-gray-700">
+      Industry Type <span class="text-red-500">*</span>
+    </h2>
+    <select 
+      formControlName="industryType" 
+      id="industryTypeArray"
+      class="flex w-full p-[12px_14px] justify-between items-center rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm">
+      <option value="-1" >All</option>
+      @for (industry of industries | async; track industry.IndustryId) {
+        <option [value]="industry?.IndustryId">{{ industry?.IndustryName }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Add New Industry Button -->
+  @if (showAddIndustryButton)
+  {
+    <div class="mt-14 ml-4">
+      <button 
+        type="button"
+        class="flex items-center p-2 text-blue-500 rounded-lg hover:text-blue-800 text-sm"
+        (click)="addNewIndustry()">
+        <span class="mr-1 icon icon-plus"></span>Add a New Industry
+      </button>
+    </div>
+  }
+</div>
+
+<!-- Add Industry Modal -->
+@if (showAddIndustryModal)
+{
+  <app-add-industry-modal 
+    [closeModal]="closeAddIndustryModal.bind(this)"
+    [industries]="industries"
+    [selectedIndustryId]="selectedIndustryId" 
+    (industryTypeChanged)="onNewIndustryTypeChange($event)" 
+    (newIndustry)="onNewIndustryAdded($event)">
+  </app-add-industry-modal>
+}
+<!-- Industry Checkbox List Section -->
+<div class="flex flex-col items-start gap-6 self-stretch h-[280px] w-full sm:mx-0 mx-auto rounded-lg border border-[#DAE5EC] bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] p-6 mt-6 mb-2.5"
+     [class.error-border]="isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']">
+  <div class="relative w-full">
+    <input [formControl]="searchControl"
+           class="flex w-full px-2 py-1.5 sm:p-[12px] sm:px-[14px] pr-10 justify-between items-center self-stretch rounded-[8px] border focus:outline-none focus:border-[#0F6DDB] focus:ring-1 focus:ring-[#0F6DDB] text-sm"
+           placeholder="Search Industry">
+    <span class="absolute right-3 top-1/2 -translate-y-1/2 icon icon-search text-gray-400"></span>
+  </div>
+  <!-- Industry List Display -->
+  <div 
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6  self-stretch industry-list w-full" 
+    [class.expanded]="showAll">
+    @if (allIndustryNames && allIndustryNames.length > 0) {
+      @for (item of (showAll ? allIndustryNames : allIndustryNames.slice(0, 9)); track item.industryId) {
+        <div class="flex items-start text-xs sm:text-sm min-h-[20px]">
+          <input 
+            name="industry_type"
+            id="industry_type_{{item.industryId}}"
+            type="checkbox" 
+            [value]="item.industryId" 
+            [checked]="isIndustryChecked(item.industryId)"
+            class="h-[16px] w-[16px] text-blue-600 cursor-pointer border-2 shadow-inner border-black/30 
+                    checked:bg-blue-600 checked:border-blue-600 checked:appearance-auto" 
+                    style="min-width: 16px; min-height: 16px;"
+                    (change)="onIndustryCheckboxChange($event, item)" />
+          <label 
+            for="industry_type_{{item.industryId}}" 
+            class="ml-2 text-xs sm:text-sm font-inter text-black leading-[1.42857143]">
+            {{ item.industryName }}
+          </label>
+        </div>
+      }
+    } @else {
+      <div class="text-gray-500 text-sm col-span-3">No industries available</div>
+    }
+  </div>
+
+  @if (!showAll) {
+    <button 
+      type="button"
+      class="text-[#0E73A9] text-[13px] font-semibold focus:outline-none underline" 
+      [hidden]="allIndustryNames.length <= 9 || showAll"
+      (click)="toggleShowAll()">
+      See more
+    </button>
+  }
+  <div class="text-red-600 text-[13px]" *ngIf="industryValidationError">
+    {{ industryValidationError }}
+  </div>
+</div>
+
+<div class="flex flex-wrap gap-2 mt-4">
+  @for (industry of selectedIndustries; track industry.IndustryValue) {
+    <span
+      class="flex items-center bg-[#F3F4F6] text-[#212121] text-[13px] font-inter px-3 py-1 rounded-full shadow-sm"
+    >
+      {{ industry.IndustryName }}
+      <button
+        type="button"
+        class="ml-2 text-[#212121] bg-[#E5E7EB] w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-300 focus:outline-none"
+        (click)="removeIndustry(industry)"
+      >
+        &times;
+      </button>
+    </span>
+  }
+</div>
+
+<div class="text-red-600 text-[13px]">
+  @if(isContinueClicked && firstInvalidField === 'industryTypeArray' && employeeForm.controls['industryTypeArray'].errors?.['required']) {
+    <span class="mt-4 text-sm">Select Industry Type </span>
+  }
+</div>
+
+          <h2 class="block mt-4 mb-2 text-sm font-semibold text-gray-700">
+            Business Description
+          </h2>      
+          <app-text-area
+          name="txtDescription"
+          id="txtDescription"
+          [control]="formControlSignals()['businessDesc']"
+          placeholder="Write Business Description"
+          [rows]="4"
+          [maxLength]="2000"
+
+          ></app-text-area> 
+        
+          <div class="flex flex-col sm:flex-row sm:gap-4">
+            <div class="flex-1">
+              <app-input-field
+              label="Business/ Trade License No"
+              name="business_license_no"
+              [control]="formControlSignals()['tradeNo']"
+              id="business_license_no"
+              placeholder="Business/ Trade License No"
+              [value]="''"
+              [maxLength]="30"
+              [isRequired]="false"
+              >
+            </app-input-field>
+          
+            </div>
+            <div class="flex-1">
+              <app-input-field
+                label="RL No."
+                (blur)="onRLNoBlur()"
+                (input)="onInputChange($event)"
+                subLabel="(Only for Recruiting Agency)"
+                name="rlNo"
+                [control]="formControlSignals()['rlNo']"
+                id="rlNo"
+                placeholder="Enter Number Only"
+                [maxLength]="6"
+                [disabled]="rlNoFromApi"
+                [ngClass]="{'opacity-75': rlNoFromApi}"
+                
+              >
+              </app-input-field>
+              <div class="text-red-600 text-[13px]">
+                @if(employeeForm.controls['rlNo'].touched && employeeForm.controls['rlNo'].errors?.['required']) {
+                  <span class="error-message">This is required</span>
+                }
+            </div>  
+          </div>
+             @if (showErrorModal){
+               <app-error-modal (modalClosed)="closeModal()"></app-error-modal>
+           }
+              <div class="flex-1">
+                    <app-input-field
+                    label="Website URL"
+                    name="website_url"
+                    id="website_url"
+                    [control]="formControlSignals()['webUrl']"
+                    placeholder="Type Website URL"
+                    [value]="''"
+                    [maxLength]="50"
+                    [isRequired]="false"
+                    >
+                    </app-input-field>
+                    <div class="text-red-600 text-[13px]">
+                      @if(isContinueClicked && employeeForm.controls['webUrl'].errors?.['invalidUrl']) {
+                        <span class="error-message">The link has to start with http:// or https://</span>
+                      }
+                      @else if(employeeForm.controls['webUrl'].errors?.['maxlength']) {
+                        <span class="error-message">
+                          Maximum allowed length is 50 characters.
+                        </span>
+                      }
+                    </div>           
+                </div>   
+          </div>
+              </div>
+              <hr class="my-8 mt-4 -mb-4 border-gray-200" />
+
+              <div class="flex-col items-start gap-5 p-6 mt-6 bg-white rounded-2xl">
+                <h2 id="contact-details" class="flex items-center mb-4 text-[#0E73A9] font-inter text-sm font-semibold leading-[24px]">
+                  <img src="assets/images/phone.svg" alt="payment receipt" class="mr-1 w-5 h-5" />
+                  Contact Details
+                </h2>
+
+                <h3 class="text-base font-semibold text-gray-900 mb-3">Primary Contact</h3>
+                
+                <!-- Contact -->
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4 ">
+              <div class="flex-1">
+                <label for="contactName" class="block mb-2 text-sm font-semibold text-gray-700">
+                  Contact Person's Name <span class="text-red-500">*</span>
+                </label>
+                <select
+                  id="contactName"
+                  name="txtContactPerson"
+                  class="w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm px-4 py-2"
+                  [formControl]="formControlSignals()['contactName']"
+                  (change)="onContactPersonSelect($event)"
+                  required
+                >
+                  <option value="" disabled>Select Contact Person Name</option>
+                  @for (person of contactPersons; track person.contactId) {
+                    <option [value]="person.contactId">{{ person.contactName }}</option>
+                  }
+                </select>
+                <div class="mt-0 text-red-600 text-[13px]">
+                  @if (
+                    isContinueClicked &&
+                    firstInvalidField === 'contactName' &&
+                    (employeeForm.controls['contactName'].errors?.['required'] || employeeForm.controls['contactName'].errors?.['whitespace'])
+                  ) {
+                    <span class="error-message">
+                      Contact Person's Name cannot be empty
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="flex-1">
+                <label for="contactDesignation" class="block mb-2 text-sm font-semibold text-gray-700">
+                  Contact Person's Designation <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="contactDesignation"
+                  name="txtDesignation"
+                  class="h-10 gap-3 px-4 py-[12px] w-full rounded-lg border border-[#DAE5EC] bg-[#eee] shadow-[0_1px_2px_rgba(0,0,0,0.05)] text-sm opacity-75 focus:outline-none focus:border-[#DAE5EC]"
+                  [formControl]="formControlSignals()['contactDesignation']"
+                  placeholder="Type contact person's designation"
+                  maxlength="100"
+                  required
+                  [disabled]="true"
+                  readonly
+                />
+                <div class="text-red-600 text-[13px]">
+                  @if (
+                  isContinueClicked &&
+                  firstInvalidField === 'contactDesignation' &&
+                  (employeeForm.controls['contactDesignation'].errors?.['required'] || employeeForm.controls['contactDesignation'].errors?.['whitespace'])
+                ) {
+                  <span class="error-message">
+                    Contact Person's Designation can not be empty</span>
+                }
+              </div>
+              </div>
+            </div>
+          
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
+              <div class="flex-1">
+                <label for="contactEmail" class="block mb-2 mt-4 text-sm font-semibold text-gray-700">
+                  Contact Person's Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="contactEmail"
+                  name="txtContactEmail"
+                  class="h-10 gap-3 px-4 py-[12px] w-full rounded-lg border border-[#DAE5EC] bg-[#eee] shadow-[0_1px_2px_rgba(0,0,0,0.05)] text-sm opacity-75 focus:outline-none focus:border-[#DAE5EC]"
+                  [formControl]="formControlSignals()['contactEmail']"
+                  placeholder="Type contact person's email"
+                  maxlength="45"
+                  required
+                  [disabled]="true"
+                  readonly
+                />
+                <div class="text-red-600 text-[13px]">
+                  @if (
+                    isContinueClicked &&
+                    firstInvalidField === 'contactEmail' &&
+                    (employeeForm.controls['contactEmail'].errors?.['required'] || employeeForm.controls['contactEmail'].errors?.['whitespace'])
+                  ) {
+                    <span class="error-message">
+                      Contact Person's Email can not be empty                  </span>
+                  }
+                  @else if (employeeForm.controls['contactEmail'].errors?.['invalidEmail']) {
+                    <span class="error-message">Please enter a valid email address</span>
+                  }
+                  @else if(employeeForm.controls['contactEmail'].errors?.['maxlength']) {
+                    <span class="error-message">
+                      Maximum allowed length is 45 characters.
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="flex-1 dropdown-container">
+                <label for="contactMobile" class="block mb-2 mt-4 text-sm font-semibold text-gray-700">
+                  Contact Person's Mobile <span class="text-red-500">*</span>
+                </label>
+                <div class="h-10 flex  bg-[#eee]  items-center border border-[#DAE5EC] rounded-lg px-1.5 sm:px-3 py-2 w-full h[24px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]">
+                  <img *ngIf="showFlag"
+                    [src]="currentFlagPath" 
+                    alt="Flag" 
+                    class="w-4 h-4 mr-1 cursor-pointer" 
+                    [ngClass]="{'opacity-75': true}"
+                    (click)="$event.preventDefault()" 
+                    [attr.disabled]="true"
+                    style="pointer-events: none; opacity: 0.5;"
+                  />
+                  <div class="relative flex items-center">
+                    <button 
+                      class="flex items-center  bg-[#eee]  sm:py-2 pl-1 pr-1 sm:px-3 text-sm font-inter text-gray-900 border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
+                      type="button"
+                      [ngClass]="{'opacity-75 ': true}"
+                      [disabled]="true"
+                      (click)="toggleDropdownCountry()"
+                    >
+                      <span class="mr-1">({{ currentCountry.phoneCode }})</span>
+                      <svg class="w-2 h-2 ml-1 sm:w-3 sm:h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Dropdown for selecting country -->
+                    @if (isOpenCountry) {
+                      <div 
+                      class="absolute top-10 left-0 bg-white border rounded-lg shadow-md w-[280px] z-10">
+                        <div class="p-2">
+                          <input 
+                            type="text" 
+                            placeholder="Search" 
+                            class="w-full px-2 py-1 border rounded-lg focus:outline-none text-sm"
+                            [formControl]="searchControl" 
+                          />
+                        </div>
+                        <!-- Country list with flag, name, and code -->
+                        <ul class="overflow-y-auto max-h-64">
+                          @for (country of filteredCountriesList; track country) {
+                            <li
+                              (click)="chooseCountry(country)"
+                              class="flex items-center px-2 py-2 cursor-pointer hover:bg-gray-100 text-sm"
+                            >
+                              <img *ngIf="showFlag" [src]="filePath[country.name]" alt="Flag" class="w-4 h-4 mr-2" />
+                              <span>{{ country.name }} ({{ country.phoneCode }})</span>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                  </div>                
+                  <!-- Mobile Number Input -->
+                  <input 
+                    type="text" 
+                    id="contactMobile" 
+                    name="txtContactMobile" 
+                    class="flex-1 px-2 py-1 text-black  bg-[#eee]  placeholder-gray-400 border-none text-md font-inter focus:outline-none text-sm"
+                    placeholder="Enter Mobile Number" 
+                    (input)="onInputChange($event)"
+                    [formControl]="formControlSignals()['contactMobile']"
+                    minlength="10"
+                    [ngClass]="{'opacity-75': true}"
+                    maxlength="{{ isBangladesh ? '10' : '15' }}"
+                    required 
+                  />
+                </div>        
+              </div>
+            </div>
+             
+
+              <!-- Add Contact Person Button -->
+              <div class="flex justify-start mt-4">
+                <a 
+                  href="https://recruiter.bdjobs.com/usermanagement/" 
+                  target="_blank"
+                  class="inline-flex items-center px-4 py-2.5 text-sm font-inter bg-[#0E73A9] text-white rounded-lg hover:bg-[#0E73A9]/90 transition-colors duration-200 shadow-sm"
+                >
+                  Add/Edit Contact Person
+                </a>
+              </div>
+            </div>
+        <hr class="my-8 mt-4 -mb-4 border-gray-200" />
+
+
+      <!-- billing address -->
+                 <div class="flex-col items-start gap-5 p-6 mt-6 bg-white rounded-2xl">
+                <h2 id="billing-address" class="flex items-center mb-4 text-[#0E73A9] font-inter text-sm font-semibold leading-[24px]">
+                  <img src="assets/images/billingNew.svg" alt="payment receipt" class="mr-2 w-5 h-5" />
+                  Billing Address
+                </h2>
+                <!-- Contact -->
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4 ">
+              <div class="flex-1">
+                <label for="billingAddress" class="block mb-2 text-sm font-semibold text-gray-700">
+                  Billing Address <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="billingAddress"
+                  name="txtbillingAddress"
+                  class="h-10 gap-3 px-4 py-[12px] w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+                  [formControl]="formControlSignals()['billingAddress']"
+                  placeholder="Type billing address"
+                  maxlength="145"
+                  required
+                />
+                <div class="mt-4 text-red-600 text-[13px]">
+                  @if (
+                  isContinueClicked &&
+                  firstInvalidField === 'billingAddress' &&
+                  (employeeForm.controls['billingAddress'].errors?.['required'] || employeeForm.controls['billingAddress'].errors?.['whitespace'])
+                ) {
+                  <span class="error-message">
+                    Billing Address can not be empty
+                  </span>
+                }
+                @else if(employeeForm.controls['billingAddress'].errors?.['maxlength']) {
+                  <span class="error-message">
+                    Maximum allowed length is 145 characters.
+                  </span>
+                }
+              </div>
+              </div>
+               <div class="flex-1 dropdown-container billing-contact-dropdown-container">
+                <label for="billingContact" class="block mb-2 text-sm font-semibold text-gray-700">
+                  Billing Contact Number<span class="text-red-500">*</span>
+                </label>
+                <div class="h-10 flex items-center border border-[#DAE5EC] rounded-lg px-1.5 sm:px-3 py-2 w-full shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB]">
+                  <img *ngIf="showFlag"
+                    [src]="currentFlagPath" 
+                    alt="Flag" 
+                    class="w-4 h-4 mr-1 cursor-pointer" 
+                    (click)="toggleDropdownCountryBilling()" 
+                  />
+                  <div class="relative flex items-center">
+                    <button 
+                      class="flex items-center sm:py-2 pl-1 pr-1 sm:px-3 text-sm font-inter text-gray-900 bg-white border-r border-[#DAE5EC] hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none"
+                      type="button"
+                      (click)="toggleDropdownCountryBilling()"
+                    >
+                      <span class="mr-1">({{ currentCountry.phoneCode }})</span>
+                      <svg class="w-2 h-2 ml-1 sm:w-3 sm:h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Dropdown for selecting country -->
+                    @if (isOpenCountryBilling) {
+              <div
+                       class="absolute top-10 left-0 bg-white border rounded-lg shadow-md z-10"
+                       style="width:400px !important; min-width:280px !important; max-width:280px !important;">
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                            class="w-full px-2 py-1 border rounded-lg focus:outline-none text-sm"
+                            [formControl]="searchControl" 
+                  />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 icon icon-search text-gray-400"></span>
+
+                          
+                </div>
+                        <!-- Country list with flag, name, and code -->
+                        <ul class="overflow-y-auto max-h-64" style="width:100% !important; min-width:400px !important;">
+                          @for (country of filteredCountriesList; track country) {
+                            <li 
+                              (click)="chooseCountry(country)"
+                              class="flex items-center px-2 py-2 cursor-pointer hover:bg-gray-100 text-sm"
+                            >
+                              <img *ngIf="showFlag" [src]="filePath[country.name]" alt="Flag" class="w-4 h-4 mr-2" />
+                              <span>{{ country.name }} ({{ country.phoneCode }})</span>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                  </div>                
+                  <!-- Mobile Number Input -->
+                  <input 
+                    type="text" 
+                    id="billingContact" 
+                    name="txtbillingContact" 
+                    class="flex-1 px-2 py-1 text-black placeholder-gray-400 border-none text-md font-inter focus:outline-none text-sm"
+                    placeholder="Enter Mobile Number" 
+                    (input)="onInputChange($event)"
+                    [formControl]="formControlSignals()['billingContact']"
+                    minlength="10"
+                    maxlength="{{ isBangladesh ? '10' : '15' }}"
+                    required 
+                  />
+                </div>
+                <div class="mt-4 text-red-600 text-[13px]">
+                  @if (
+                  isContinueClicked &&
+                  firstInvalidField === 'billingContact' &&
+                  (employeeForm.controls['billingContact'].errors?.['required'] || employeeForm.controls['billingContact'].errors?.['whitespace'])
+                ) {
+                  <span class="error-message">
+                    Billing Contact Number can not be empty
+                  </span>
+                }
+                   @else if (isBangladesh && (employeeForm.controls['billingContact'].errors?.['minlength'] || employeeForm.controls['contactMobile'].errors?.['maxlength'])) {
+                  <span class="mt-4 text-sm">
+                    Contact Number must be 10 digits and won't start from 0
+                  </span>
+                }
+                
+                @else if (employeeForm.controls['billingContact'].errors?.['mobile']) {
+                  <span class="mt-4 text-sm">Please enter a valid mobile number</span>
+                }
+                @else if(employeeForm.controls['billingContact'].errors?.['maxlength']) {
+                  <span class="error-message">
+                    Maximum allowed length is {{ isBangladesh ? '10' : '15' }} characters.
+                  </span>
+                }
+              </div>          
+              </div>
+            </div>
+          
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
+              <div class="flex-1">
+                <label for="billingEmail" class="block mb-2 mt-1 text-sm font-semibold text-gray-700">
+                  Billing Contact's Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="billingEmail"
+                  name="txtbillingEmail"
+                  class="h-10 gap-3 px-4 py-[12px] w-full rounded-lg border border-[#DAE5EC] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none focus:border-[#0F6DDB] text-sm"
+                  [formControl]="formControlSignals()['billingEmail']"
+                  placeholder="Type contact person's email"
+                  maxlength="45"
+                  required
+                />
+                <div class=" mt-4 text-red-600 text-[13px]">
+                  @if (
+                    isContinueClicked &&
+                    firstInvalidField === 'billingEmail' &&
+                    (employeeForm.controls['billingEmail'].errors?.['required'] || employeeForm.controls['billingEmail'].errors?.['whitespace'])
+                  ) {
+                    <span class="error-message">
+                      Billing Contact's Email can not be empty
+                    </span>
+                  }
+                  @else if (employeeForm.controls['billingEmail'].errors?.['invalidEmail']) {
+                    <span class="error-message">Please enter a valid email address</span>
+                  }
+                  @else if(employeeForm.controls['billingEmail'].errors?.['maxlength']) {
+                    <span class="error-message">
+                      Maximum allowed length is 45 characters.
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+
+ <div class="p-6 flex-col mt-6 items-start gap-5 rounded-2xl bg-white">
+  <hr class="my-12 -mt-6 border-gray-200" />
+
+<!-- Accessibility Profile -->
+<section class="my-4">
+  <!-- Checkbox -->
+  <div class="mb-4">
+    <label class="block text-[20px] font-semibold text-gray-900 mb-2">
+      Does your company have facilities for person with disabilities?
+      <a href="https://corporate3.bdjobs.com/disability-inclusion-practices.asp" target="_blank" class="text-[#0E73A9] hover:text-[#3d6b96] underline text-base font-normal ml-2">Learn more</a>
+    </label>
+    <div class="flex flex-col sm:flex-row gap-6">
+      <!-- Yes Card -->
+      <label
+        class="relative flex flex-col justify-between cursor-pointer border rounded-lg p-4 w-full sm:w-[240px] min-h-[100px] transition-all duration-200
+          text-gray-900
+          flex-shrink-0
+          "
+        [ngClass]="{
+          'bg-[#eff4f7] border-[#bbe2f7] shadow-md': employeeForm.get('facilityForDisability')?.value == 1,
+          'bg-white border-[#DAE5EC]': employeeForm.get('facilityForDisability')?.value != 1
+        }"
+      >
+        <!-- Radio at top right -->
+        <input
+          type="radio"
+          name="facility_for_disability"
+          [value]="1"
+          [formControl]="formControlSignals()['facilityForDisability']"
+          class="absolute top-3 right-3 accent-[#0E73A9] w-5 h-5"
+        />
+        <span class="text-lg font-semibold mb-2 mt-2">Yes</span>
+        <span class="text-[15px] font-semibold text-gray-600">Facilities for person with Disabilities here.</span>
+      </label>
+      <!-- No Card -->
+      <label
+        class="relative flex flex-col justify-between cursor-pointer border rounded-lg p-4 w-full sm:w-[240px] min-h-[100px] transition-all duration-200
+          text-gray-900
+          flex-shrink-0
+          "
+        [ngClass]="{
+          'bg-[#eff4f7] border-[#bbe2f7] shadow-md': employeeForm.get('facilityForDisability')?.value == 0,
+          'bg-white border-[#DAE5EC]': employeeForm.get('facilityForDisability')?.value != 0
+        }"
+      >
+        <!-- Radio at top right -->
+        <input
+          type="radio"
+          name="facility_for_disability"
+          [value]="0"
+          [formControl]="formControlSignals()['facilityForDisability']"
+          class="absolute top-3 right-3 accent-[#0E73A9] w-5 h-5"
+        />
+        <span class="text-lg font-semibold mb-2 mt-2">No</span>
+        <span class="text-[15px] font-semibold text-gray-600">Facilities for person with Disabilities here.</span>
+      </label>
+    </div>
+  </div>
+
+  @if (employeeForm.get('facilityForDisability')?.value === 1) {
+      <div  id="DisabilityPanel" class="block -mr-2">
+<div class="container flex flex-wrap p-4 mx-auto mt-2 mb-4 -ml-2 rounded-lg" style="background-image: url('assets/images/disability.svg'); background-size: 60%; background-repeat: no-repeat; background-position: right;">
+  
+    <div class="w-full mb-6 lg:w-1/2">
+            <fieldset class="mb-4">
+                <legend class="text-[#212121] font-inter text-sm font-semibold leading-[20px]">Do you have Disability Inclusion Policy</legend>
+                <label class="mr-4 radio-inline " for="disabilityInclusRadPol1">
+                    <input 
+                    type="radio" 
+                    name="disabilityInclusRadPol" 
+                    id="disabilityInclusRadPol1"
+                    [value]="'1'"
+                    [formControl]="formControlSignals()['inclusionPolicy']"
+                    >
+                    <span class="ml-1 question text-sm">Yes</span>
+                </label>
+                <label class="mr-4 radio-inline" for="disabilityInclusRadPol2">
+                    <input type="radio" 
+                    name="disabilityInclusRadPol" 
+                    id="disabilityInclusRadPol2" 
+                    [value]="'2'"
+                    [formControl]="formControlSignals()['inclusionPolicy']">
+                    <span class="ml-1 question text-sm">No</span>
+                </label>
+            </fieldset>
+
+   @if (formControlSignals()['inclusionPolicy'].value === '2') 
+              {    
+                <fieldset class="mb-4">
+                    <legend class="text-[#212121] font-inter text-sm font-semibold leading-[20px]">Would you like to have any support for implementing?</legend>
+                    <label class="mr-4 radio-inline" for="disabilityInclusRadPol3">
+                        <input type="radio"
+                         name="disabilityInclusRadPolSupport"
+                         id="disabilityInclusRadPol3" 
+                         [value]="'1'"
+                         [formControl]="formControlSignals()['support']">
+                        <span class="ml-1 question text-sm">Yes</span>
+                    </label>
+                    <label class="mr-4 radio-inline" for="disabilityInclusRadPol4">
+                        <input type="radio" 
+                        class="custom-radio" 
+                        name="disabilityInclusRadPolSupport" 
+                        id="disabilityInclusRadPol4" 
+                        [value]="'2'"
+                        [formControl]="formControlSignals()['support']">
+                        <span class="ml-1 question text-sm">No</span>
+                    </label>
+                </fieldset>  
+              }   
+                <fieldset class="mb-4">
+                  <legend class="text-[#212121] font-inter text-sm font-semibold leading-[20px]">Do you provide Disability Inclusion Training for your Employees?</legend>
+                  <label class="mr-4 radio-inline" for="disabilityInclusRadPol5">
+                      <input type="radio" 
+                      name="disabilityInclus" 
+                      id="disabilityInclusRadPol5" 
+                      [value]="'1'"
+                      [formControl]="formControlSignals()['training']">
+                      <span class="ml-1 question text-sm">Yes</span>
+                  </label>
+                  <label class="mr-4 radio-inline " for="disabilityInclusRadPol6">
+                      <input type="radio" 
+                      name="disabilityInclus" 
+                      id="disabilityInclusRadPol6" 
+                      [value]="'2'"
+                      [formControl]="formControlSignals()['training']">
+                      <span class="ml-1 question text-sm">No</span>
+                  </label>
+              </fieldset> 
+        </div>
+</div>
+            
+      <div class="rounded-lg border border-[#DAE5EC] bg-white shadow flex flex-col items-start gap-6 p-6 self-stretch">
+        <h2 class="text-[#212121] font-inter text-sm font-semibold leading-[20px] mb-4">
+          As part of Disability Inclusion, what do your company have?
+        </h2>  
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          @for (item of disabilities; track item) {
+            <div class="flex items-start">
+              <input name="disability_type" 
+                    [checked]="isValueInDiList(item.value)" 
+                    type="checkbox" 
+                    id="disability_wrap_{{item.value}}"
+                    [value]="item.value" 
+                    (change)="onCheckboxChange($event)" 
+                    class="h-[16px] w-[16px] text-blue-600 cursor-pointer border-2 shadow-inner border-black/30 
+                            checked:bg-blue-600 checked:border-blue-600 checked:appearance-auto" 
+                            style="min-width: 16px; min-height: 16px;"
+                            >
+              <label for="disability_wrap_{{item.value}}"  class="text-sm leading-[1.42857143] font-inter text-black box-border ml-2">
+                {{ item.label }}
+              </label>
+            </div>            
+          }
+        </div>
+      </div>
+        </div>
+      }
+      </section>
+      </div>
+            <section class="flex justify-end mt-8">
+              <div class="relative inline-flex">
+                <button 
+                  type="submit"
+                  [disabled]="isLoading"
+                  class="box-border m-0 font-inherit overflow-visible text-center font-normal leading-normal align-middle whitespace-nowrap touch-manipulation select-none border border-transparent rounded inline-flex items-center bg-[#05A44B] text-white text-sm font-inter px-4 py-2.5 shadow-md transition duration-300 ease-linear hover:bg-[#048a3f] disabled:opacity-50 disabled:cursor-not-allowed">
+                  <span *ngIf="isLoading" class="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Save Changes
+                </button>
+              </div>
+            </section>
+              <div class="mt-6">
+                {{formValue | json}}
+              </div>
+              
+<!-- Profile Image Modal -->
+@if (showProfileImageModal) {
+  <app-profile-image-modal
+    [closeModal]="closeProfileImageModal.bind(this)"
+    (imageUploaded)="onProfileImageUploaded($event)">
+  </app-profile-image-modal>
+}
+              

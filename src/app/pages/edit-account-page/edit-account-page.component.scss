@@ -1,0 +1,173 @@
+.error-message {
+    color: #e3342f;
+    font-size: 0.875rem; 
+    margin-top: -14px; 
+    display: block; 
+    margin-bottom: 24px;
+  }
+
+  :host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .max-w-full {
+    max-width: 100%;
+  }
+
+  @media (max-width: 1024px) {
+    :host {
+      padding: 0 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :host {
+      padding: 0 0.5rem;
+    }
+  }
+
+  .flex-col {
+    min-width: 0;
+  }
+
+  form {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .bg-white {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .your-container {
+    @apply bg-[#F9FAFB] w-[1750px] h-[3022px];
+  }
+
+  :host ::ng-deep {
+    label {
+      font-size: 14px !important;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="password"],
+    select,
+    textarea {
+      font-size: 16px !important;
+      
+      &::placeholder {
+        font-size: 16px !important;
+      }
+    }
+    
+    .form-control,
+    [formControlName] {
+      font-size: 16px !important;
+    }
+    
+    h2, h3 {
+      &.block {
+        font-size: 14px !important;
+      }
+    }
+    
+    legend {
+      font-size: 14px !important;
+    }
+    
+    span.question {
+      font-size: 16px !important;
+    }
+    
+    button {
+      font-size: 16px !important;
+    }
+    
+    option {
+      font-size: 16px !important;
+    }
+  }
+
+  .row {
+    background-image: url('/public/assets/images/disability.svg'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+.question {
+  color: #212121;
+  font-size: 16px; 
+  font-weight: 500; 
+  line-height: 1.5rem; 
+  letter-spacing: 0.02em; 
+  font-family: 'Inter', sans-serif;
+}
+.error-border {
+  border: 2px solid red;
+}
+
+.industry-list {
+  max-height: 150px; /* Initial max height */
+  overflow-y: hidden; /* Hidden scroll initially */
+  transition: max-height 0.3s ease-in-out;
+}
+
+.industry-list.expanded {
+  max-height: 400px; /* Expanded max height */
+  overflow-y: auto; /* Enable scroll when expanded */
+}
+.custom-select option {
+  padding-left: 30px; /* Adjust as needed for flag width */
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px 20px; /* Adjust flag size */
+}
+
+@media (max-width: 320px) {
+  #resImg  {
+    background: url('/public/assets/images/midBackground.svg') no-repeat center;
+    background-size: cover;
+  }
+}
+.dropdown-container {
+  .dropdown-upwards {
+    bottom: 100%;
+    margin-bottom: 0.25rem;
+    top: auto;
+    margin-top: 0;
+  }
+
+  .dropdown-downwards {
+    top: 100%;
+    margin-top: 0.25rem;
+    bottom: auto;
+    margin-bottom: 0;
+  }
+}
+
+.billing-contact-dropdown-container {
+  min-width: 350px;
+  max-width: 450px;
+  width: 100%;
+}
+
+:host ::ng-deep {
+  app-add-industry-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

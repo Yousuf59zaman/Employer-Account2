@@ -1,0 +1,18 @@
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.logo-ring {
+	@apply h-14 w-14 rounded-full border border-neutral-300 bg-white flex items-center justify-center;
+}
+
+.logo-img {
+	@apply max-h-9 object-contain;
+}
+
+

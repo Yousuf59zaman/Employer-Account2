@@ -30,20 +30,20 @@
 }
 
 .industry-list {
-  max-height: 150px; /* Initial max height */
-  overflow-y: hidden; /* Hidden scroll initially */
+  max-height: 150px; 
+  overflow-y: hidden;
   transition: max-height 0.3s ease-in-out;
 }
 
 .industry-list.expanded {
-  max-height: 400px; /* Expanded max height */
-  overflow-y: auto; /* Enable scroll when expanded */
+  max-height: 400px; 
+  overflow-y: auto; 
 }
 .custom-select option {
-  padding-left: 30px; /* Adjust as needed for flag width */
+  padding-left: 30px;
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: 20px 20px; /* Adjust flag size */
+  background-size: 20px 20px; 
 }
 
 @media (max-width: 320px) {

@@ -1,0 +1,23 @@
+<div>
+  @if (label()) {
+  <label [ngClass]="classesForLabel()" [for]="name" data-testid="label">
+    {{label()}}
+    <span [ngClass]="isRequired()?'text-red-400':'hidden'">*</span>
+  </label>
+  }
+  @if (type() === 'text' || 'password' || 'email' || 'number') {
+  <div class="relative my-2 rounded-md shadow-sm border" [ngClass]="{'border-red-500': control().errors?.['invalid']}">
+    <span class="icon-redo absolute py-2.5 ml-2 text-[#323232]"
+      [ngClass]="{'hidden': !isExtraAttempt(), 'py-[15px]': isExtraAttempt() && control().errors?.['invalid']}"></span>
+    <input [type]="type()" [name]="name" [id]="name" [class]="styleClass" [ngClass]="classes()"
+      [required]="isRequired()" [readOnly]="isDisabled()" [placeholder]="placeholder()" [formControl]="control()"
+      [min]="minValue()" [max]="maxValue()" [maxlength]="maxLength()">
+  </div>
+  }
+  <!-- Error Message -->
+  @if(control().errors?.['invalid']){
+  <p class="text-sm text-red-600 mt-2 text-error-primary-600" id="hs-validation-name-error-helper">
+    {{ validationText() }}
+  </p>
+  }
+</div>

@@ -1,0 +1,17 @@
+<div class="w-full h-full flex flex-col">
+ 
+  <!-- Options List -->
+  <div class="flex-1 flex flex-col">
+    @for (option of talentSearchOptions; track option.id) {
+      <button 
+        (click)="selectOption(option.id)"
+        [class]="option.isActive 
+          ? 'w-full px-4 py-3 text-left text-white bg-[#0E73A9] font-medium font-[\'Inter\'] transition-colors duration-200'
+          : 'w-full px-4 py-3 text-left text-black bg-white font-medium font-[\'Inter\'] hover:bg-gray-50 transition-colors duration-200'"
+      >
+        {{ option.name }}
+      </button>
+    }
+  </div>
+</div>
+

@@ -1,0 +1,156 @@
+<div class="w-full md:w-[544px] p-6 bg-white rounded-[10px] shadow-[2px_4px_14px_0px_rgba(217,235,244,1.00)] border border-sky-700">
+
+  @if (selectedTalentSearchOption?.id === 'resume-on-demand') {
+    <div class="w-full">
+              <h2 class="text-[18px] font-bold text-[#212121] mb-4 text-left font-['Inter'] mt-4">For Each Job Position</h2>
+      
+      <div class="h-px bg-gray-300 mb-6"></div>
+      
+              <div class="space-y-4 mb-6">
+          <div class="flex justify-between items-center">
+            <span class="text-[#212121] text-[17px] font-bold">Price</span>
+            <span class="text-[#212121] text-[17px] font-bold">{{ formatNumber(resumeOnDemandPriceDisplay()) }} {{ currencyLabel() }}</span>
+          </div>
+          
+          @if (!isInternational()) {
+            <div class="flex justify-between items-center">
+              <span class="text-[#212121] text-[17px] font-bold">VAT &#64; 5%</span>
+              <span class="text-[#212121] text-[17px] font-bold">{{ formatNumber(vatAmount()) }} {{ currencyLabel() }}</span>
+            </div>
+          }
+        </div>
+      
+      <div class="h-px bg-gray-300 mb-6"></div>
+      
+              <div class="flex justify-between items-center mb-8">
+          <span class="text-[#212121] text-[17px] font-bold">Amount to Pay</span>
+          <span class="text-[#0E73A9] font-bold text-[20px]">= {{ formatNumber(isInternational() ? resumeOnDemandPriceDisplay() : totalAmount()) }} {{ currencyLabel() }}</span>
+        </div>
+      
+      <button 
+        (click)="placeResumeOnDemandOrder()"
+        class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
+      >
+        Place Order
+      </button>
+    </div>
+  }
+
+  <!-- Instant Buy Pricing Table -->
+  @if (selectedTalentSearchOption?.id === 'instant-buy') {
+    <div class="border border-sky-200 rounded-lg overflow-hidden overflow-x-auto">
+      <table class="w-full border-collapse min-w-[420px]">
+        <thead>
+          <tr class="bg-sky-50">
+            <th class="text-left px-4 py-3 text-[#0074B7] text-base font-bold font-['Inter'] border-b border-sky-200">
+              Number of CV
+            </th>
+            <th class="text-right px-4 py-3 text-[#0074B7] text-base font-bold font-['Inter'] border-b border-sky-200">
+              Price
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of cvItemsDisplay(); track item.numberOfCV) {
+            <tr class="border-b border-sky-100 last:border-b-0">
+              <td class="px-4 py-3 text-zinc-800 text-base font-normal font-['Inter']">
+                <span class="font-semibold">{{ item.numberOfCV }}</span>
+              </td>
+              <td class="px-4 py-3 text-zinc-800 text-base font-normal font-['Inter'] text-right">
+                <span class="font-semibold">{{ item.price.split(' ')[0] }} {{ item.price.split(' ')[1] }}</span>
+                <span class="font-normal"> {{ item.price.split(' ').slice(2).join(' ') }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VAT Notice -->
+    <div class="mt-4 text-center">
+      <p class="text-sm font-normal font-['Inter']">5% VAT Included</p>
+    </div>
+  }
+
+  <!-- Bulk Option -->
+  @if (selectedTalentSearchOption?.id === 'bulk') {
+    <div class="w-full">
+                      <div class="flex justify-between items-center mb-3 mt-4">
+          <span class="text-lg font-bold text-[#212121] font-['Inter']">Bulk</span>
+          <div class="flex items-center gap-2">
+            @if (!isInternational()) {
+              <span class="text-[20px] font-bold text-[#0E73A9] font-['Inter']">4,000 BDT</span>
+            } @else {
+              <span class="text-[20px] font-bold text-[#0E73A9] font-['Inter']">65 USD</span>
+            }
+            <span class="text-[14px] font-normal text-gray-500 font-['Inter']">Per Job</span>
+          </div>
+        </div>
+        
+        <div class="h-px bg-gray-300 mb-4"></div>
+        
+        <div class="space-y-3 mb-4">
+          <div class="flex justify-between items-center">
+            <span class="text-[#212121] text-[17px] font-bold font-['Inter']">Quantity</span>
+            <select 
+              (change)="onQuantityChange($event)"
+              [value]="selectedQuantity()"
+              class="px-3 py-2 border border-[#3f99c9] rounded-md text-[#212121] text-[14px] font-medium font-['Inter']"
+            >
+              <option value="1000">1000</option>
+              <option value="2000">2000</option>
+              <option value="2500">2500</option>
+              <option value="5000">5000</option>
+              <option value="10000">10000</option>
+              <option value="15000">15000</option>
+            </select>
+          </div>
+          
+          <div class="flex justify-between items-center">
+            <span class="text-[#212121] text-[17px] font-bold font-['Inter']">Validity</span>
+            <select 
+              (change)="onValidityChange($event)"
+              [value]="selectedValidity()"
+              class="px-3 py-2 border border-[#3f99c9] rounded-md text-[#212121] text-[14px] font-medium font-['Inter']"
+            >
+              @for (validity of getValidityOptions(); track validity) {
+                <option [value]="validity">{{ validity }} {{ validity === 1 ? 'Month' : 'Months' }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        
+        <div class="h-px bg-gray-300 mb-4"></div>
+        
+        <div class="space-y-3 mb-4">
+          <div class="flex justify-between items-center">
+            <span class="text-[#212121] text-[17px] font-bold font-['Inter']">Price</span>
+            <span class="text-[#212121] text-[17px] font-bold font-['Inter']">{{ formatNumber(bulkPrice()) }} {{ currencyLabel() }}</span>
+          </div>
+          
+          @if (!isInternational()) {
+            <div class="flex justify-between items-center">
+              <span class="text-[#212121] text-[17px] font-bold font-['Inter']">VAT &#64; 5%</span>
+              <span class="text-[#212121] text-[17px] font-bold font-['Inter']">{{ formatNumber(bulkVatAmount()) }} {{ currencyLabel() }}</span>
+            </div>
+          }
+        </div>
+        
+        <div class="h-px bg-gray-300 mb-4"></div>
+        
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-[#212121] text-[17px] font-bold font-['Inter']">Amount to Pay</span>
+          <span class="text-[#0E73A9] font-bold text-[20px] font-['Inter']">= {{ formatNumber(bulkTotalAmount()) }} {{ currencyLabel() }}</span>
+        </div>
+        
+        <button 
+          (click)="placeBulkOrder()"
+          class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200 font-['Inter']"
+        >
+          Place Order
+        </button>
+    </div>
+  }
+
+</div>
+

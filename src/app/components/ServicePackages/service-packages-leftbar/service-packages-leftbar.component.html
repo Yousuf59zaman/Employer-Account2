@@ -1,0 +1,108 @@
+<div class="relative md:left-0 md:top-[1px] md:absolute flex flex-col justify-start gap-2 min-h-[400px] w-full">
+  <div class="flex flex-col justify-start w-full">
+    <div class="self-stretch flex flex-col justify-start gap-2 w-full">
+      <!-- Prepaid Section -->
+      <div class="w-full p-4 flex justify-between items-center cursor-pointer border-l border-b border-neutral-200 font-semibold"
+        [ngClass]="expandedSections.prepaid ? 'bg-[#0E73A9] text-white' : 'bg-white text-zinc-800'"
+        (click)="toggleSection('prepaid')">
+        <div class="text-lg font-['Inter'] font-semibold">Prepaid</div>
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-200"
+          [ngClass]="expandedSections.prepaid ? 'text-white' : 'text-zinc-800'"
+          [class.rotate-180]="expandedSections.prepaid"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      @if (expandedSections.prepaid) {
+        <div class="flex flex-col justify-start items-start" @expandCollapse>
+          @if (showSmePackage) {
+            <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+              [ngStyle]="selectedPackage === 'sme-listing' ? {'color': '#165273', 'font-weight': '700'} : {}"
+              (click)="selectPackage('sme-listing')">
+              <div class="justify-start text-base font-normal font-['Inter']">SME Listing</div>
+            </div>
+          }
+          <div class="w-full md:w-80 pl-8 pr-4 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'standard-listing' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('standard-listing')">
+            <div class="justify-start text-base font-normal font-['Inter']">Standard Listing</div>
+            <div class="w-4 h-3 relative origin-top-left rotate-90"></div>
+          </div>
+          <div class="w-full md:w-80 px-8 py-4 relative flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'premium-listing' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('premium-listing')">
+            <div class="justify-start text-base font-normal font-['Inter']">Premium Listing</div>
+            @if (isRecommended('premium-listing')) {
+              <div class="px-3 py-1.5 left-8 md:left-[174px] top-2 md:top-[13px] absolute bg-cyan-800 rounded-3xl flex justify-start items-center gap-2.5">
+                <div class="justify-start text-white text-[10px] font-medium font-['Inter']">Recommended</div>
+              </div>
+            }
+          </div>
+          <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'premium-plus' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('premium-plus')">
+            <div class="justify-start text-base font-normal font-['Inter']">Premium Plus</div>
+          </div>
+          <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'hot-job' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('hot-job')">
+            <div class="justify-start text-base font-normal font-['Inter']">Hot Job</div>
+          </div>
+        </div>
+      }
+    </div>
+    <!-- Pay as you go Section -->
+    <div class="w-full p-4 flex justify-between items-center cursor-pointer border-l border-b border-neutral-200 font-semibold"
+      [ngClass]="expandedSections.payAsYouGo ? 'bg-sky-700 text-white' : 'bg-white text-zinc-800'"
+      (click)="toggleSection('payAsYouGo')">
+      <div class="text-lg font-['Inter'] font-semibold">Pay as you go</div>
+      <svg xmlns="http://www.w3.org/2000/svg"
+        class="w-5 h-5 transition-transform duration-200"
+        [ngClass]="expandedSections.payAsYouGo ? 'text-white' : 'text-zinc-800'"
+        [class.rotate-180]="expandedSections.payAsYouGo"
+        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    @if (expandedSections.payAsYouGo) {
+      <div class="flex flex-col justify-start items-start" @expandCollapse>
+        <!-- Example pay-as-you-go package items -->
+        <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+          [ngStyle]="selectedPackage === 'pnpl' ? {'color': '#165273', 'font-weight': '700'} : {}"
+          (click)="selectPackage('pnpl')">
+          <div class="justify-start text-base font-normal font-['Inter']">PNPL</div>
+        </div>
+      </div>
+    }
+    <!-- Free Section (hidden for international users) -->
+    @if (!isInternational) {
+      <div class="w-full p-4 flex justify-between items-center cursor-pointer border-l  border-neutral-200 font-semibold"
+        [ngClass]="expandedSections.free ? 'bg-sky-700 text-white' : 'bg-white text-zinc-800'"
+        (click)="toggleSection('free')">
+        <div class="text-lg font-['Inter'] font-semibold">Free</div>
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-200"
+          [ngClass]="expandedSections.free ? 'text-white' : 'text-zinc-800'"
+          [class.rotate-180]="expandedSections.free"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      @if (expandedSections.free) {
+        <div class="flex flex-col justify-start items-start" @expandCollapse>
+          <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'internship-announcement' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('internship-announcement')">
+            <div class="justify-start text-base font-normal font-['Inter']">Internship Announcement</div>
+          </div>
+          <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+            [ngStyle]="selectedPackage === 'blue-collar' ? {'color': '#165273', 'font-weight': '700'} : {}"
+            (click)="selectPackage('blue-collar')">
+            <div class="justify-start text-base font-normal font-['Inter']">Blue Collar</div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

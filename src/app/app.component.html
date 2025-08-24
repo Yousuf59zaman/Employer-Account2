@@ -1,4 +1,17 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
-<!-- <span class="icon-info"></span> -->
+<ng-container *ngIf="!isMinimalLayout">
+  <app-nav (navbarDataLoaded)="onNavbarDataLoaded($event)"></app-nav>
+  <router-outlet></router-outlet>
+  <app-sales-contact [salesPersonData]="salesPersonData"></app-sales-contact>
+  <app-footer></app-footer>
+
+  <!-- Modal Container -->
+  <app-modal *ngIf="(modalService.modalConfig$ | async)?.componentRef && !(modalService.modalConfig$ | async)?.isClose">
+    <ng-container *ngComponentOutlet="(modalService.modalConfig$ | async)?.componentRef!"></ng-container>
+  </app-modal>
+</ng-container>
+<ng-container *ngIf="isMinimalLayout">
+  <app-navbar></app-navbar>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+  <!-- <span class="icon-info"></span> -->
+</ng-container>

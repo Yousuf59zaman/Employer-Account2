@@ -14,4 +14,9 @@ export interface UserLoginInformation {
     eventId: number;
   };
 }
+  export interface UserLoginInformation {
+    status: Number;
+    message: string;
+    redirectUrl: string;
+  }
   

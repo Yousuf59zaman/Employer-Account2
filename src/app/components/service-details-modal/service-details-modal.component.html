@@ -1,0 +1,132 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+<div class="modal-content">
+  <div class="modal-header-row">
+    <div class="modal-header">
+      <span class="modal-title">Services Details</span>
+      <button class="modal-close" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-header-divider"></div>
+  </div>
+  <div class="modal-body">
+    <div class="service-title-row">
+      <div class="service-title-main">
+        <span class="service-label">Service Name:</span>
+        <span class="service-name">{{ service?.serviceName }} <span class="service-code"></span></span>
+      </div>
+    </div>
+    <div class="service-meta-row-v2">
+      <div class="service-meta-block-v2">
+        <div class="service-meta-dates">
+          <span class="service-meta-value">{{ service?.startingDate | date:'dd MMM yyyy' }}</span>
+          <span class="service-meta-sep">to</span>
+          <span class="service-meta-value">{{ service?.endingDate | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div class="service-meta-label">Validity period</div>
+      </div>
+      <div class="service-meta-block-v2 service-meta-block-right-v2">
+        <div class="service-meta-duration-value">{{ service?.servicesDuration }} {{ (service?.servicesDuration === 1 || service?.servicesDuration === 0) ? 'month' : 'months' }}</div>
+        <div class="service-meta-label service-meta-label-right">Service Duration</div>
+      </div>
+    </div>
+    <div class="listing-cards-v2">
+      <div class="listing-card-v2">
+        <div class="listing-card-title-row">
+          <span class="icon icon-play" style="color:#667085;font-size:16px;margin-right:6px;"></span>
+          <span class="listing-card-title">Standard Listing</span>
+        </div>
+        <div class="listing-card-info-row">
+          <span class="listing-card-info-limit">
+            <span class="listing-card-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                <path d="M1.34961 13C1.36224 11.8429 1.36212 10.7027 1.35741 9.61393M1.35741 9.61393C1.34168 5.97427 1.27485 2.9079 1.46284 1.69514C1.70707 0.119591 4.26168 1.55329 7.31321 2.73228L8.68821 3.32486C9.70021 3.761 11.1455 4.53568 10.5105 5.44056C10.2489 5.81333 9.70634 6.23973 8.70468 6.71133L1.35741 9.61393Z" stroke="#475467" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="listing-card-info-label">Job Posting Limit</span>
+            <span class="listing-card-info-value">{{ service?.maxJob }}</span>
+          </span>
+          <span class="listing-card-divider">|</span>
+          <span class="listing-card-info-posted">
+          <img src="assets/images/content-writing.svg" alt="content-writing" style="width: 20px; height: 20px; margin-right: 4px;">
+            <span class="listing-card-info-label">You have posted</span>
+            <span class="listing-card-info-value-bold">{{ service?.postedJob }}</span>
+            <span class="listing-card-info-used">({{ service?.maxJob - service?.postedJob }} Remaining)</span>
+          </span>
+        </div>
+      </div>
+      <div class="listing-card-v2 listing-card-v2-blue">
+        <div class="listing-card-title-row">
+          <span class="icon icon-play" style="color:#1570EF;font-size:16px;margin-right:6px;"></span>
+          <span class="listing-card-title listing-card-title-blue">Premium Listing</span>
+        </div>
+        <div class="listing-card-info-row">
+          <span class="listing-card-info-limit">
+            <span class="listing-card-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                <path d="M1.34961 13C1.36224 11.8429 1.36212 10.7027 1.35741 9.61393M1.35741 9.61393C1.34168 5.97427 1.27485 2.9079 1.46284 1.69514C1.70707 0.119591 4.26168 1.55329 7.31321 2.73228L8.68821 3.32486C9.70021 3.761 11.1455 4.53568 10.5105 5.44056C10.2489 5.81333 9.70634 6.23973 8.70468 6.71133L1.35741 9.61393Z" stroke="#475467" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="listing-card-info-label">Job Posting Limit</span>
+            <span class="listing-card-info-value">{{ service?.maxStandOutJob }}</span>
+          </span>
+          <span class="listing-card-divider">|</span>
+          <span class="listing-card-info-posted">
+          <img src="assets/images/content-writing.svg" alt="content-writing" style="width: 20px; height: 20px; margin-right: 4px;">
+            <span class="listing-card-info-label">You have posted</span>
+            <span class="listing-card-info-value-bold">{{ service?.totalStandOutJobPostAfterAccess }}</span>
+            <span class="listing-card-info-used">({{ service?.maxStandOutJob - service?.totalStandOutJobPostAfterAccess }} Remaining)</span>
+          </span>
+        </div>
+      </div>
+      <div class="listing-card-v2 listing-card-v2-yellow">
+        <div class="listing-card-title-row">
+          <span class="icon icon-play" style="color:#EAAA08;font-size:16px;margin-right:6px;"></span>
+          <span class="listing-card-title listing-card-title-yellow">Premium Plus</span>
+        </div>
+        <div class="listing-card-info-row">
+          <span class="listing-card-info-limit">
+            <span class="listing-card-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                <path d="M1.34961 13C1.36224 11.8429 1.36212 10.7027 1.35741 9.61393M1.35741 9.61393C1.34168 5.97427 1.27485 2.9079 1.46284 1.69514C1.70707 0.119591 4.26168 1.55329 7.31321 2.73228L8.68821 3.32486C9.70021 3.761 11.1455 4.53568 10.5105 5.44056C10.2489 5.81333 9.70634 6.23973 8.70468 6.71133L1.35741 9.61393Z" stroke="#475467" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="listing-card-info-label">Job Posting Limit</span>
+            <span class="listing-card-info-value">{{ service?.maxPremiumJobs }}</span>
+          </span>
+          <span class="listing-card-divider">|</span>
+          <span class="listing-card-info-posted">
+          <img src="assets/images/content-writing.svg" alt="content-writing" style="width: 20px; height: 20px; margin-right: 4px;">
+            <span class="listing-card-info-label">You have posted</span>
+            <span class="listing-card-info-value-bold">{{ service?.totalPremiumJobsPostAfterAccess }}</span>
+            <span class="listing-card-info-used">({{ service?.maxPremiumJobs - service?.totalPremiumJobsPostAfterAccess }} Remaining)</span>
+          </span>
+        </div>
+      </div>
+      @if (service?.maxCV && service?.maxCV > 0) {
+      <div class="listing-card-v2 listing-card-v2-violet">
+        <div class="listing-card-title-row">
+          <span class="icon icon-play" style="color:#EAAA08;font-size:16px;margin-right:6px;"></span>
+          <span class="listing-card-title listing-card-title-violet">CV Search</span>
+        </div>
+        <div class="listing-card-info-row">
+          <span class="listing-card-info-limit">
+            <span class="listing-card-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+                <path d="M1.34961 13C1.36224 11.8429 1.36212 10.7027 1.35741 9.61393M1.35741 9.61393C1.34168 5.97427 1.27485 2.9079 1.46284 1.69514C1.70707 0.119591 4.26168 1.55329 7.31321 2.73228L8.68821 3.32486C9.70021 3.761 11.1455 4.53568 10.5105 5.44056C10.2489 5.81333 9.70634 6.23973 8.70468 6.71133L1.35741 9.61393Z" stroke="#475467" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="listing-card-info-label">CV Search Limit</span>
+            <span class="listing-card-info-value">{{ service?.maxCV }}</span>
+          </span>
+          <span class="listing-card-divider">|</span>
+          <span class="listing-card-info-posted">
+          <img src="assets/images/content-writing.svg" alt="content-writing" style="width: 20px; height: 20px; margin-right: 4px;">
+            <span class="listing-card-info-label">You have posted</span>
+            <span class="listing-card-info-value-bold">{{ service?.totalPremiumJobsPostAfterAccess }}</span>
+            <span class="listing-card-info-used">({{ service?.maxCV - service?.viewedCV}} Remaining)</span>
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,52 @@
+<section class="col-span-1 -ml-8 ">
+  <h1 class="text-primary-900 mb-5 text-2xl">Settings</h1>
+  <nav class="flex flex-col space-y-2 items-start w-full">
+    <div class="w-full flex flex-col">
+      <div class="flex items-center w-full">
+        <a routerLink="edit" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"
+          class="flex-1 flex items-center px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm">
+          <span class="icon-edit-user mr-2 text-2xl"></span>
+          Edit Profile
+      
+        <button (click)="toggleEditProfileDropdown()" type="button" class="ml-16 p-2 focus:outline-none">
+          <ng-container *ngIf="!isEditProfileOpen">
+            <!-- Angle Down Icon -->
+            <svg [style.color]="isEditProfileActive() ? '#0E73A9' : '#64748b'" class="transition-transform duration-200" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </ng-container>
+          <ng-container *ngIf="isEditProfileOpen">
+            <!-- Angle Up Icon -->
+            <svg [style.color]="isEditProfileActive() ? '#0E73A9' : '#64748b'" class="transition-transform duration-200" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 15L12 9L18 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </ng-container>
+        </button>
+          </a>
+      </div>
+      <div *ngIf="isEditProfileOpen" class="pl-6 bg-white">
+        <div class="border-l border-gray-300 pl-4">
+          <a [routerLink]="['/settings/edit']" fragment="company-details" [style.color]="isDropdownLinkActive('company-details') ? '#0E73A9' : '#4B5563'" [ngClass]="{'bg-blue-50': isDropdownLinkActive('company-details')}" class="block px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm text-left">Company Details</a>
+          <a [routerLink]="['/settings/edit']" fragment="contact-details" [style.color]="isDropdownLinkActive('contact-details') ? '#0E73A9' : '#4B5563'" [ngClass]="{'bg-blue-50': isDropdownLinkActive('contact-details')}" class="block px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm text-left">Contact Details</a>
+          <a [routerLink]="['/settings/edit']" fragment="billing-address" [style.color]="isDropdownLinkActive('billing-address') ? '#0E73A9' : '#4B5563'" [ngClass]="{'bg-blue-50': isDropdownLinkActive('billing-address')}" class="block px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm text-left">Billing Address</a>
+        </div>
+      </div>
+    </div>
+
+    <a routerLink="change-password" routerLinkActive="active-link"
+      class=" w-full flex items-center px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm">
+      <span class="icon-key-1 mr-2 text-2xl"></span> Change Password
+    </a>
+
+
+    <a href="https://recruiter.bdjobs.com/usermanagement/" target="_blank" rel="noopener noreferrer"
+      class="w-full flex items-center px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm">
+      <span class="icon-manage-setting mr-2 text-2xl"></span> User Management
+    </a>
+    <!-- <a routerLink="nid" routerLinkActive="active-link"
+      class="w-full flex items-center px-2 py-2 text-gray-600 hover:bg-gray-100 whitespace-nowrap text-sm">
+      <span class="icon-user-box mr-2 text-2xl"></span>
+      NID Varification
+    </a> -->
+  </nav>
+</section>

@@ -1,0 +1,92 @@
+<div class="bg-[#eeee] h-[auto] w-[auto] p-8">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header Section -->
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold flex items-center gap-2">
+        </h2>
+        <div class="flex gap-2">
+          <button 
+            class="bg-[#0c6899] hover:bg-[#08547a] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+            (click)="redirectTo('https://www.bdjobs.com/talent-search-dashboard/')">
+            <i class="icon icon-search"></i> Search Talent
+          </button>
+        
+          <!-- Post a New Job Button -->
+          <button 
+            class="bg-[#008A22] hover:bg-[#006617] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+            (click)="redirectTo('https://recruiter.bdjobs.com/jobposting/')">
+            <i class="icon icon-plus"></i> Post a New Job
+          </button>
+        </div>
+      </div>
+  
+
+<!-- Header -->
+ <h2 class="ml-1 text-[18px] text-[#0c6899] font-bold flex items-center gap-2">
+  <i class="icon icon-mail-sent text-[#0c6899] mr-18"></i>
+  Email Template(s)
+</h2>
+    <div class="bg-white mt-4 rounded-sm border shadow-sm mb-2 p-4">
+    <!-- Description -->
+    <h3 class="text-[16px] font-bold text-gray-700 mb-2">Email Template(s)
+    </h3>
+    <p class="text-gray-600 mb-4">
+      Sending interview invitation or rejection letter or any other message to a job seeker through email is a very
+      common task for HR personnel. Bdjobs.com allows you to create templates of such texts so that you can reuse it
+      whenever necessary. To create/edit such an email template, choose the buttons below:
+    </p>
+    <button 
+    *ngIf="emailTemplatesList.length < 10"
+    class="bg-[#008c23] mb-4 hover:bg-[#006617] text-[14px] text-white px-[12px] py-[6px] rounded transition duration-300"
+    (click)="createTemplate()">
+    <i class="icon icon-plus-sign mr-1 text-xs"></i>Create New 
+    </button>
+  
+    <!-- Table -->
+    <div class="bg-white  rounded-md overflow-hidden">
+      <table class="w-full border border-gray-100">
+        <thead class="bg-[#595959] text-white">
+          <tr>
+            <th class="p-3 text-left pl-8 w-[5%]">#</th>
+            <th class="p-3 text-left pl-8 w-[40%]">Template(s)</th>
+            <th class="p-3 text-left pl-20 w-[25%]">Last Update</th>
+            <th class="p-3 text-left pl-24 w-[30%]">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let template of emailTemplatesList; let i = index" 
+          (mouseenter)="onRowHover(i)" (mouseleave)="onRowLeave()"
+          [style.backgroundColor]="rowHoverIndex === i ? '#e0e0e0' : (i % 2 === 0 ? '#f9f9f9' : 'white')">
+            <td class="p-3 text-left pl-8">
+              <span class="bg-[#595959] text-white rounded-full w-[20px] h-[20px] flex items-center justify-center font-bold">
+                {{ i + 1 }}
+              </span>
+            </td>
+            <td class="p-3 text-left pl-6 text-gray-700">{{ template.name }}</td>
+            <td class="p-3 text-left pl-20 text-gray-600">
+              <i class="icon icon-calendar mr-1"></i> {{ template.lastUpdated | date: 'd MMM yyyy' }}
+            </td>
+            <td class="p-3 text-left pl-20">
+              <div class="flex gap-3">
+                <button [style.backgroundColor]="rowHoverIndex === i ? '#337ab7' : '#f0f0f0'" 
+                [style.color]="rowHoverIndex === i ? 'white' : '#4a4a4a'"
+                class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center gap-1 hover:text-white"
+                (click)="viewTemplate(template.templateID)">
+                
+                  <i class="icon icon-eye"></i> View
+                </button>
+                <button [style.backgroundColor]="rowHoverIndex === i ? '#008A22' : '#f0f0f0'" 
+                [style.color]="rowHoverIndex === i ? 'white' : '#4a4a4a'"
+                class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center gap-1 hover:text-white"
+                (click)="viewTemplateEditor(template.templateID)">
+                  Edit
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table> 
+    </div>
+    </div>
+  </div>
+  

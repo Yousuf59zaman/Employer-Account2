@@ -1,0 +1,138 @@
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-[550px]">
+    <div class="flex gap-4 border-b pb-4 mb-4">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <button class="text-lg font-bold text-gray-400" (click)="prevMonthLeft()">
+            <i class="icon-angle-left text-black" style="font-size: 12px; font-weight: 100;"></i>
+          </button>
+          <div class="flex gap-1 items-center">
+            <div class="relative">
+              <select [(ngModel)]="displayMonthLeft" (ngModelChange)="onMonthChange('left', $event)" class="border border-black rounded px-2 py-1 text-sm focus:outline-none appearance-none bg-white pr-6">
+                @for (m of months; track $index) {
+                  <option [value]="$index">{{ m }}</option>
+                }
+              </select>
+              <span class="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-black">
+                <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'>
+                  <path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/>
+                </svg>
+              </span>
+            </div>
+            <div class="relative">
+              <select [(ngModel)]="displayYearLeft" (ngModelChange)="onYearChange('left', $event)" class="border border-black rounded px-2 py-1 text-sm focus:outline-none appearance-none bg-white pr-6">
+                @for (y of years; track $index) {
+                  <option [value]="y">{{ y }}</option>
+                }
+              </select>
+              <span class="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-black">
+                <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'>
+                  <path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/>
+                </svg>
+              </span>
+            </div>
+          </div>
+          <button class="text-lg font-bold text-gray-400" (click)="nextMonthLeft()">
+            <i class="icon-angle-right text-black" style="font-size: 12px; font-weight: 100;"></i>
+          </button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs text-gray-400 mb-1">
+          <div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div><div>Su</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+          @for (dayObj of leftMonthDays; track $index) {
+            <button
+              class="w-7 h-7 rounded-full"
+              [ngClass]="{
+                'bg-[#0E73A9] text-white': isSelected(dayObj, 'left'),
+                'bg-gray-200': isInRange(dayObj, 'left'),
+                'text-[#0E73A9]': isToday(dayObj, 'left'),
+                'text-black': !isToday(dayObj, 'left') && dayObj.type === 'current',
+                'text-gray-300': dayObj.type === 'next',
+              }"
+              (click)="selectDate(dayObj, 'left')"
+              [disabled]="dayObj.type !== 'current' || !dayObj.day"
+              >
+              {{ dayObj.day || '' }}
+            </button>
+          }
+        </div>
+      </div>
+      <div class="w-px bg-gray-200 mx-2 self-stretch"></div>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <button class="text-lg font-bold text-gray-400" (click)="prevMonthRight()">
+            <i class="icon-angle-left text-black" style="font-size: 12px; font-weight: 100;"></i>
+          </button>
+          <div class="flex gap-1 items-center">
+            <div class="relative">
+              <select [(ngModel)]="displayMonthRight" (ngModelChange)="onMonthChange('right', $event)" class="border border-black rounded px-2 py-1 text-sm focus:outline-none appearance-none bg-white pr-6">
+                @for (m of months; track $index) {
+                  <option [value]="$index">{{ m }}</option>
+                }
+              </select>
+              <span class="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-black">
+                <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'>
+                  <path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/>
+                </svg>
+              </span>
+            </div>
+            <div class="relative">
+              <select [(ngModel)]="displayYearRight" (ngModelChange)="onYearChange('right', $event)" class="border border-black rounded px-2 py-1 text-sm focus:outline-none appearance-none bg-white pr-6">
+                @for (y of years; track $index) {
+                  <option [value]="y">{{ y }}</option>
+                }
+              </select>
+              <span class="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-black">
+                <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'>
+                  <path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/>
+                </svg>
+              </span>
+            </div>
+          </div>
+          <button class="text-lg font-bold text-gray-400" (click)="nextMonthRight()">
+            <i class="icon-angle-right text-black" style="font-size: 12px; font-weight: 100;"></i>
+          </button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs text-gray-400 mb-1">
+          <div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div><div>Su</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+          @for (dayObj of rightMonthDays; track $index) {
+            <button
+              class="w-7 h-7 rounded-full"
+              [ngClass]="{
+                'bg-[#0E73A9] text-white': isSelected(dayObj, 'right'),
+                'bg-gray-200': isInRange(dayObj, 'right'),
+                'text-[#0E73A9]': isToday(dayObj, 'right'),
+                'text-black': !isToday(dayObj, 'right') && dayObj.type === 'current',
+                'text-gray-300': dayObj.type === 'next',
+              }"
+              (click)="selectDate(dayObj, 'right')"
+              [disabled]="dayObj.type !== 'current' || !dayObj.day"
+              >
+              {{ dayObj.day || '' }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 mt-4 flex-wrap">
+      <input
+        class="border rounded px-2 py-1 text-sm w-24"
+        placeholder="Start date"
+        [(ngModel)]="startDateInput"
+        (blur)="onStartDateInputBlur()"
+      />
+      <span class="text-gray-400">–</span>
+      <input
+        class="border rounded px-2 py-1 text-sm w-24"
+        placeholder="End date"
+        [(ngModel)]="endDateInput"
+        (blur)="onEndDateInputBlur()"
+      />
+      <button class="ml-auto px-3 py-1 rounded border text-gray-600 min-w-[70px]" (click)="onCancel()">Cancel</button>
+      <button class="px-3 py-1 rounded bg-[#0E73A9] text-white min-w-[70px]" (click)="onApply()">Apply</button>
+    </div>
+  </div>
+</div>

@@ -39,6 +39,9 @@
               @if (isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['required']) {
                 <span class="error-message">Username cannot be empty</span>
               } 
+              @else if (isContinueClicked && firstInvalidField === 'username' && employeeForm.controls['username'].errors?.['minlength']) {
+                <span class="error-message">Username can not be less than 3 words</span>
+              } 
               @else if (!employeeForm.controls['username'].errors && usernameExistsMessage) {
                 <span class="error-message">{{ usernameExistsMessage }}</span>
               } 
@@ -123,7 +126,7 @@
               [maxLength]="120"
               [isRequired]="true">
             </app-input-field>
-            <div class="text-red-600" data-error-for="username">
+            <div class="text-red-600" data-error-for="companyName">
               @if (
                 isContinueClicked &&
                 firstInvalidField === 'companyName' &&
@@ -558,6 +561,7 @@
           [control]="formControlSignals()['businessDesc']"
           placeholder="Write Business Description"
           [rows]="4"
+          [maxLength]="2000"
           ></app-text-area> 
         
           <div class="flex flex-col sm:flex-row sm:gap-6">
@@ -814,7 +818,7 @@
   
   @if (employeeForm.get('facilitiesForDisabilities')?.value === 1) {
       <div  id="DisabilityPanel" class="block -mr-2">
-<div class="container flex flex-wrap p-4 mx-auto mt-2 mb-4 -ml-2 rounded-lg" style="background-image: url('/assets/images/disability.svg'); background-size: 60%; background-repeat: no-repeat; background-position: right;">
+<div class="container flex flex-wrap p-4 mx-auto mt-2 mb-4 -ml-2 rounded-lg" style="background-image: url('assets/images/disability.svg'); background-size: 60%; background-repeat: no-repeat; background-position: right;">
   
     <div class="w-full mb-6 lg:w-1/2">
             <fieldset class="mb-4">

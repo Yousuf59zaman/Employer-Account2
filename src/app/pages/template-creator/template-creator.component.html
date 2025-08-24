@@ -1,0 +1,92 @@
+<div class="bg-[#eeee] h-auto w-auto p-8">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header Section -->
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold flex items-center gap-2"></h2>
+        <div class="flex gap-2">
+          <button
+            class="bg-[#0c6899] hover:bg-[#08547a] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+            (click)="redirectTo('https://www.bdjobs.com/talent-search-dashboard/')">
+            <i class="icon icon-search"></i> Search Talent
+          </button>
+  
+          <button
+            class="bg-[#008A22] hover:bg-[#006617] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+            (click)="redirectTo('https://recruiter.bdjobs.com/jobposting/')">
+            <i class="icon icon-plus"></i> Post a New Job
+          </button>
+        </div>
+      </div>
+  
+      <h2 class="text-[22px] text-black font-semibold flex items-center gap-2 ml-7">
+        <i class="icon icon-edit text-black"></i>  Email Template Creator
+      </h2>
+      <div class="bg-white mt-4 rounded-lg border shadow-sm mb-2 p-8 mx-auto max-w-[1100px]">
+        <form [formGroup]="templateForm" (ngSubmit)="saveTemplate()" class="space-y-4">
+          <label class="block text-sm font-bold mb-2 text-gray-700" for="name">Template Name (required)</label>
+          <input
+            id="name"
+            type="text"
+            class="form-control search_box_content actionCaller w-full px-2 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Type template name"
+            formControlName="templateTitle"
+            maxlength="15" />
+            <p *ngIf="templateForm.controls['templateTitle'].invalid && templateForm.controls['templateTitle'].touched" 
+            class="text-red-500 text-xs mt-1">
+           Template Name is required and should be max 15 characters.
+         </p>
+          <label class="block mt-4 text-sm font-bold mb-2 text-gray-700" for="content">Template Text (required)</label>
+          <textarea
+            id="content"
+            class="form-control w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            formControlName="templateText"
+            rows="5"
+            maxlength="3400"
+            (input)="updateCharacterCount()"></textarea>
+      
+          <p *ngIf="isTyping" class="text-sm text-gray-600">
+            You can type maximum <span class="text-red-500 mr-1">{{ maxCharacters - currentCharCount }}</span> character(s).
+          </p>
+      
+          <button
+            type="submit"
+            class="mt-4 text-[14px] bg-[#337ab7] hover:bg-[#2e6da4] text-white font-sans px-4 py-2 rounded-md transition duration-300"
+            [disabled]="templateForm.invalid"
+            >
+            Submit
+          </button>
+        </form>
+      <!-- FAQ Accordion Section -->
+      <button
+      class="mt-2 flex items-center w-full -ml-4 text-[14px] hover:text-[#23527c] text-left font-bold text-[#337ab7] py-2 px-4 rounded-md transition duration-300"
+      (click)="toggleAccordion()"
+      [attr.aria-expanded]="isAccordionOpen">
+      <span [class.rotate-180]="isAccordionOpen" class="icon icon-angle-top transition-transform duration-300"></span>
+      <span class="ml-1">What is Template Name and Template Text?</span>
+    </button>
+    
+    <div *ngIf="isAccordionOpen" class="accordionContent p-4 -mt-2 ">
+      <strong class="block  font-bold text-[14px] -ml-4">Template Name</strong>
+      <p class="text-[14px] text-gray-700  -ml-4">
+        A piece of text that makes a tag for an email template so that you can easily pick your desired one.
+      </p>
+      <p class="text-[14px] text-gray-700 mt-2 -ml-4">
+        You can type maximum <strong class="font-bold">15</strong> characters for a <strong>Template Name</strong>.</p>
+      <p class="text-[14px] text-gray-700 mt-2 -ml-4">
+          <strong class="font-bold">Template text</strong> is  simple paragraph that can be used as your email body which you are supposed to send.</p>
+      <app-email-template-modal #emailModal></app-email-template-modal>
+
+      <a 
+        href="javascript:void(0)"
+        id="mail_sample"
+        class="text-[#337ab7] text-[14px] hover:text-[#23527c] mt-3 inline-block -ml-4"
+        (click)="openExample()">
+        View example
+      </a>
+    </div>
+      <ng-template #loading>
+        <p class="text-[#212121]"><span class="icon icon spinner">Loading email template... </span></p>
+      </ng-template>
+    </div>
+  </div>
+

@@ -1,0 +1,16 @@
+<div class="relative md:left-0 md:top-[1px] md:absolute flex flex-col justify-start gap-2 min-h-[400px] w-full">
+  <div class="flex flex-col justify-start w-full">
+    <div class="self-stretch flex flex-col justify-start gap-0 w-full">
+      @for (item of items; track item.id) {
+        <div
+          class="w-full px-4 py-3 cursor-pointer border-l border-neutral-200"
+          [ngClass]="selectedItemId() === item.id ? 'bg-[#0e73a9] text-white font-[Inter] font-semibold' : 'bg-white text-zinc-800 font-[Inter]'"
+          (click)="selectItem(item.id)"
+        >
+          <div class="text-base">{{ item.label }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+

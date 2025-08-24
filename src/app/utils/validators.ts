@@ -40,11 +40,10 @@ export function noWhitespaceValidator(): ValidatorFn {
 export function banglaTextValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
-    const banglaRegex = /^[\u0980-\u09FF\u09E6-\u09EF\s।,।()\[\]]+$/;
+    const banglaRegex = /^[\u0980-\u09FF\u09E6-\u09EF\s।,।()\[\]\-.]+$/;
     if (value && !banglaRegex.test(value)) {
       return { invalidBanglaText: true };
     }
-
     return null;
   };
 }
@@ -87,6 +86,42 @@ export function companyAddressValidator(): ValidatorFn {
     // Check if input is less than 10 characters
     if (value.length < 10) {
       return { minlength: true };
+    }
+
+    return null;
+  };
+}
+
+export function emailValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) {
+      return null;
+    }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(value)) {
+      return { invalidEmail: true };
+    }
+    return null;
+  };
+}
+
+export function urlValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    
+    if (!value) {
+      return null; 
+    }
+
+    if (!value.toLowerCase().startsWith('https://') && !value.toLowerCase().startsWith('http://')) {
+      return { invalidUrl: true };
+    }
+
+    try {
+      new URL(value);
+    } catch {
+      return { invalidUrl: true };
     }
 
     return null;

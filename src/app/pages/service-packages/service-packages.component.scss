@@ -1,0 +1,28 @@
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none; 
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.service-packages {
+	.tabs {
+		white-space: nowrap;
+	}
+}
+
+@media (max-width: 767px) {
+	.service-packages {
+		.tabs button {
+			min-width: 180px;
+		}
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+	.service-packages {
+		.tabs button {
+			min-width: 220px;
+		}
+	}
+}

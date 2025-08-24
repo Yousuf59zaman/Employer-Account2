@@ -1,0 +1,41 @@
+<div class="bg-[#eeee] h-[auto] w-[auto] p-8">
+    <div class="max-w-6xl mx-auto">
+   <!-- Header Section -->
+   <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold flex items-center gap-2">
+    </h2>
+    <div class="flex gap-2">
+      <button 
+        class="bg-[#0c6899] hover:bg-[#08547a] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+        (click)="redirectTo('https://www.bdjobs.com/talent-search-dashboard/')">
+        <i class="icon icon-search"></i> Search Talent
+      </button>
+    
+      <!-- Post a New Job Button -->
+      <button 
+        class="bg-[#008A22] hover:bg-[#006617] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+        (click)="redirectTo('https://recruiter.bdjobs.com/jobposting/')">
+        <i class="icon icon-plus"></i> Post a New Job
+      </button>
+    </div>
+  </div>
+<h2 class=" text-[22px] text-black font-semibold flex items-center gap-2 ml-7">
+<i class="icon icon-eye text-black "></i>
+View Email Template
+</h2>
+    <div class="bg-white mt-4 rounded-lg border shadow-sm mb-2 p-8 mx-auto max-w-[1100px]">
+        <ng-container *ngIf="templateDetails() as template; else loading">
+            <p class="vt-name text-[#212121] text-[14px] font-bold mb-2">Name of Email Template</p>
+            <p class="vt-name text-[#212121] text-[18px] mb-2">{{ template.name }}</p>
+            <p class="vt-name text-[#212121] text-[14px] font-bold mb-2">Last Update</p>
+            <p class="text-[#212121] font-inter mb-2 text-[18px]">{{ template.lastUpdated | date: 'd MMM yyyy' }}</p>
+            <p class="text-gray-700 whitespace-pre-line leading-[1.2]">{{ template.content }}</p>
+            <button class="btn-primary mt-2 text-[14px] px-3 py-1.5 font-inter hover:bg-[#0f273b] transition duration-300" (click)="viewTemplateEditor(template.templateID)">
+              Edit Template
+            </button>
+        </ng-container>
+        <ng-template #loading>
+            <p class="text-[#212121]">Loading email template...</p>
+        </ng-template>
+    </div>
+</div>

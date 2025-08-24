@@ -1,0 +1,52 @@
+<div class="w-full mt-10">
+  <div class="text-center mb-4">
+    <h3 class="text-[32px] font-semibold font-[inherit] text-[#333333]">Why with Bdjobs?</h3>
+  </div>
+
+  <!-- Stats summary (optional simple placeholders to match layout) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">20 lacs</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">Unique Visitors<br/>Every Month</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">2,00,000</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">Visitors Per Day</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">4.8M+</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">CVs in the Talent<br/>Search</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">45,000+</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">Companies<br/>Recruit Through…</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">2,00,000</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">Applications Daily</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-[0_6px_20px_rgba(14,115,169,0.12),0_2px_8px_rgba(14,115,169,0.08)] p-5 text-center">
+      <div class="text-[#0E73A9] text-[30px] font-bold font-['Inter']">80,000+</div>
+      <div class="text-[#333333] text-[16px] font-medium font-['Inter']">Views Per Job</div>
+    </div>
+  </div>
+
+  <div class="text-[#333] text-[14px] font-inter mb-3">You can make payment by following:</div>
+
+  <!-- Logos row -->
+  <div class="w-full bg-white rounded-md border border-neutral-200 p-4 mx-auto">
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      @for (logo of logos; track logo.name) {
+        <div class="h-16 w-16 rounded-full border-[1.5px] border-[#cfcfcf] bg-white flex items-center justify-center relative group">
+          <img [src]="logo.src" [alt]="logo.name" class="max-h-14 object-contain" />
+          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+            {{ logo.name }}
+            <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+

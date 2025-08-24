@@ -55,7 +55,7 @@ filteredCountriesList = this.countrie;
   employeeForm: FormGroup = new FormGroup({
     
     facilitiesForDisabilities: new FormControl(0),
-    username: new FormControl('', [Validators.required, noBlacklistCharacters]),  
+    username: new FormControl('', [Validators.required, Validators.minLength(3), noBlacklistCharacters]),  
     password: new FormControl('', [Validators.required,Validators.maxLength(10), noBlacklistCharacters]),
     confirmPassword: new FormControl('', [Validators.required]),
     companyName: new FormControl('', [Validators.required, noWhitespaceValidator()]),
@@ -432,6 +432,10 @@ closeAddIndustryModal(): void {
   this.showAddIndustryModal = false;
 }
 onNewIndustryAdded(event: { IndustryName: string }): void {
+    if (this.selectedIndustries.length >= 10) {
+      alert('You cannot select more than 10 Industries.');
+      return;
+    }
     const industryName = event.IndustryName.trim(); 
     const currentIndustryId = this.selectedIndustryId;
     const currentIndustryNames = this.employeeForm.controls['industryName'].value;
@@ -800,6 +804,30 @@ onContinue() {
     return;
   }
 
+  // Check if company name already exists
+  if (this.companyNameExistsMessage) {
+    this.firstInvalidField = 'companyName';
+    const companyNameElement = document.getElementById('companyName');
+    if (companyNameElement) {
+      companyNameElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      companyNameElement.focus();
+    }
+    this.isLoading = false;
+    return;
+  }
+
+  // Check if username already exists
+  if (this.usernameExistsMessage) {
+    this.firstInvalidField = 'username';
+    const usernameElement = document.getElementById('username');
+    if (usernameElement) {
+      usernameElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      usernameElement.focus();
+    }
+    this.isLoading = false;
+    return;
+  }
+
   console.log('Current form values:', this.employeeForm.value);
   const credentials = {
     username: this.employeeForm.value.username || '',
@@ -871,7 +899,7 @@ onContinue() {
     this.checkNamesService.insertAccount(payload).subscribe({
       next: (response) => {
         console.log('Account created successfully:', response);
-        this.router.navigate(['/account-created-successfully']);
+        this.router.navigate(['/account-created-successfully'], { state: { fromRegister: true } });
         this.isLoading = false;
       },
       error: (error) => {

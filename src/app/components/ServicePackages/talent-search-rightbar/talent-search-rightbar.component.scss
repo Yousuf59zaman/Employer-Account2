@@ -1,0 +1,19 @@
+
+.features-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.feature-item {
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateX(2px);
+  }
+}
+
+.text-content {
+  line-height: 1.5;
+  word-wrap: break-word;
+}

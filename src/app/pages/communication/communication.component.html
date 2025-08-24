@@ -1,0 +1,213 @@
+<div class="h-[auto] w-[auto] bg-[#eeee]">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="flex items-center gap-2 text-2xl font-bold">
+        <i class="text-gray-700 icon-com"></i> Communication
+      </h2>
+      <div class="flex gap-2 mt-4">
+                <button 
+          class="bg-[#0c6899] hover:bg-[#08547a] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+          (click)="redirectTo('https://www.bdjobs.com/talent-search-dashboard/')">
+          <i class="icon icon-search"></i> Search Talent
+        </button>
+      
+        <!-- Post a New Job Button -->
+        <button 
+          class="bg-[#008A22] hover:bg-[#006617] text-white px-3 py-2 rounded flex items-center gap-2 transition duration-300"
+          (click)="redirectTo('https://recruiter.bdjobs.com/jobposting/')">
+          <i class="icon icon-plus"></i> Post a New Job
+        </button>
+      </div>
+    </div>
+
+    <!-- Grid Section -->
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="p-4 transition duration-300 bg-white border rounded-md shadow-md focus:ring-4 focus:ring-blue-500 focus:outline-none hover:shadow-lg hover:bg-gray-50">
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-gray-700">Emails by using CV Bank</span>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check text-md"></i> 
+              <span>Sent</span>
+              <button class="px-3 text-orange-700 bg-[#fbe9e9] border border-orange-300 rounded-full text-sm font-semibold transition duration-300 hover:bg-orange-800 hover:text-white cursor-pointer"
+                      [disabled]="sentEmails().cv === 0"
+                      (click)="redirectToSentEmails('cv')">
+                      {{ sentEmails().cv }}
+              </button>
+            </div>
+    
+            <!-- Read Emails -->
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check-double"></i> 
+              <span>Read</span>
+              <button class="px-3 text-green-700 bg-[#e8f5e9] border border-[#81c784] rounded-full text-sm font-semibold transition duration-300 hover:bg-green-800 hover:text-white"
+              [disabled]="readEmails().cv === 0"
+              (click)="redirectToReadEmails('cv')">
+                {{ readEmails().cv }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Emails to Applicants -->
+      <div class="p-4 transition duration-300 bg-white border rounded-md shadow-md focus:ring-4 focus:ring-blue-500 focus:outline-none hover:shadow-lg hover:bg-gray-50">
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-gray-700">Emails to Applicants</span>
+      
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check text-md"></i> 
+              <span>Sent</span>
+              <button class="px-3 text-orange-700 bg-[#fbe9e9] border border-[#ffab91] rounded-full text-sm font-semibold transition duration-300 hover:bg-orange-800 hover:text-white cursor-pointer"
+              [disabled]="sentEmails().ap === 0"       
+              (click)="redirectToSentEmails('ap')">
+                      {{ sentEmails().ap }}
+              </button>
+            </div>
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check-double"></i> 
+              <span>Read</span>
+              <button class="px-3 text-green-700 bg-[#e8f5e9] border border-[#81c784] rounded-full text-sm font-semibold transition duration-300 hover:bg-green-800 hover:text-white"
+              [disabled]="readEmails().ap === 0"
+              (click)="redirectToReadEmails('ap')">
+                {{ readEmails().ap }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>     
+      <!-- Emails for Invitation -->
+      <div class="p-4 transition duration-300 bg-white border rounded-md shadow-md focus:ring-4 focus:ring-blue-500 focus:outline-none hover:shadow-lg hover:bg-gray-50">
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-gray-700">Emails for Invitation</span>    
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check text-md"></i> 
+              <span>Sent</span>
+              <button class="px-3 text-orange-700 bg-[#fbe9e9] border border-orange-300 rounded-full text-sm font-semibold transition duration-300 hover:bg-orange-800 hover:text-white cursor-pointer"
+              [disabled]="sentEmails().iv === 0"
+              (click)="redirectToSentEmails('iv')">
+                {{ sentEmails().iv }}
+              </button>
+            </div>
+      
+            <!-- Read Emails -->
+            <div class="flex items-center gap-1 text-gray-700">
+              <i class="text-gray-600 icon icon-check-double"></i> 
+              <span>Read</span>
+              <button class="px-3 text-green-700 bg-[#e8f5e9] border border-[#81c784] rounded-full text-sm font-semibold transition duration-300 hover:bg-green-800 hover:text-white"
+                [disabled]="readEmails().iv === 0"
+                (click)="redirectToReadEmails('iv')">
+                {{ readEmails().iv }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="max-w-6xl p-4 mx-auto mt-4 mb-2 bg-white border rounded-lg shadow-sm">
+    <h2 class="flex items-center gap-2 -ml-4 text-lg font-semibold">
+      <span class="ml-4 icon-envelope"></span> Jobwise emails sent to applicants
+    </h2>
+
+    <!-- Search Bar -->
+    <div class="relative max-w-6xl mx-auto mt-4">
+      <input
+        type="text"
+        class="w-full p-1 pr-12 border rounded outline-none focus:to-blue-300"
+        placeholder="Search by job title"
+        [formControl]="keyword"
+        (keyup.enter)="onSearch()" 
+      />
+      <button 
+      class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#008C23] text-white px-4 py-1 rounded hover:bg-[#006617] transition"
+      (click)="onSearch()">
+        Search
+      </button>
+    </div>
+      <!-- Loader -->
+<div *ngIf="loading()" class="flex items-center justify-center py-10">
+  <div class="w-12 h-12 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+</div>
+<!-- Job Emails Table -->
+<div *ngIf="!loading() && dataLoaded()" class="max-w-6xl mx-auto mt-4 overflow-hidden border border-gray-200 rounded-md">
+  <table class="min-w-full bg-white divide-y divide-gray-300">
+    <thead class="bg-[#595959] text-white">
+      <tr>
+        <th class="p-3 text-left text-[14px] font-semibold uppercase tracking-wider">#</th>
+        <th class="p-3 text-left text-[14px] font-semibold uppercase tracking-wider">Jobs({{ jobs.length }})</th>
+        <th class="p-3 text-left text-[14px] font-semibold uppercase tracking-wider">Published Date</th>
+        <th class="p-3 text-center text-[14px] font-semibold uppercase tracking-wider">Sent Email(s)</th>
+        <th class="p-3 text-center text-[14px] font-semibold uppercase tracking-wider">Read Email(s)</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <ng-container *ngIf="paginatedJobs.length > 0; else noData">
+        <tr *ngFor="let job of paginatedJobs; let i = index" class="transition hover:bg-gray-100">
+          <td class="p-3 text-center text-[12px]">
+            <span class="bg-[#595959] text-white rounded-full w-[22px] h-[22px] flex items-center justify-center font-semibold">
+              {{ (currentPage - 1) * pageSize + i + 1 }}
+            </span>
+          </td>
+          <td class="p-3 text-sm font-medium text-left text-gray-900">{{ job.job }}</td>
+          <td class="p-3 text-sm text-left text-gray-600">
+            <span class="mr-2 icon icon-calendar"></span>{{ job.publishDate | date: 'MMM dd, yyyy' }}
+          </td>
+          <td class="p-3 text-sm text-center text-gray-600">
+            <button 
+              class="text-gray-600"
+              [disabled]="job.sentEmail === 0"
+              (click)="redirectToJobSentEmails(job.jobId)">
+              {{ job.sentEmail }}
+            </button>
+          </td>
+          <td class="p-3 text-sm text-center text-gray-600">
+            <button 
+              class="text-gray-600"
+              [disabled]="job.readEmail === 0"
+              (click)="redirectToJobReadEmails(job.jobId)">
+              {{ job.readEmail }}
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+<!-- No Data Found Message -->
+<ng-template #noData>
+  <tr>
+    <td colspan="5" class="px-6 py-16 text-sm font-medium text-center text-gray-500">
+      <div class="flex flex-col items-center">
+        <i class="text-gray-400 icon icon-envelope" style="font-size: 64px;"></i>
+        <span class="text-[16px] font-semibold text-[#0e73a9] mt-2">No data found</span>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+    <div class="flex flex-col items-start mt-4">
+      <div class="flex mt-2 mb-12 space-x-2">
+        <button
+          *ngFor="let page of totalPagesArray"
+          class="px-3.5 py-1.5 transition-colors rounded"
+          [style.backgroundColor]="currentPage === page ? '#0e73a9' : '#08547a'"
+          [style.color]="currentPage === page ? 'white' : 'white'"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <!-- Email Templates Button -->
+      <button 
+      class="bg-[#0e73a9] hover:bg-[#08547a] text-white px-4 py-2 rounded transition duration-300"
+      (click)="redirectToEmailTemplate()">
+      Email Template
+    </button>
+    </div>
+  </div>
+</div> 

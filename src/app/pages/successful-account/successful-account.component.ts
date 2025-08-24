@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoginService } from '../../Services/login.service';
 import { AuthService } from '../../Services/shared/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-successful-account',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './successful-account.component.html',
   styleUrl: './successful-account.component.scss'
 })
@@ -23,13 +24,21 @@ export class SuccessfulAccountComponent {
   ? this.urlParams.get('selectedJobType')
   : '';
 
-  constructor(private router: Router, private loginService: LoginService, private authService: AuthService
-  ) {}
+  mode: 'create' | 'edit' = 'create';
+
+  constructor(private router: Router, private route: ActivatedRoute, private loginService: LoginService, private authService: AuthService) {}
   ngOnInit(): void {
     const storedCredentials = this.authService.getCredentials();
     if (storedCredentials.username && storedCredentials.password) {
       this.userName = storedCredentials.username;
       this.password = storedCredentials.password;
+    }
+
+    // Determine mode based on route
+    if (this.router.url.includes('account-updated-successfully')) {
+      this.mode = 'edit';
+    } else {
+      this.mode = 'create';
     }
   }
   onClickLoginButton() {
@@ -79,6 +88,7 @@ export class SuccessfulAccountComponent {
               },
               error: () => {
                 this.loginFormErrorMessage = 'Failed to set authentication cookies.';
+                alert('Failed to set authentication cookies.');
                 this.isLoginApiCallPending = false;
               }
             });
@@ -87,10 +97,12 @@ export class SuccessfulAccountComponent {
         }
         // If not successful, show error
         this.loginFormErrorMessage = 'Login failed. Please check your credentials.';
+        alert('Login failed. Please check your credentials.');
         this.isLoginApiCallPending = false;
       },
       error: () => {
         this.loginFormErrorMessage = "Couldn't connect to the server.";
+        alert("Couldn't connect to the server.");
         this.isLoginApiCallPending = false;
       },
     });
@@ -113,7 +125,6 @@ export class SuccessfulAccountComponent {
     this.loginFormErrorMessage = message;
     this.isLoginApiCallPending = false;
   }
-  
 }
 
 

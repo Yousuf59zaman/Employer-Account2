@@ -1,0 +1,20 @@
+<div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50" (click)="close()">
+  <div class="bg-white w-[560px] max-w-[92vw] p-8 rounded-lg shadow-xl relative" (click)="$event.stopPropagation()">
+    <!-- Info icon -->
+    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+      <img src="https://corporate3.bdjobs.com/images/info_mandatory.png" alt="Info" class="w-14 h-14 object-contain" />
+    </div>
+    
+    <div class="text-center text-[#333] text-[16px] leading-7">
+      <p>To access the SMS Package feature you should be logged in</p>
+      <p>and your company must be verified to purchase SMS Packages.</p>
+      <p>For further details please contact <strong>16479</strong>.</p>
+    </div>
+
+    <div class="mt-6 flex justify-center">
+      <button type="button" class="px-6 py-2 rounded-md bg-[#008C23] hover:bg-[#007A1F] text-white" (click)="close()">Ok</button>
+    </div>
+  </div>
+</div>
+
+

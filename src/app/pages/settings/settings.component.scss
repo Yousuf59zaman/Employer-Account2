@@ -1,0 +1,25 @@
+.active-link {
+  @apply border-l-4 border-[#0E73A9] bg-blue-50 text-[#0E73A9];
+}
+
+.edit-profile-dropdown {
+  @apply pl-8 border-l-2 border-gray-200 bg-blue-50;
+}
+
+nav > div > div > a.active-link {
+  @apply border-l-4 border-[#0E73A9] bg-blue-50 text-[#0E73A9];
+}
+
+.edit-profile-dropdown a.active-link, .pl-0.bg-white a.active-link, .pl-8.bg-white a.active-link {
+  color: #0E73A9 !important;
+  background: none !important;
+  border: none !important;
+}
+
+.edit-profile-dropdown a {
+  @apply block px-2 py-2 text-gray-700 hover:bg-gray-100 text-base;
+}
+
+.angle-icon {
+  transition: transform 0.2s;
+}

@@ -1,0 +1,165 @@
+<div class="self-stretch px-4 pt-6 pb-12 rounded-[10px] shadow-[2px_4px_14px_0px_rgba(217,235,244,1.00)] flex flex-col justify-start items-start gap-6 bg-white border border-sky-700">
+  <!-- Regular Package View -->
+  @if (!isPNPL) {
+    <div class="flex flex-col justify-start items-end gap-12">
+      <div class="w-full md:w-[544px] flex flex-col justify-center items-center gap-6">
+        <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch inline-flex justify-between items-center">
+            <div class="justify-start text-Colors-Text-text-primary-(900) text-lg font-semibold font-['Inter'] leading-7">{{selectedPackageData?.name || 'SME Listing'}}</div>
+              <div class="flex justify-start items-end gap-1">
+                <div class="justify-start text-[#0E73A9] text-[20px] font-semibold font-['Inter'] leading-loose">{{formatNumber(displayPricePerJob)}} {{currencyLabel}}</div>
+                <div class="justify-start text-[#667085] text-[16px] font-medium font-['Inter'] leading-normal">Per Job</div>
+              </div>
+          </div>
+          <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
+                      <div class="self-stretch pb-2 inline-flex justify-between items-center">
+             <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Quantity</div>
+             <div class="flex flex-col items-center gap-1">
+               <div class="flex justify-start items-center gap-3">
+                 <button (click)="decrementQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
+                   <div class="w-3.5 h-0.5 left-[5px] top-[11px] absolute bg-sky-700"></div>
+                 </button>
+                 <div class="px-4 py-2 bg-white rounded-md outline outline-1 outline-offset-[-1px] outline-sky-700 inline-flex flex-col justify-center items-center gap-2.5">
+                   <input type="number"
+                     class="justify-start text-zinc-800 text-base font-medium font-['Inter'] w-10 text-center outline-none no-spinner"
+                     [formControl]="quantityControl"
+                     min="0" max="9999"
+                     appNumericOnly
+                     />
+                 </div>
+                 <button (click)="incrementQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
+                   <div class="w-3.5 h-0.5 left-[5px] top-[11px] absolute bg-sky-700"></div>
+                   <div class="w-0.5 h-3.5 left-[11px] top-[5px] absolute bg-sky-700"></div>
+                 </button>
+               </div>
+                @if (isHotJob && quantity > 0 && discountPercent > 0) {
+                  <div class="text-[#616161] text-[14px] font-medium font-['Inter']">{{roundedDiscountPercent}}% Discount Applied</div>
+                }
+             </div>
+           </div>
+           <div class="self-stretch py-2 inline-flex justify-between items-center">
+            <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Price</div>
+            <div class="rounded-md flex justify-start items-center gap-2.5">
+              @if (isHotJob && quantity > 0) {
+                <div class="justify-start text-zinc-800 text-base font-semibold font-['Inter']">
+                  {{formatNumber(totalPrice)}} {{currencyLabel}}
+                </div>
+              } @else {
+                <div class="justify-start text-zinc-800 text-base font-semibold font-['Inter']">{{formatNumber(totalPrice)}} {{currencyLabel}}</div>
+              }
+            </div>
+          </div>
+          
+
+          @if (!isInternational) {
+            <div class="self-stretch py-1.5 inline-flex justify-between items-center">
+              <div class="justify-start"><span class="text-zinc-800 text-lg font-semibold font-['Inter']">VAT </span><span class="text-zinc-800 text-sm font-normal font-['Inter']">&#64; 5% VAT</span></div>
+              <div class="inline-flex flex-col justify-center items-start gap-2.5">
+                <div class="justify-start text-zinc-800 text-base font-semibold font-['Inter']">{{formatNumber(vatAmount)}} {{currencyLabel}}</div>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
+        <div class="self-stretch inline-flex justify-between items-center">
+          <div class="flex-1 flex justify-between items-center">
+            <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Amount to pay</div>
+            <div class="flex justify-start items-center gap-3">
+              <span class="text-xl font-bold text-sky-700">=</span>
+              <div class="text-right justify-center text-sky-700 text-xl font-bold font-['Inter']">{{formatNumber(totalAmount)}} {{currencyLabel}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- PNPL Table View -->
+  @if (isPNPL) {
+    <div class="flex flex-col justify-start items-end gap-12">
+      <div class="w-full md:w-[544px] flex flex-col justify-center items-center gap-6">
+        <div class="self-stretch flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="justify-start text-Colors-Text-text-primary-(900) text-lg font-semibold font-['Inter'] leading-7">PNPL</div>
+            <div class="flex justify-start items-end gap-1">
+              <div class="justify-start text-Colors-Text-text-brand-tertiary-(600) text-xl font-semibold font-['Inter'] leading-loose">500৳</div>
+              <div class="justify-start text-Colors-Text-text-quaternary-(500) text-base font-medium font-['Inter'] leading-normal">Per Job</div>
+            </div>
+          </div>
+          <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
+          <div class="w-full border border-sky-200 bg-white overflow-x-auto">
+            <table class="w-full min-w-[420px]">
+              <thead class="bg-sky-700">
+                <tr>
+                  <th class="px-4 py-3 text-left text-white font-bold text-base">Item</th>
+                  <th class="px-4 py-3 text-left text-white font-bold text-base">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of pnplItems; track item) {
+                  <tr class="border-b border-sky-100">
+                    <td class="px-4 py-3 text-black text-base">{{item.contacts}}</td>
+                    <td class="px-4 py-3 text-black text-base">
+                      <span>{{formatNumber(item.price)}}</span>
+                      <span class="text-sm"> BDT</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <!-- Spacer to match regular view height -->
+          <div class="self-stretch pb-2 inline-flex justify-between items-center opacity-0">
+            <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Quantity</div>
+            <div class="flex justify-start items-center gap-3">
+              <div class="w-6 h-6"></div>
+              <div class="px-4 py-2 w-10"></div>
+              <div class="w-6 h-6"></div>
+            </div>
+          </div>
+          <div class="self-stretch py-2 inline-flex justify-between items-center opacity-0">
+            <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Price</div>
+            <div class="rounded-md flex justify-start items-center gap-2.5">
+              <div class="justify-start text-zinc-800 text-base font-semibold font-['Inter']">0 BDT</div>
+            </div>
+          </div>
+          <div class="self-stretch py-1.5 inline-flex justify-between items-center opacity-0">
+            <div class="justify-start"><span class="text-zinc-800 text-lg font-semibold font-['Inter']">VAT </span><span class="text-zinc-800 text-sm font-normal font-['Inter']">&#64; 5% VAT</span></div>
+            <div class="inline-flex flex-col justify-center items-start gap-2.5">
+              <div class="justify-start text-zinc-800 text-base font-semibold font-['Inter']">0 BDT</div>
+            </div>
+          </div>
+        </div>
+        <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
+        <div class="self-stretch inline-flex justify-between items-center">
+          <div class="flex-1 flex justify-between items-center">
+            <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Select a package</div>
+          </div>
+        </div>
+        
+        <!-- PNPL Place Order Button -->
+        <div class="w-full px-6 py-3 bg-green-700 rounded-md inline-flex justify-center items-center gap-2.5 cursor-pointer hover:bg-green-800 transition-colors" (click)="placeOrder()">
+          <div class="justify-start text-white text-sm font-semibold font-['Inter']">Place Order</div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Place Order Button for Regular Packages -->
+  <div class="w-full md:w-[544px] px-6 py-3 bg-green-700 rounded-md inline-flex justify-center items-center gap-2.5 cursor-pointer hover:bg-green-800 transition-colors" (click)="placeOrder()">
+    <div class="justify-start text-white text-sm font-semibold font-['Inter']">Place Order</div>
+  </div>
+</div>
+
+<style>
+  input[type=number].no-spinner::-webkit-inner-spin-button,
+  input[type=number].no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+input[type=number].no-spinner {
+-moz-appearance: textfield;
+appearance: textfield;
+}
+</style>

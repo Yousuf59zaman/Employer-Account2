@@ -1,0 +1,239 @@
+<div class="ml-12 mr-20">
+  <!-- Page Title and Subtitle -->
+  <div class="p-4 sm:p-6">
+    <h1 class="text-xl sm:text-2xl font-semibold mb-1">Subscription Services</h1>
+    <p class="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base">Set up your bdjobs recruiter presence and hiring needs.</p>
+
+    <!-- Tabs -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
+      <div class="flex flex-wrap gap-1 sm:gap-0 sm:space-x-0 overflow-x-auto sm:overflow-visible">
+        <button
+          (click)="setActiveTab('all')"
+          [class]="(activeTab === 'all' ? 'px-3 sm:px-4 py-2 rounded font-medium cursor-pointer bg-blue-100' : 'px-3 sm:px-4 py-2 rounded-t bg-gray-50 font-medium cursor-pointer hover:bg-white') + ' text-xs sm:text-[14px] whitespace-nowrap'"
+          [style.color]="activeTab === 'all' ? '#0E73A9' : '#344054'"
+          class="flex items-center gap-1 sm:gap-2"
+          >
+          All <span
+          [style.background-color]="activeTab === 'all' ? '#0E73A9' : '#E4E7EC'"
+          [style.color]="activeTab === 'all' ? 'white' : '#344054'"
+        class="text-xs rounded-full px-1.5 sm:px-2 py-0.5">{{ getTabCount('all') }}</span>
+      </button>
+      <button
+        (click)="setActiveTab('job')"
+        [class]="(activeTab === 'job' ? 'px-3 sm:px-4 py-2 rounded font-medium cursor-pointer bg-blue-100' : 'px-3 sm:px-4 py-2 rounded-t bg-gray-50 font-medium cursor-pointer hover:bg-white') + ' text-xs sm:text-[14px] whitespace-nowrap'"
+        [style.color]="activeTab === 'job' ? '#0E73A9' : '#344054'"
+        class="flex items-center gap-1 sm:gap-2"
+        >
+        Job Posting <span
+        [style.background-color]="activeTab === 'job' ? '#0E73A9' : '#E4E7EC'"
+        [style.color]="activeTab === 'job' ? 'white' : '#344054'"
+      class="text-xs rounded-full px-1.5 sm:px-2 py-0.5">{{ getTabCount('job') }}</span>
+    </button>
+    <button
+      (click)="setActiveTab('cm')"
+      [class]="(activeTab === 'cm' ? 'px-3 sm:px-4 py-2 rounded font-medium cursor-pointer bg-blue-100' : 'px-3 sm:px-4 py-2 rounded-t bg-gray-50 font-medium cursor-pointer hover:bg-white') + ' text-xs sm:text-[14px] whitespace-nowrap'"
+      [style.color]="activeTab === 'cm' ? '#0E73A9' : '#344054'"
+      class="flex items-center gap-1 sm:gap-2"
+      >
+      CM Package <span
+      [style.background-color]="activeTab === 'cm' ? '#0E73A9' : '#E4E7EC'"
+      [style.color]="activeTab === 'cm' ? 'white' : '#344054'"
+    class="text-xs rounded-full px-1.5 sm:px-2 py-0.5">{{ getTabCount('cm') }}</span>
+  </button>
+
+  <button
+    [class]="'px-3 sm:px-4 py-2 rounded-t font-medium bg-gray-50 text-xs sm:text-[14px] whitespace-nowrap'"
+    [style.color]="'#344054'"
+    class="flex items-center gap-1 sm:gap-2"
+    disabled
+    >
+    SMS Package <span
+    [style.background-color]="'#E4E7EC'"
+    [style.color]="'#344054'"
+  class="text-xs rounded-full px-1.5 sm:px-2 py-0.5">{{ getTabCount('sms') }}</span>
+</button>
+<button
+  (click)="setActiveTab('cv')"
+  [class]="(activeTab === 'cv' ? 'px-3 sm:px-4 py-2 rounded font-medium cursor-pointer bg-blue-100' : 'px-3 sm:px-4 py-2 rounded-t bg-gray-50 font-medium cursor-pointer hover:bg-white') + ' text-xs sm:text-[14px] whitespace-nowrap'"
+  [style.color]="activeTab === 'cv' ? '#0E73A9' : '#344054'"
+  class="flex items-center gap-1 sm:gap-2"
+  >
+  CV Bank <span
+  [style.background-color]="activeTab === 'cv' ? '#0E73A9' : '#E4E7EC'"
+  [style.color]="activeTab === 'cv' ? 'white' : '#344054'"
+class="text-xs rounded-full px-1.5 sm:px-2 py-0.5">{{ getTabCount('cv') }}</span>
+</button>
+      </div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2">
+        <button class="flex items-center gap-1 text-gray-600 hover:text-[#0E73A9] text-xs sm:text-sm" (click)="printTable()">
+          <span class="icon icon-print"></span>
+          <span class="hidden sm:inline">Print</span>
+        </button>
+        <button
+          class="border rounded px-2 sm:px-3 py-1 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 w-full sm:w-auto justify-center"
+          (click)="openDatePicker()"
+          >
+          <span class="icon icon-calendar text-gray-600"></span>
+          <span style="color: #667085;" class="truncate">
+            {{ startDate && endDate ? (startDate | date:'shortDate') + ' – ' + (endDate | date:'shortDate') : 'Start date – End date' }}
+          </span>
+        </button>
+        @if (startDate && endDate) {
+          <button
+            class="text-red-600 hover:text-red-800 text-xs sm:text-sm w-full sm:w-auto text-center"
+            (click)="clearDateFilters()"
+            >
+            Clear
+          </button>
+        }
+      </div>
+    </div>
+
+<!-- Table -->
+<div [class]="loading ? 'bg-white rounded shadow relative' : 'overflow-x-auto bg-white rounded shadow relative'">
+  <!-- Loading Overlay -->
+  @if (loading) {
+    <div class="absolute inset-0 bg-white bg-opacity-30 z-10">
+      <div class="flex justify-center" style="padding-top: 5rem;">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E6596]"></div>
+      </div>
+    </div>
+  }
+  
+  <table class="min-w-full text-xs sm:text-sm" style="color: #344054; font-family: var(--Font-family-font-family-body, Inter), Inter, sans-serif;">
+    <thead class="bg-gray-200">
+      <tr>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black">SL</th>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black">Service Name</th>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black hidden sm:table-cell">Usage</th>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black hidden md:table-cell">Expire Date</th>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black hidden lg:table-cell">Subscription Duration</th>
+        <th style="padding: var(--spacing-lg, 12px);" class="text-left font-medium text-black">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamic Rows -->
+      @for (item of getPaginatedData(); track item; let i = $index) {
+        <tr class="border-b">
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);">
+            {{ ((currentPage - 1) * itemsPerPage + i + 1) < 10 ? '0' + ((currentPage - 1) * itemsPerPage + i + 1) : ((currentPage - 1) * itemsPerPage + i + 1) }}
+          </td>
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+            <div class="flex items-center gap-1 sm:gap-2">
+              <span class="icon icon-service-list"></span>
+              <span class="font-medium sm:font-normal">{{ item.serviceName }}</span>
+            </div>
+            @if (!isSmsPackage(item)) {
+              <span
+                [ngClass]="'text-xs font-semibold px-2 sm:px-4 py-1 rounded-full border' + (getStatus(item) === 'Active' ? ' text-[#067647]' : ' text-[#344054]')"
+                    [ngStyle]="getStatus(item) === 'Active' 
+                      ? {'background-color': '#ECFDF3', 'border-color': '#ABEFC6', 'border-width': '1.5px', 'border-style': 'solid'} 
+                      : {'background-color': '#F9FAFB', 'border-color': '#E4E7EC', 'border-width': '1.5px', 'border-style': 'solid'}"
+                >
+                {{ getStatus(item) }}
+              </span>
+            }
+            <!-- Mobile-only usage info -->
+            <div class="sm:hidden text-xs text-gray-600">
+              @if (getUsageDisplay(item); as usage) {
+                Usage: {{ usage }}
+              }
+            </div>
+          </td>
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);" class="hidden sm:table-cell">
+            @if (getUsageDisplay(item); as usage) {
+              @if (usage.includes(' ')) {
+                <span style="font-weight: 600;">{{ usage.split(' ')[0] }}</span>
+              }
+              @if (usage.includes(' ')) {
+                <span>&nbsp;{{ usage.split(' ').slice(1).join(' ') }}</span>
+              }
+              @if (!usage.includes(' ')) {
+                <span style="font-weight: 600;">{{ usage }}</span>
+              }
+            }
+          </td>
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);" class="hidden md:table-cell">{{ getExpireDate(item) }}</td>
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);" class="hidden lg:table-cell">
+            {{ item.duration === 1 ? '1 Month' : (item.duration > 1 ? item.duration + ' Months' : 'N/A') }}
+          </td>
+          <td style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);">
+            @if (!isSmsPackage(item)) {
+              <div style="display: flex; align-items: center;">
+                <img src="assets/images/table preview.svg" alt="Table Preview" style="width: 16px; height: 16px; @media (min-width: 640px) { width: 20px; height: 20px; } margin-right: 4px;">
+                <a href="#" style="color: #0E6596;" class="hover:underline text-xs sm:text-sm" (click)="openDetailsModal(item); $event.preventDefault()">Details</a>
+              </div>
+            }
+          </td>
+        </tr>
+      }
+
+      <!-- Empty State -->
+      @if (getPaginatedData().length === 0) {
+        <tr>
+          <td colspan="6" style="padding: var(--spacing-3xl, 24px) var(--spacing-xl, 16px);" class="text-center text-gray-500 text-xs sm:text-sm">
+            No services found for this category.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+@if (getTotalPages() > 1) {
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-4">
+    <div class="text-xs sm:text-sm text-gray-500 text-center sm:text-left">Page {{ currentPage }} of {{ getTotalPages() }}</div>
+    <div class="flex items-center justify-center sm:justify-end gap-1">
+      <button
+        (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="px-2 py-1 rounded border text-gray-500 bg-white disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+        >
+        Previous
+      </button>
+      <!-- Page Numbers -->
+      @for (page of getPageNumbers(); track page) {
+        @if (page !== '...') {
+          <button
+            (click)="navigateToPage(page)"
+            [ngStyle]="page === currentPage ? {'background-color': '#0E6596', 'color': 'white', 'border': '1px solid #0E6596'} : {'background-color': 'white', 'color': '#344054', 'border': '1px solid #E4E7EC'}"
+            class="px-2 py-1 rounded text-xs sm:text-sm"
+            >
+            {{ page }}
+          </button>
+        }
+        @if (page === '...') {
+          <span class="px-2 text-xs sm:text-sm">...</span>
+        }
+      }
+      <button
+        (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage === getTotalPages()"
+        class="px-2 py-1 rounded border text-gray-500 bg-white disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+        >
+        Next
+      </button>
+    </div>
+  </div>
+}
+
+</div>
+</div>
+
+<!-- Date Range Picker Modal -->
+@if (showDatePicker) {
+  <app-date-range-picker-modal
+    [initialStartDate]="startDate"
+    [initialEndDate]="endDate"
+    (apply)="onDateRangeApply($event)"
+    (cancel)="closeDatePicker()"
+  ></app-date-range-picker-modal>
+}
+
+@if (showDetailsModal) {
+  <app-service-details-modal
+    [service]="selectedService"
+    (close)="showDetailsModal = false">
+  </app-service-details-modal>
+}

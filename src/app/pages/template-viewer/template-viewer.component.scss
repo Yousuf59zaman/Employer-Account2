@@ -1,0 +1,13 @@
+
+  .vt-title {
+    @apply text-lg font-semibold text-[#212121];
+  }
+  
+  .vt-name {
+    @apply text-[#212121];
+  }
+  
+  .btn-primary {
+    @apply bg-[#337ab7] text-white px-4 py-2 rounded-md transition hover:bg-[#2e6da4];
+  }
+  
