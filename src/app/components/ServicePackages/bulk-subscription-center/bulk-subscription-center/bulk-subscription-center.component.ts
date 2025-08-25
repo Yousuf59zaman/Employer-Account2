@@ -378,6 +378,29 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     this.validityControl.reset();
     // Ensure initial tab pulls its saved state
     this.restoreState(this._selectedBulkItemId);
+    // Update validity and pricing when quantity changes via direct input
+    this.quantityControl.valueChanges.subscribe(() => {
+      this.updateValidityBasedOnQuantity();
+      this.calculatePricing();
+    });
+
+    // Customized view controls need to react to direct input as well
+    this.standardQuantityControl.valueChanges.subscribe(() => {
+      this.updateValidityForCustomizedView();
+      this.calculatePricing();
+    });
+    this.premiumQuantityControl.valueChanges.subscribe(() => {
+      this.updateValidityForCustomizedView();
+      this.calculatePricing();
+    });
+    this.premiumPlusQuantityControl.valueChanges.subscribe(() => {
+      this.updateValidityForCustomizedView();
+      this.calculatePricing();
+    });
+
+    // Ensure validity reflects any restored quantity
+    this.updateValidityBasedOnQuantity();
+    this.updateValidityForCustomizedView();
   }
 
   get selectedValidity(): string {

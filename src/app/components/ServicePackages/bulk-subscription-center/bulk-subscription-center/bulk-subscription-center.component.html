@@ -260,7 +260,7 @@
         }
         
         <!-- Validity Section - Only shows when quantity > 0 -->
-        @if ((isCustomizedView && (standardQuantity > 0 || premiumQuantity > 0 || premiumPlusQuantity > 0)) || (!isCustomizedView && quantity > 0)) {
+          @if ((isCustomizedView && (standardQuantity + premiumQuantity + premiumPlusQuantity) >= 5) || (!isCustomizedView && quantity >= 5)) {
           <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
           
           <div class="self-stretch py-2 inline-flex justify-between items-center">
