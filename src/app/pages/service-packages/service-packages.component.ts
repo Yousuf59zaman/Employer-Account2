@@ -12,6 +12,7 @@ import { TalentSearchRightbarComponent } from '../../components/ServicePackages/
 import { BulkSubscriptionRightbarComponent } from '../../components/ServicePackages/bulk-subscription-rightbar/bulk-subscription-rightbar.component';
 import { SmeVisibilityService } from '../../Services/sme-visibility.service';
 import { ServicePackagesFooterComponent } from '../../components/Shared/service-packages-footer/service-packages-footer.component';
+import { PackageId } from '../../components/ServicePackages/bulk-subscription-center/bulk-subscription-center/bulk-subscription-center.component';
 
 interface Package {
   id: string;
@@ -49,7 +50,7 @@ export class ServicePackagesComponent implements OnInit {
 
   activeTab: 'jobs' | 'talent-search' | 'bulk-subscription' | 'sms' | 'others' = 'jobs';
   selectedTalentSearchOption: TalentSearchOption | null = null;
-  selectedBulkSubscriptionItemId: string = 'bulk-standard';
+  selectedBulkSubscriptionItemId: PackageId = 'bulk-standard';
   showSmePackage: boolean = false;
 
   // PNPL pricing data
@@ -69,12 +70,12 @@ export class ServicePackagesComponent implements OnInit {
     { contacts: 'All Contacts', price: 73 }
   ];
 
-  constructor(private smeVisibilityService: SmeVisibilityService) {}
+  constructor(private smeVisibilityService: SmeVisibilityService) { }
 
   ngOnInit() {
     // Check SME package visibility on component initialization
     this.showSmePackage = this.smeVisibilityService.getFinalSmeVisibility();
-    
+
     // If SME package is hidden and it's currently selected, switch to standard listing
     if (!this.showSmePackage && this.selectedPackage?.id === 'sme-listing') {
       this.selectedPackage = {
@@ -92,7 +93,7 @@ export class ServicePackagesComponent implements OnInit {
 
   setActiveTab(tab: 'jobs' | 'talent-search' | 'bulk-subscription' | 'sms' | 'others') {
     this.activeTab = tab;
-    
+
     // Set default talent search option when talent-search tab is activated
     if (tab === 'talent-search') {
       this.selectedTalentSearchOption = {
@@ -108,7 +109,7 @@ export class ServicePackagesComponent implements OnInit {
   }
 
   onBulkSubscriptionItemSelected(item: { id: string; label: string }) {
-    this.selectedBulkSubscriptionItemId = item.id;
+    this.selectedBulkSubscriptionItemId = item.id as PackageId;
   }
 
   // Currency helpers aligned with other components

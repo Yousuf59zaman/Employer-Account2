@@ -39,14 +39,14 @@
                 </div>
                 @if (standardQuantity > 0 && !isInternational) {
                   <div class="text-[#616161] text-xs font-medium font-['Inter']">
-                    @if (standardQuantity >= 5 && standardQuantity <= 10) { 12% Discount Applied }
+                    @if      (standardQuantity >= 5 && standardQuantity <= 10)  { 12% Discount Applied }
                     @else if (standardQuantity >= 11 && standardQuantity <= 19) { 23% Discount Applied }
-                    @else if (standardQuantity >= 20 && standardQuantity <= 29) { 25% Discount Applied }
-                    @else if (standardQuantity >= 30 && standardQuantity <= 40) { 30% Discount Applied }
+                    @else if (standardQuantity >= 20 && standardQuantity <= 29) { 23% Discount Applied }
+                    @else if (standardQuantity >= 30 && standardQuantity <= 40) { 28% Discount Applied }
                     @else if (standardQuantity >= 41 && standardQuantity <= 50) { 33% Discount Applied }
-                    @else if (standardQuantity >= 51 && standardQuantity <= 100) { 36% Discount Applied }
-                    @else if (standardQuantity >= 101 && standardQuantity <= 200) { 40% Discount Applied }
-                    @else if (standardQuantity >= 201) { 44% Discount Applied }
+                    @else if (standardQuantity >= 51 && standardQuantity <= 100){ 43% Discount Applied }
+                    @else if (standardQuantity >= 101 && standardQuantity <= 200){ 48% Discount Applied }
+                    @else if (standardQuantity >= 201)                           { 54% Discount Applied }
                   </div>
                 }
               </div>

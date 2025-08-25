@@ -12,7 +12,7 @@
               </div>
           </div>
           <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
-                      <div class="self-stretch pb-2 inline-flex justify-between items-center">
+             <div class="self-stretch pb-2 inline-flex justify-between items-center">
              <div class="justify-start text-zinc-800 text-lg font-semibold font-['Inter']">Quantity</div>
              <div class="flex flex-col items-center gap-1">
                <div class="flex justify-start items-center gap-3">
@@ -21,10 +21,13 @@
                  </button>
                  <div class="px-4 py-2 bg-white rounded-md outline outline-1 outline-offset-[-1px] outline-sky-700 inline-flex flex-col justify-center items-center gap-2.5">
                    <input type="number"
+                     #quantityInput
                      class="justify-start text-zinc-800 text-base font-medium font-['Inter'] w-10 text-center outline-none no-spinner"
                      [formControl]="quantityControl"
                      min="0" max="9999"
                      appNumericOnly
+                     (keydown)="enforceMaxDigits($event, 4)"
+                     (paste)="enforcePasteMaxDigits($event, 4)"
                      />
                  </div>
                  <button (click)="incrementQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">

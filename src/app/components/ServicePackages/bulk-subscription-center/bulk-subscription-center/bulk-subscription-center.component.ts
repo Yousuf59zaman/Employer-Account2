@@ -4,6 +4,24 @@ import { CommonModule } from '@angular/common';
 import { NumericOnlyDirective } from '../../../../directives/numeric-only.dir';
 import { OrderService } from '../../../../Services/order.service';
 
+// Per-tab state identifiers and shape
+export type PackageId = 'bulk-standard' | 'bulk-premium' | 'bulk-premium-plus' | 'bulk-customized';
+
+interface BulkPackageState {
+  quantity: number;
+  validity: string;
+  isTalentSearchExpanded: boolean;
+
+  // customized view fields (kept for all for simplicity)
+  standardQuantity: number;
+  premiumQuantity: number;
+  premiumPlusQuantity: number;
+  isStandardExpanded: boolean;
+  isPremiumExpanded: boolean;
+  isPremiumPlusExpanded: boolean;
+  isTalentSearchCustomizedExpanded: boolean;
+}
+
 interface BulkSubscriptionPackage {
   id: string;
   name: string;
@@ -19,7 +37,18 @@ interface BulkSubscriptionPackage {
   styleUrl: './bulk-subscription-center.component.scss'
 })
 export class BulkSubscriptionCenterComponent implements OnInit {
-  @Input() selectedBulkItemId: string = 'bulk-standard';
+  // Maintain selected package id with a setter to persist/restore per-tab state
+  private _selectedBulkItemId: PackageId = 'bulk-standard';
+  @Input() set selectedBulkItemId(val: PackageId) {
+    // persist current tab before switching
+    this.persistState(this._selectedBulkItemId);
+    this._selectedBulkItemId = val;
+    // restore new tab's saved state
+    this.restoreState(val);
+  }
+  get selectedBulkItemId(): PackageId {
+    return this._selectedBulkItemId;
+  }
 
   quantityControl = new FormControl(0);
   validityControl = new FormControl('');
@@ -36,6 +65,73 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   isPremiumExpanded = signal(false);
   isPremiumPlusExpanded = signal(false);
   isTalentSearchCustomizedExpanded = signal(false);
+
+  // In-memory state store keyed by package id
+  private createDefaultState(): BulkPackageState {
+    return {
+      quantity: 0,
+      validity: '',
+      isTalentSearchExpanded: false,
+      standardQuantity: 0,
+      premiumQuantity: 0,
+      premiumPlusQuantity: 0,
+      isStandardExpanded: false,
+      isPremiumExpanded: false,
+      isPremiumPlusExpanded: false,
+      isTalentSearchCustomizedExpanded: false,
+    };
+  }
+
+  private stateByPackage: Record<PackageId, BulkPackageState> = {
+    'bulk-standard': this.createDefaultState(),
+    'bulk-premium': this.createDefaultState(),
+    'bulk-premium-plus': this.createDefaultState(),
+    'bulk-customized': this.createDefaultState(),
+  };
+
+  // Save what's currently on screen into the per-tab map
+  private persistState(pkg: PackageId) {
+    if (!pkg) return;
+    const s = this.stateByPackage[pkg] ?? (this.stateByPackage[pkg] = this.createDefaultState());
+    s.quantity = this.quantityControl.value ?? 0;
+    s.validity = this.validityControl.value ?? '';
+    s.isTalentSearchExpanded = this.isTalentSearchExpanded();
+
+    s.standardQuantity = this.standardQuantityControl.value ?? 0;
+    s.premiumQuantity = this.premiumQuantityControl.value ?? 0;
+    s.premiumPlusQuantity = this.premiumPlusQuantityControl.value ?? 0;
+
+    s.isStandardExpanded = this.isStandardExpanded();
+    s.isPremiumExpanded = this.isPremiumExpanded();
+    s.isPremiumPlusExpanded = this.isPremiumPlusExpanded();
+    s.isTalentSearchCustomizedExpanded = this.isTalentSearchCustomizedExpanded();
+  }
+
+  // Restore saved values back into the controls/signals
+  private restoreState(pkg: PackageId) {
+    const s: BulkPackageState = this.stateByPackage[pkg] ?? this.createDefaultState();
+
+    this.quantityControl.setValue(s.quantity, { emitEvent: false });
+    this.validityControl.setValue(s.validity, { emitEvent: false });
+    this.isTalentSearchExpanded.set(s.isTalentSearchExpanded);
+
+    this.standardQuantityControl.setValue(s.standardQuantity, { emitEvent: false });
+    this.premiumQuantityControl.setValue(s.premiumQuantity, { emitEvent: false });
+    this.premiumPlusQuantityControl.setValue(s.premiumPlusQuantity, { emitEvent: false });
+
+    this.isStandardExpanded.set(s.isStandardExpanded);
+    this.isPremiumExpanded.set(s.isPremiumExpanded);
+    this.isPremiumPlusExpanded.set(s.isPremiumPlusExpanded);
+    this.isTalentSearchCustomizedExpanded.set(s.isTalentSearchCustomizedExpanded);
+
+    if (this.isCustomizedView) {
+      this.updateValidityForCustomizedView();
+    } else {
+      this.updateValidityBasedOnQuantity();
+    }
+
+    this.calculatePricing();
+  }
 
   // USD pricing for bulk subscription packages (from Services.asp)
   private readonly usdPerJobByPackageId: Record<string, number> = {
@@ -222,19 +318,19 @@ export class BulkSubscriptionCenterComponent implements OnInit {
 
   get customizedTotalPrice(): number {
     const totalJobPrice = this.customizedStandardPrice + this.customizedPremiumPrice + this.customizedPremiumPlusPrice;
-    
+
     if (this.isTalentSearchCustomizedExpanded()) {
       const totalQuantity = this.standardQuantity + this.premiumQuantity + this.premiumPlusQuantity;
       return totalJobPrice + this.getCvPriceForQuantity(totalQuantity);
     }
-    
+
     return totalJobPrice;
   }
 
   // Helper method to get CV price based on total quantity for customized view
   private getCvPriceForQuantity(quantity: number): number {
     if (quantity === 0) return 0;
-    
+
     if (this.isInternational) {
       if (quantity >= 5 && quantity <= 10) {
         return 30; // 30 USD for 550 CVs
@@ -254,7 +350,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
         return 295; // 295 USD for 15,000 CVs
       }
     }
-    
+
     // BDT CV pricing
     if (quantity >= 5 && quantity <= 10) {
       return 2500; // 550 CVs for 2,500 BDT
@@ -273,25 +369,27 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     } else if (quantity >= 201) {
       return 25000; // 15,000 CVs for 25,000 BDT
     }
-    
+
     return 0;
   }
 
   ngOnInit() {
     this.validityControl.setValue('');
     this.validityControl.reset();
+    // Ensure initial tab pulls its saved state
+    this.restoreState(this._selectedBulkItemId);
   }
 
   get selectedValidity(): string {
     return this.validityControl.value || '';
   }
-// cv count based on quantity
+  // cv count based on quantity
   get cvCount(): number {
     if (this.isCustomizedView) {
       // For customized view, calculate CV count based on total quantity
       const totalQuantity = this.standardQuantity + this.premiumQuantity + this.premiumPlusQuantity;
       if (totalQuantity === 0) return 0;
-      
+
       if (totalQuantity >= 5 && totalQuantity <= 10) {
         return 550; // 550 CVs for 5-10 jobs
       } else if (totalQuantity >= 11 && totalQuantity <= 19) {
@@ -310,10 +408,10 @@ export class BulkSubscriptionCenterComponent implements OnInit {
         return 15000; // 15,000 CVs for 201+ jobs
       }
     }
-    
+
     // Regular view CV count logic
     if (this.quantity === 0) return 0;
-    
+
     if (this.quantity >= 5 && this.quantity <= 10) {
       return 550; // 550 CVs for 5-10 jobs
     } else if (this.quantity >= 11 && this.quantity <= 19) {
@@ -331,7 +429,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     } else if (this.quantity >= 201) {
       return 15000; // 15,000 CVs for 201+ jobs
     }
-    
+
     return 0;
   }
 
@@ -358,20 +456,20 @@ export class BulkSubscriptionCenterComponent implements OnInit {
 
   get validityOptions(): { value: string; label: string }[] {
     let totalQuantity = 0;
-    
+
     // For customized view, use total quantity from all job types
     if (this.isCustomizedView) {
       totalQuantity = this.standardQuantity + this.premiumQuantity + this.premiumPlusQuantity;
     } else {
       totalQuantity = this.quantity;
     }
-    
+
     if (totalQuantity === 0) {
       return [];
     }
-    
+
     let options: { value: string; label: string }[] = [];
-    
+
     if (this.selectedPackage.id === 'bulk-standard' || this.isCustomizedView) {
       if (totalQuantity >= 5 && totalQuantity <= 19) {
         options = [{ value: '6-months', label: '6 months' }];
@@ -400,14 +498,14 @@ export class BulkSubscriptionCenterComponent implements OnInit {
         options = [{ value: '12-months', label: '12 months' }];
       }
     }
-    
+
     console.log('Validity options generated:', options, 'for total quantity:', totalQuantity);
     return options;
   }
 
   get filteredValidityOptions(): { value: string; label: string }[] {
     const options = this.validityOptions;
-    
+
     const filtered = options.filter(option => {
       const validValues = ['6-months', '9-months', '12-months'];
       const isValid = validValues.includes(option.value) && option.label && option.label.trim() !== '';
@@ -418,33 +516,33 @@ export class BulkSubscriptionCenterComponent implements OnInit {
 
   // Bulk subscription packages with pricing (matching Services.asp logic)
   bulkPackages: BulkSubscriptionPackage[] = [
-    { 
-      id: 'bulk-standard', 
-      name: 'Standard Listing Job', 
-      startingPrice: 12500, 
+    {
+      id: 'bulk-standard',
+      name: 'Standard Listing Job',
+      startingPrice: 12500,
       pricePerJob: 2500
     },
-    { 
-      id: 'bulk-premium', 
-      name: 'Premium Listing Job', 
-      startingPrice: 16000, 
+    {
+      id: 'bulk-premium',
+      name: 'Premium Listing Job',
+      startingPrice: 16000,
       pricePerJob: 3200
     },
-    { 
-      id: 'bulk-premium-plus', 
-      name: 'Premium Plus Job', 
-      startingPrice: 24000, 
+    {
+      id: 'bulk-premium-plus',
+      name: 'Premium Plus Job',
+      startingPrice: 24000,
       pricePerJob: 4800
     },
-    { 
-      id: 'bulk-customized', 
-      name: 'Customized', 
-      startingPrice: 30000, 
+    {
+      id: 'bulk-customized',
+      name: 'Customized',
+      startingPrice: 30000,
       pricePerJob: 6000
     }
   ];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   get selectedPackage(): BulkSubscriptionPackage {
     return this.bulkPackages.find(pkg => pkg.id === this.selectedBulkItemId) || this.bulkPackages[0];
@@ -486,7 +584,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
         return usdPricePerJob * 5; // Starting package is always 5 jobs
       }
     }
-    
+
     return this.selectedPackage.startingPrice;
   }
 
@@ -510,21 +608,21 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   get discountPercent(): number {
     // No discounts for international companies (USD)
     if (this.isInternational) return 0;
-    
+
     if (this.quantity === 0) return 0;
     if (this.quantity < 5) return 0;
-    
+
     // Different discount logic for different packages
     if (this.selectedPackage.id === 'bulk-standard') {
-      // Standard package discount logic
-      if (this.quantity >= 5 && this.quantity <= 10) return 12;
-      if (this.quantity >= 11 && this.quantity <= 20) return 23;
-      if (this.quantity >= 21 && this.quantity <= 29) return 23;
-      if (this.quantity >= 30 && this.quantity <= 40) return 28;
-      if (this.quantity >= 41 && this.quantity <= 50) return 33;
-      if (this.quantity >= 51 && this.quantity <= 100) return 43;
-      if (this.quantity >= 101 && this.quantity <= 200) return 48;
-      if (this.quantity >= 201) return 62;
+      // Standard package discount logic aligned to sheet
+      if (this.quantity <= 10) return 12;
+      if (this.quantity <= 19) return 23;
+      if (this.quantity <= 29) return 23;
+      if (this.quantity <= 40) return 28;
+      if (this.quantity <= 50) return 33;
+      if (this.quantity <= 100) return 43;
+      if (this.quantity <= 200) return 48;
+      return 54; // 201+
     } else if (this.selectedPackage.id === 'bulk-premium') {
       // Premium package discount logic 
       if (this.quantity >= 5 && this.quantity <= 10) return 18;
@@ -546,7 +644,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
       if (this.quantity >= 101 && this.quantity <= 200) return 57;
       if (this.quantity >= 201) return 62;
     }
-    
+
     return 0;
   }
 
@@ -563,36 +661,36 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     if (this.isCustomizedView) {
       return this.customizedTotalPrice;
     }
-    
+
     // For Standard package, prices are already discounted, so return job price directly
     if (this.selectedPackage.id === 'bulk-standard') {
       let finalPrice = this.jobPrice;
-      
+
       if (this.isTalentSearchExpanded()) {
         finalPrice = finalPrice + this.cvPrice;
         console.log('Standard package - Adding CV cost:', this.cvPrice, 'Final price:', finalPrice);
         return finalPrice;
       }
-      
+
       console.log('Standard package - No CV cost added. Final price:', finalPrice);
       return finalPrice;
     }
-    
+
     // For Premium and Premium Plus packages, prices are already discounted, so return job price directly
     if (this.selectedPackage.id === 'bulk-premium' || this.selectedPackage.id === 'bulk-premium-plus') {
       let finalPrice = this.jobPrice;
-      
+
       if (this.isTalentSearchExpanded()) {
         finalPrice = finalPrice + this.cvPrice;
         return finalPrice;
       }
       return finalPrice;
     }
-    
+
     const discountedJobPrice = this.jobPrice - this.discountAmount;
     const roundedDiscountedJobPrice = Math.ceil(discountedJobPrice);
-    
-    
+
+
     if (this.isTalentSearchExpanded()) {
       const finalPrice = roundedDiscountedJobPrice + this.cvPrice;
       return finalPrice;
@@ -603,7 +701,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   get vatAmount(): number {
     // No VAT for international companies (USD)
     if (this.isInternational) return 0;
-    
+
     if (this.priceAfterDiscount === 0) return 0;
     const rawVat = this.priceAfterDiscount * this.vatRate;
     return Math.round(rawVat);
@@ -616,7 +714,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
 
   toggleTalentSearch() {
     this.isTalentSearchExpanded.set(!this.isTalentSearchExpanded());
-    this.calculatePricing(); 
+    this.calculatePricing();
   }
 
   // Customized view toggle methods
@@ -775,7 +873,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
         this.validityControl.setValue('12-months');
       }
     }
-    
+
     this.validityControl.markAsPristine();
     this.validityControl.markAsUntouched();
   }
@@ -783,7 +881,7 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   private updateValidityForCustomizedView(): void {
     if (this.isCustomizedView) {
       const totalQuantity = this.standardQuantity + this.premiumQuantity + this.premiumPlusQuantity;
-      
+
       if (totalQuantity === 0) {
         this.validityControl.setValue('');
       } else {
@@ -795,16 +893,16 @@ export class BulkSubscriptionCenterComponent implements OnInit {
           this.validityControl.setValue('12-months');
         }
       }
-      
+
       this.validityControl.markAsPristine();
       this.validityControl.markAsUntouched();
     }
   }
 
   calculatePricing() {
-  
+
     console.log('calculatePricing called - forcing change detection');
-    
+
     const currentState = this.isTalentSearchExpanded();
     this.isTalentSearchExpanded.set(!currentState);
     this.isTalentSearchExpanded.set(currentState);

@@ -1,5 +1,6 @@
 import { Component, computed, signal, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SampleViewModalComponent } from '../../sample-view-modal/sample-view-modal.component';
 
 interface Feature {
   text?: string;
@@ -18,14 +19,17 @@ interface TalentSearchOption {
 @Component({
   selector: 'app-talent-search-rightbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SampleViewModalComponent],
   templateUrl: './talent-search-rightbar.component.html',
   styleUrl: './talent-search-rightbar.component.scss'
 })
 export class TalentSearchRightbarComponent {
   @Input() selectedTalentSearchOption: TalentSearchOption | null = null;
-  
+
   private companyCountry = signal<string>('');
+
+  // Modal state for "View Sample"
+  public isSampleModalOpen: boolean = false;
 
   constructor() {
     this.companyCountry.set(localStorage.getItem('CompanyCountry') || '');
@@ -36,11 +40,11 @@ export class TalentSearchRightbarComponent {
     return country !== '' && country !== 'bangladesh';
   });
 
-  protected readonly currencyLabel = computed(() => 
+  protected readonly currencyLabel = computed(() =>
     this.isInternational() ? 'USD' : 'BDT'
   );
 
-  protected readonly startingPrice = computed(() => 
+  protected readonly startingPrice = computed(() =>
     this.isInternational() ? '2.5' : '99'
   );
 
@@ -137,6 +141,15 @@ export class TalentSearchRightbarComponent {
     }
   }
 
+
+  // Open/Close handlers for Sample View Modal
+  public openSampleModal(): void {
+    this.isSampleModalOpen = true;
+  }
+
+  public closeSampleModal(): void {
+    this.isSampleModalOpen = false;
+  }
 
 
 

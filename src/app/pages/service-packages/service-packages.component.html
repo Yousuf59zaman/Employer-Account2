@@ -140,7 +140,7 @@
         } @else if (activeTab === 'talent-search') {
           <app-talent-search-leftbar (optionSelected)="onTalentSearchOptionSelected($event)"></app-talent-search-leftbar>
         } @else if (activeTab === 'bulk-subscription') {
-          <app-bulk-subscription-leftbar (itemSelected)="onBulkSubscriptionItemSelected($event)"></app-bulk-subscription-leftbar>
+          <app-bulk-subscription-leftbar [activeId]="selectedBulkSubscriptionItemId" (itemSelected)="onBulkSubscriptionItemSelected($event)"></app-bulk-subscription-leftbar>
         } @else {
           <app-service-packages-leftbar (packageSelected)="onPackageSelected($event)"></app-service-packages-leftbar>
         }

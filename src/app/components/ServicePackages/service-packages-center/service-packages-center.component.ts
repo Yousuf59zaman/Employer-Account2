@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../Services/order.service';
@@ -26,8 +26,9 @@ interface PNPLItem {
   templateUrl: './service-packages-center.component.html',
   styleUrl: './service-packages-center.component.scss'
 })
-export class ServicePackagesCenterComponent implements OnChanges {
+export class ServicePackagesCenterComponent implements OnChanges, AfterViewInit {
   @Input() selectedPackage: Package | null = null;
+  @ViewChild('quantityInput') quantityInput!: ElementRef<HTMLInputElement>;
 
   quantityControl = new FormControl(0, { nonNullable: true });
   pricePerJob: number = 500;
@@ -36,7 +37,61 @@ export class ServicePackagesCenterComponent implements OnChanges {
   constructor(
     private orderService: OrderService,
     private smeVisibilityService: SmeVisibilityService
-  ) {}
+  ) { }
+
+  ngAfterViewInit(): void {
+    // If needed, ensure the initial value respects 4-digit limit
+    const el = this.quantityInput?.nativeElement;
+    if (el && el.value && el.value.length > 4) {
+      el.value = el.value.slice(0, 4);
+      const num = parseInt(el.value, 10);
+      this.quantityControl.setValue(isNaN(num) ? 0 : num, { emitEvent: false });
+    }
+  }
+
+  // Prevent entering more than 4 digits via keyboard
+  enforceMaxDigits(event: KeyboardEvent, maxDigits: number = 4): void {
+    const input = event.target as HTMLInputElement;
+    const controlKeys = new Set<string>([
+      'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Home', 'End'
+    ]);
+    if (controlKeys.has(event.key) || event.ctrlKey || event.metaKey) {
+      return;
+    }
+    // Allow non-digit handling to be done by existing directive
+    if (!/[0-9]/.test(event.key)) {
+      return;
+    }
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const replacing = end - start; // number of chars being replaced
+    const newLength = input.value.length - replacing + 1; // +1 for this key
+    if (newLength > maxDigits) {
+      event.preventDefault();
+    }
+  }
+
+  // Sanitize paste and clamp to max digits before directive runs
+  enforcePasteMaxDigits(event: ClipboardEvent, maxDigits: number = 4): void {
+    const input = event.target as HTMLInputElement;
+    let text = event.clipboardData?.getData('text') || '';
+    text = text.replace(/\D/g, '');
+    if (!text) {
+      event.preventDefault();
+      return;
+    }
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const current = input.value;
+    const next = (current.slice(0, start) + text + current.slice(end)).replace(/\D/g, '');
+    const truncated = next.slice(0, maxDigits);
+    event.preventDefault();
+    input.value = truncated;
+    const num = truncated ? parseInt(truncated, 10) : 0;
+    this.quantityControl.setValue(isNaN(num) ? 0 : num, { emitEvent: true });
+    // Emit input so any other listeners update accordingly
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 
   // Hot Jobs pricing tiers
   hotJobsPricing = [
@@ -168,19 +223,19 @@ export class ServicePackagesCenterComponent implements OnChanges {
     if (this.isInternational) {
       return 0;
     }
-    
+
     const originalPrice = this.quantity * this.pricePerJob;
     const tierPrice = this.totalPrice;
     const discountAmount = originalPrice - tierPrice;
     const discountPercent = (discountAmount / originalPrice) * 100;
-    
+
     return discountPercent;
   }
 
   get roundedDiscountPercent(): number {
     const rawPercent = this.discountPercent;
     const decimalPart = rawPercent - Math.floor(rawPercent);
-    
+
     if (decimalPart >= 0.5) {
       return Math.ceil(rawPercent);
     } else {
@@ -192,7 +247,7 @@ export class ServicePackagesCenterComponent implements OnChanges {
     if (!this.isHotJob || this.quantity === 0) {
       return 0;
     }
-    
+
     const originalPrice = this.quantity * this.pricePerJob;
     const tierPrice = this.totalPrice;
     return originalPrice - tierPrice;
@@ -202,7 +257,7 @@ export class ServicePackagesCenterComponent implements OnChanges {
     if (!this.isHotJob) {
       return this.totalPrice;
     }
-    
+
     return this.totalPrice;
   }
 
@@ -273,7 +328,7 @@ export class ServicePackagesCenterComponent implements OnChanges {
     return num.toLocaleString('en-IN');
   }
 
- 
+
   placeOrder(): void {
     if (!this.selectedPackage) {
       console.warn('Cannot place order: No package selected');
@@ -284,8 +339,8 @@ export class ServicePackagesCenterComponent implements OnChanges {
       const currency = this.currencyLabel;
       const packageId = this.selectedPackage.id;
       const packageName = this.selectedPackage.name;
-      const quantity = this.quantity; 
-      const totalAmount = this.totalAmount; 
+      const quantity = this.quantity;
+      const totalAmount = this.totalAmount;
 
       const orderRequest = this.orderService.createOrderRequest(
         packageId,
