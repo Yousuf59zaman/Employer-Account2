@@ -57,6 +57,8 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   premiumQuantityControl = new FormControl(0);
   premiumPlusQuantityControl = new FormControl(0);
 
+  readonly MAX_QUANTITY_LENGTH = 4;
+
   vatRate = 0.05;
 
   isTalentSearchExpanded = signal(false);
@@ -398,9 +400,48 @@ export class BulkSubscriptionCenterComponent implements OnInit {
       this.calculatePricing();
     });
 
+    // Enforce 4-digit max on value changes (in case of programmatic updates)
+    this.quantityControl.valueChanges.subscribe((v) => {
+      this.trimControlToMaxDigits(this.quantityControl, v);
+    });
+    this.standardQuantityControl.valueChanges.subscribe((v) => {
+      this.trimControlToMaxDigits(this.standardQuantityControl, v);
+    });
+    this.premiumQuantityControl.valueChanges.subscribe((v) => {
+      this.trimControlToMaxDigits(this.premiumQuantityControl, v);
+    });
+    this.premiumPlusQuantityControl.valueChanges.subscribe((v) => {
+      this.trimControlToMaxDigits(this.premiumPlusQuantityControl, v);
+    });
+
     // Ensure validity reflects any restored quantity
     this.updateValidityBasedOnQuantity();
     this.updateValidityForCustomizedView();
+  }
+
+  onQuantityInputEvent(event: Event, which: 'regular' | 'standard' | 'premium' | 'premiumPlus'): void {
+    const input = event.target as HTMLInputElement;
+    if (!input) return;
+    const sanitized = (input.value || '').replace(/[^0-9]/g, '');
+    const trimmed = sanitized.slice(0, this.MAX_QUANTITY_LENGTH);
+    if (trimmed !== sanitized) input.value = trimmed;
+    const parsed = parseInt(trimmed, 10);
+    const val = isNaN(parsed) ? 0 : parsed;
+    const clamp = Math.min(Math.max(val, 0), 9999);
+    switch (which) {
+      case 'regular': this.quantityControl.setValue(clamp, { emitEvent: true }); break;
+      case 'standard': this.standardQuantityControl.setValue(clamp, { emitEvent: true }); break;
+      case 'premium': this.premiumQuantityControl.setValue(clamp, { emitEvent: true }); break;
+      case 'premiumPlus': this.premiumPlusQuantityControl.setValue(clamp, { emitEvent: true }); break;
+    }
+  }
+
+  private trimControlToMaxDigits(ctrl: FormControl<number | null>, v: number | null | undefined) {
+    const raw = String(v ?? '');
+    if (raw.length > this.MAX_QUANTITY_LENGTH) {
+      const trimmed = parseInt(raw.slice(0, this.MAX_QUANTITY_LENGTH), 10);
+      if (!isNaN(trimmed)) ctrl.setValue(trimmed as any, { emitEvent: false });
+    }
   }
 
   get selectedValidity(): string {
@@ -576,16 +617,17 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   }
 
   // Customized view quantities
+  // Do not count when the section is collapsed
   get standardQuantity(): number {
-    return this.standardQuantityControl.value ?? 0;
+    return this.isStandardExpanded() ? (this.standardQuantityControl.value ?? 0) : 0;
   }
 
   get premiumQuantity(): number {
-    return this.premiumQuantityControl.value ?? 0;
+    return this.isPremiumExpanded() ? (this.premiumQuantityControl.value ?? 0) : 0;
   }
 
   get premiumPlusQuantity(): number {
-    return this.premiumPlusQuantityControl.value ?? 0;
+    return this.isPremiumPlusExpanded() ? (this.premiumPlusQuantityControl.value ?? 0) : 0;
   }
 
   get isCustomizedView(): boolean {
@@ -742,22 +784,33 @@ export class BulkSubscriptionCenterComponent implements OnInit {
 
   // Customized view toggle methods
   toggleStandard() {
-    this.isStandardExpanded.set(!this.isStandardExpanded());
+    const nowOpen = !this.isStandardExpanded();
+    this.isStandardExpanded.set(nowOpen);
+    // Reset quantity when closing the section
+    if (!nowOpen) this.standardQuantityControl.setValue(0, { emitEvent: true });
+    this.updateValidityForCustomizedView();
     this.calculatePricing();
   }
 
   togglePremium() {
-    this.isPremiumExpanded.set(!this.isPremiumExpanded());
+    const nowOpen = !this.isPremiumExpanded();
+    this.isPremiumExpanded.set(nowOpen);
+    if (!nowOpen) this.premiumQuantityControl.setValue(0, { emitEvent: true });
+    this.updateValidityForCustomizedView();
     this.calculatePricing();
   }
 
   togglePremiumPlus() {
-    this.isPremiumPlusExpanded.set(!this.isPremiumPlusExpanded());
+    const nowOpen = !this.isPremiumPlusExpanded();
+    this.isPremiumPlusExpanded.set(nowOpen);
+    if (!nowOpen) this.premiumPlusQuantityControl.setValue(0, { emitEvent: true });
+    this.updateValidityForCustomizedView();
     this.calculatePricing();
   }
 
   toggleTalentSearchCustomized() {
     this.isTalentSearchCustomizedExpanded.set(!this.isTalentSearchCustomizedExpanded());
+    this.updateValidityForCustomizedView();
     this.calculatePricing();
   }
 
@@ -770,10 +823,13 @@ export class BulkSubscriptionCenterComponent implements OnInit {
   }
 
   incrementQuantity() {
-    if (this.quantity === 0) {
+    const current = this.quantity;
+    if (current === 0) {
       this.quantityControl.setValue(5);
+    } else if (current < 9999) {
+      this.quantityControl.setValue(current + 1);
     } else {
-      this.quantityControl.setValue(this.quantity + 1);
+      this.quantityControl.setValue(9999);
     }
     this.updateValidityBasedOnQuantity();
     this.calculatePricing();
@@ -796,9 +852,9 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     const currentValue = this.standardQuantityControl.value ?? 0;
     if (currentValue === 0) {
       this.standardQuantityControl.setValue(5);
-    } else {
+    } else if (currentValue < 9999) {
       this.standardQuantityControl.setValue(currentValue + 1);
-    }
+    } // if at 9999, do nothing
     this.calculatePricing();
     this.updateValidityForCustomizedView();
   }
@@ -820,9 +876,9 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     const currentValue = this.premiumQuantityControl.value ?? 0;
     if (currentValue === 0) {
       this.premiumQuantityControl.setValue(5);
-    } else {
+    } else if (currentValue < 9999) {
       this.premiumQuantityControl.setValue(currentValue + 1);
-    }
+    } // if at 9999, do nothing
     this.calculatePricing();
     this.updateValidityForCustomizedView();
   }
@@ -844,9 +900,9 @@ export class BulkSubscriptionCenterComponent implements OnInit {
     const currentValue = this.premiumPlusQuantityControl.value ?? 0;
     if (currentValue === 0) {
       this.premiumPlusQuantityControl.setValue(5);
-    } else {
+    } else if (currentValue < 9999) {
       this.premiumPlusQuantityControl.setValue(currentValue + 1);
-    }
+    } // if at 9999, do nothing
     this.calculatePricing();
     this.updateValidityForCustomizedView();
   }
@@ -940,7 +996,9 @@ export class BulkSubscriptionCenterComponent implements OnInit {
       const currency = this.currencyLabel;
       const packageId = this.selectedPackage.id;
       const packageName = this.selectedPackage.name;
-      const quantity = this.quantity;
+      const quantity = this.isCustomizedView
+        ? (this.standardQuantity + this.premiumQuantity + this.premiumPlusQuantity)
+        : this.quantity;
       const totalAmount = this.totalAmount;
       const validity = this.selectedValidity;
 

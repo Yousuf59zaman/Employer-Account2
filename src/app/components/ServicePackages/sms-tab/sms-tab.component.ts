@@ -20,6 +20,7 @@ export class SmsTabComponent {
   private readonly perSmsBDT = 0.50; // 0.50 BDT per SMS
   private readonly perSmsUSD = 0.05; // 0.05 USD per SMS
   private readonly fallbackUsdToBdtRate = 80; // Fallback like services.asp
+  readonly MAX_QUANTITY_LENGTH = 4;
 
   get isInternational(): boolean {
     const country = (localStorage.getItem('CompanyCountry') || '').trim().toLowerCase();
@@ -68,13 +69,37 @@ export class SmsTabComponent {
 
   increment(): void {
     const current = this.quantityControl.value || 0;
-    this.quantityControl.setValue(current + 1);
+    if (current < 9999) {
+      this.quantityControl.setValue(current + 1);
+    } else {
+      this.quantityControl.setValue(9999);
+    }
   }
 
   onQuantityInput(value: string): void {
-    const parsed = parseInt(value, 10);
+    // Back-compat helper: keep but enforce 4 digits
+    const sanitized = (value || '').replace(/[^0-9]/g, '');
+    const trimmed = sanitized.slice(0, this.MAX_QUANTITY_LENGTH);
+    const parsed = parseInt(trimmed, 10);
     if (!isNaN(parsed) && parsed >= 1) {
       this.quantityControl.setValue(parsed);
+    } else if (trimmed === '') {
+      // Allow empty while typing; do not force 0
+      this.quantityControl.setValue(1);
+    }
+  }
+
+  onQuantityInputEvent(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input) return;
+    const sanitized = (input.value || '').replace(/[^0-9]/g, '');
+    const trimmed = sanitized.slice(0, this.MAX_QUANTITY_LENGTH);
+    if (trimmed !== sanitized) {
+      input.value = trimmed;
+    }
+    const parsed = parseInt(trimmed, 10);
+    if (!isNaN(parsed)) {
+      this.quantityControl.setValue(Math.min(Math.max(parsed, 1), 9999));
     }
   }
 

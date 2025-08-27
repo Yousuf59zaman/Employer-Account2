@@ -29,6 +29,8 @@
               [formControl]="quantityControl"
               min="1" max="9999"
               appNumericOnly
+              (input)="onQuantityInputEvent($event)"
+              [attr.maxlength]="MAX_QUANTITY_LENGTH"
               [minValue]="1"
               [maxValue]="9999"
             />

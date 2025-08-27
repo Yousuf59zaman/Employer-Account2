@@ -1,2 +1,33 @@
 /* Service Packages Leftbar Component Styles */
-/* All styling is handled through Tailwind classes in the HTML template */
+
+/* Make the listing row flex so the badge aligns to the right */
+.listing-option {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* Update the recommendation badge styles */
+.recommended {
+	background-color: #12708c;
+	color: white;
+	border-radius: 4px;
+	padding: 2px 8px;
+	font-size: 12px;
+	display: inline-block;
+	margin-left: 8px;
+	vertical-align: middle;
+	position: relative;
+	white-space: nowrap;
+}
+
+/* Ensure text and badge align properly on small screens */
+@media (max-width: 576px) {
+	.listing-name {
+		flex: 1;
+	}
+  
+	.recommended {
+		flex-shrink: 0;
+	}
+}

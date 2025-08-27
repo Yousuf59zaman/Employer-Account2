@@ -29,6 +29,8 @@
                       [formControl]="standardQuantityControl"
                       min="0" max="9999"
                       appNumericOnly
+                      (input)="onQuantityInputEvent($event, 'standard')"
+                      [attr.maxlength]="MAX_QUANTITY_LENGTH"
                     />
                   </div>
                   <button (click)="incrementStandardQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
@@ -84,6 +86,8 @@
                       [formControl]="premiumQuantityControl"
                       min="0" max="9999"
                       appNumericOnly
+                      (input)="onQuantityInputEvent($event, 'premium')"
+                      [attr.maxlength]="MAX_QUANTITY_LENGTH"
                     />
                   </div>
                   <button (click)="incrementPremiumQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
@@ -139,6 +143,8 @@
                       [formControl]="premiumPlusQuantityControl"
                       min="0" max="9999"
                       appNumericOnly
+                      (input)="onQuantityInputEvent($event, 'premiumPlus')"
+                      [attr.maxlength]="MAX_QUANTITY_LENGTH"
                     />
                   </div>
                   <button (click)="incrementPremiumPlusQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer">
@@ -225,6 +231,8 @@
                     [formControl]="quantityControl"
                     min="0" max="9999"
                     appNumericOnly
+                    (input)="onQuantityInputEvent($event, 'regular')"
+                    [attr.maxlength]="MAX_QUANTITY_LENGTH"
                   />
                 </div>
                 <button (click)="incrementQuantity()" class="w-6 h-6 relative bg-white rounded-3xl outline outline-1 outline-offset-[-1px] outline-sky-700 overflow-hidden cursor-pointer flex items-center justify-center">
@@ -260,7 +268,7 @@
         }
         
         <!-- Validity Section - Only shows when quantity > 0 -->
-          @if ((isCustomizedView && (standardQuantity + premiumQuantity + premiumPlusQuantity) >= 5) || (!isCustomizedView && quantity >= 5)) {
+        @if ((isCustomizedView && (standardQuantity + premiumQuantity + premiumPlusQuantity) >= 5) || (!isCustomizedView && quantity >= 5)) {
           <div class="self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-neutral-200"></div>
           
           <div class="self-stretch py-2 inline-flex justify-between items-center">

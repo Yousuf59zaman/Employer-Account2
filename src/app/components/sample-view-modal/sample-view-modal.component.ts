@@ -14,13 +14,19 @@ export class SampleViewModalComponent implements OnChanges {
   @Input() isOpen: boolean = false;
   @Input() packageType: string = '';
   @Output() closeModal = new EventEmitter<void>();
-  
-  activeTab: 'joblist' | 'details' = 'joblist';
+
+  activeTab: 'joblist' | 'details' | 'cvbank' = 'joblist';
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isOpen']) {
       if (this.isOpen) {
         this.disableBodyScroll();
+        // Set default active tab based on package type
+        if (this.packageType === 'talent-search-bulk') {
+          this.activeTab = 'cvbank';
+        } else {
+          this.activeTab = 'joblist';
+        }
       } else {
         this.enableBodyScroll();
       }
@@ -35,8 +41,14 @@ export class SampleViewModalComponent implements OnChanges {
     document.body.style.overflow = 'auto';
   }
 
+  get showOnlyCvBankTab(): boolean {
+    return this.packageType === 'talent-search-bulk';
+  }
+
   get joblistImage(): string {
     switch (this.packageType) {
+      case 'talent-search-bulk':
+        return 'assets/images/talent-search-bulk.jpg';
       case 'sme-listing':
         return 'https://corporate3.bdjobs.com/images/List-Basic-Listing.jpg';
       case 'premium-listing':
@@ -50,6 +62,8 @@ export class SampleViewModalComponent implements OnChanges {
 
   get detailsImage(): string {
     switch (this.packageType) {
+      case 'talent-search-bulk':
+        return 'assets/images/talent-search-bulk.jpg';
       case 'sme-listing':
         return 'https://corporate3.bdjobs.com/images/Details-%20Basic-Job-Listing.jpg';
       case 'premium-listing':
@@ -61,7 +75,14 @@ export class SampleViewModalComponent implements OnChanges {
     }
   }
 
-  setActiveTab(tab: 'joblist' | 'details') {
+  get currentImage(): string {
+    if (this.activeTab === 'cvbank') {
+      return 'assets/images/talent-search-bulk.jpg';
+    }
+    return this.activeTab === 'joblist' ? this.joblistImage : this.detailsImage;
+  }
+
+  setActiveTab(tab: 'joblist' | 'details' | 'cvbank') {
     this.activeTab = tab;
   }
 

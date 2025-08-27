@@ -29,14 +29,12 @@
             <div class="justify-start text-base font-normal font-['Inter']">Standard Listing</div>
             <div class="w-4 h-3 relative origin-top-left rotate-90"></div>
           </div>
-          <div class="w-full md:w-80 px-8 py-4 relative flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"
+          <div class="w-full md:w-80 px-8 py-4 listing-option cursor-pointer hover:bg-gray-100"
             [ngStyle]="selectedPackage === 'premium-listing' ? {'color': '#165273', 'font-weight': '700'} : {}"
             (click)="selectPackage('premium-listing')">
-            <div class="justify-start text-base font-normal font-['Inter']">Premium Listing</div>
+            <div class="listing-name justify-start text-base font-normal font-['Inter']">Premium Listing</div>
             @if (isRecommended('premium-listing')) {
-              <div class="px-3 py-1.5 left-8 md:left-[174px] top-2 md:top-[13px] absolute bg-cyan-800 rounded-3xl flex justify-start items-center gap-2.5">
-                <div class="justify-start text-white text-[10px] font-medium font-['Inter']">Recommended</div>
-              </div>
+              <span class="recommended">Recommended</span>
             }
           </div>
           <div class="w-full md:w-80 px-8 py-4 flex justify-start items-center gap-2.5 cursor-pointer hover:bg-gray-100"

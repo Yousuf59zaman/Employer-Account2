@@ -15,42 +15,58 @@
 
       <!-- Tab Navigation -->
       <div class="flex border-b border-gray-200 -pt-8 pl-8">
-        <button 
-          (click)="setActiveTab('joblist')"
-          [class]="activeTab === 'joblist' 
-            ? 'px-6 py-2 text-[#337ab7] border-b-2 border-[#337ab7] font-medium' 
-            : 'px-6 py-2 text-gray-500 hover:text-[#337ab7] font-medium'"
-        >
-          Joblist Page
-        </button>
-        <button 
-          (click)="setActiveTab('details')"
-          [class]="activeTab === 'details' 
-            ? 'px-6 py-2 text-[#337ab7] border-b-2 border-[#337ab7] font-medium' 
-            : 'px-6 py-2 text-gray-500 hover:text-[#337ab7] font-medium'"
-        >
-          Details Page
-        </button>
+        @if (showOnlyCvBankTab) {
+          <div class="px-6 py-2 text-[#337ab7] border-b-2 border-[#337ab7] font-medium">
+            CV Bank
+          </div>
+        } @else {
+          <button 
+            (click)="setActiveTab('joblist')"
+            [class]="activeTab === 'joblist' 
+              ? 'px-6 py-2 text-[#337ab7] border-b-2 border-[#337ab7] font-medium' 
+              : 'px-6 py-2 text-gray-500 hover:text-[#337ab7] font-medium'"
+          >
+            Joblist Page
+          </button>
+          <button 
+            (click)="setActiveTab('details')"
+            [class]="activeTab === 'details' 
+              ? 'px-6 py-2 text-[#337ab7] border-b-2 border-[#337ab7] font-medium' 
+              : 'px-6 py-2 text-gray-500 hover:text-[#337ab7] font-medium'"
+          >
+            Details Page
+          </button>
+        }
       </div>
 
       <!-- Modal Content -->
       <div class="relative overflow-auto max-h-[calc(90vh-120px)]" id="sampleViewScrollArea">
-        @if (activeTab === 'joblist') {
+        @if (showOnlyCvBankTab) {
           <div class="flex flex-col items-center bg-gray-50 p-8 rounded-lg">
             <img 
-              [src]="joblistImage" 
-              alt="Joblist Page Sample" 
+              [src]="currentImage" 
+              alt="CV Bank Sample" 
               class="max-w-full h-auto rounded-lg shadow-md"
             />
           </div>
-        } @else if (activeTab === 'details') {
-          <div class="flex flex-col items-center bg-gray-50 p-8 rounded-lg">
-            <img 
-              [src]="detailsImage" 
-              alt="Details Page Sample" 
-              class="max-w-full h-auto rounded-lg shadow-md"
-            />
-          </div>
+        } @else {
+          @if (activeTab === 'joblist') {
+            <div class="flex flex-col items-center bg-gray-50 p-8 rounded-lg">
+              <img 
+                [src]="currentImage" 
+                alt="Joblist Page Sample" 
+                class="max-w-full h-auto rounded-lg shadow-md"
+              />
+            </div>
+          } @else if (activeTab === 'details') {
+            <div class="flex flex-col items-center bg-gray-50 p-8 rounded-lg">
+              <img 
+                [src]="currentImage" 
+                alt="Details Page Sample" 
+                class="max-w-full h-auto rounded-lg shadow-md"
+              />
+            </div>
+          }
         }
       </div>
       <app-back-to-top [target]="'sampleViewScrollArea'" position="absolute" [threshold]="150" [alignWithScrollbar]="true" [rightOffset]="8" [bottomOffset]="20"></app-back-to-top>

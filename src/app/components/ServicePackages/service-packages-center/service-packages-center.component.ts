@@ -302,7 +302,12 @@ export class ServicePackagesCenterComponent implements OnChanges, AfterViewInit 
   }
 
   incrementQuantity() {
-    this.quantityControl.setValue(this.quantity + 1);
+    const current = this.quantity;
+    if (current < 9999) {
+      this.quantityControl.setValue(current + 1);
+    } else {
+      this.quantityControl.setValue(9999);
+    }
   }
 
   decrementQuantity() {
